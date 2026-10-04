@@ -3,6 +3,8 @@
 A premium, editorial redesign of [australianlongevityclinic.com.au](https://australianlongevityclinic.com.au/).
 Plain HTML, CSS and a small amount of JavaScript. No framework, no build step, no tracking.
 
+The home page was built with the **scroll-craft** skill (github.com/nateherkai/scroll-craft) as a chaptered editorial: a title page, five chapters, a colophon, a folio in the margin instead of a fixed bar, and one engineered peak. The design decisions, the feeling curve and the verification results are recorded in `BRIEF.md`; the build's row is in `../scrollcraft/FINGERPRINTS.md`.
+
 Open `index.html` in a browser, or serve the folder:
 
 ```bash
@@ -15,7 +17,7 @@ python3 -m http.server 8080
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Home: positioning, trust strip, services index, how care works, standards, doctors, FAQ, visit, booking call to action |
+| `index.html` | Home, built with scroll-craft: title page; I What this is; II Four programs; III How care works here (the pathway that draws itself); IV Standards (ink ground); V The doctors; colophon with address, hours and the one action |
 | `iv-therapy.html` | IV infusion therapy |
 | `peptide-programs.html` | Peptide programs |
 | `trt.html` | Testosterone replacement therapy |
@@ -23,19 +25,24 @@ python3 -m http.server 8080
 | `our-doctors.html` | The medical team (placeholder cards, see below) |
 | `contact.html` | Address, hours, enquiry form, map |
 | `policies.html` | Privacy, appointments, fees, consent, feedback and complaints |
-| `assets/css/site.css` | The whole design system, commented by section |
-| `assets/js/site.js` | Masthead, mobile menu, reveal on scroll, form handling |
+| `assets/scrollcraft/` | The scroll-craft engine (`scrollcraft.js`, `scrollcraft.css`), copied verbatim and never edited |
+| `assets/css/home.css` | Home page: token theme over the engine's floor, chapters, folio, chart |
+| `assets/js/home.js` | Home page: engine mount, folio, the self-drawing pathway chart |
+| `assets/css/site.css` | The secondary pages' design system, commented by section |
+| `assets/js/site.js` | Secondary pages: menu, reveal on scroll, form handling |
 | `assets/img/` | Logo mark and favicon (SVG) |
+| `BRIEF.md` | The scroll-craft brief: grammar, signature move, feeling curve, peak, score, verification |
 
 ## Design intent
 
 The brief was premium, trusted and editorial rather than a scroll-through "world" or a wall of generated imagery.
 So the site is carried by typography, structure and copy:
 
-- **Type.** Newsreader (a text serif with optical sizes) for display and ledes, Inter for interface text and small-caps labels. Loaded from Google Fonts; the stack falls back to Iowan Old Style, Palatino and Georgia.
-- **Colour.** Warm bone paper, near-black ink, a single deep eucalyptus green for emphasis and buttons, bronze for figure numbers. Colours are tokens at the top of `site.css`.
-- **Structure.** Numbered sections, hairline rules, figure captions, an "On this page" contents rail on long pages, and a dark standards section on the home page. The services index reads like a table of contents rather than a card grid.
-- **Motion.** A single gentle fade on reveal, a masthead that condenses on scroll. Nothing scroll-jacked. All motion is disabled under `prefers-reduced-motion`.
+- **Type.** Newsreader (a text serif with optical sizes) for display and prose, Geist for labels, the folio and tables. Two families. Loaded from Google Fonts; the stack falls back to Iowan Old Style, Palatino and Georgia.
+- **Colour.** Bone paper, near-black ink, tinted secondary ink, and one cobalt spot colour. Chapter IV of the home page hard-cuts to an ink ground with a lighter stop of the same cobalt. Tokens sit at the top of `home.css` and `site.css`.
+- **Structure.** On the home page: chapters with Roman intertitles, a margin folio that tracks the chapter you are in, dense asymmetric spreads, media in its own column with a caption, a colophon rather than a call-to-action island. Secondary pages keep a static running head, hairline rules and an "On this page" rail.
+- **The peak.** Chapter III pins while a care-pathway chart draws itself under the reader's hand: consultation, assessment, program, review, then a dashed return line and a square mark that means stop. It is page-local SVG and JavaScript driven from the engine's `--sc-p`; the engine is untouched.
+- **Motion.** One gentle rise on entry, wipes on the chapter numerals, a parallax plate in the doctors' chapter, and the chart. Nothing scroll-jacked. Reduced motion shows the chart complete and keeps every fade that carries meaning. Without JavaScript the page still reads in full.
 - **Imagery.** None generated. Photo positions are "plates": tonal fields with a grain texture, a small label naming the intended subject, and a numbered caption. They are designed to look deliberate until the clinic's own photography is dropped in.
 
 ## Content: what is verified and what is not
@@ -101,6 +108,21 @@ Export JPEGs around 1600px wide at quality 80. Add `loading="lazy"` to everythin
 - **Book a consultation** buttons all point to `contact.html`. If the clinic uses an online booking system (HotDoc, HealthEngine, Halaxy, Cliniko and similar are common in Brisbane), change those links to the booking URL. Search `contact.html"` across the HTML files.
 - **The enquiry form** has no backend by design. Without one, submitting it opens the visitor's email app with the enquiry drafted to reception. To send enquiries to a server instead, add a `data-endpoint` attribute to the `<form>` with a URL that accepts a JSON POST (a form service such as Formspree or Basin, or the clinic's own handler) and the script will use it.
 - **The map** is a standard Google Maps embed with no API key. It is styled in muted tones to sit with the page. A "Get directions" link is provided as a fallback.
+
+## Verifying the home page the way it was built
+
+The skill's harness walks the page at six scroll positions per act and reports dead scroll, cues that never reach full opacity, and contrast measured on the composited page. To run it yourself:
+
+```bash
+# from the repository root, with the scroll-craft repo cloned beside it
+node <scroll-craft>/plugins/nateherk-design/skills/scroll-craft/scripts/serve.mjs --root australian-longevity-clinic --port 4500 &
+cd scrollcraft/.tools && npm i playwright-core
+node <scroll-craft>/.../scripts/shoot.mjs --url http://localhost:4500 --out ../lab/desktop
+node <scroll-craft>/.../scripts/shoot.mjs --url http://localhost:4500 --out ../lab/mobile --width 390 --height 844
+node <scroll-craft>/.../scripts/shoot.mjs --url http://localhost:4500 --out ../lab/reduced --reduced-motion
+```
+
+Then read `sheet.png` in each folder. The last run before handoff was clean on all three; the results are summarised at the end of `BRIEF.md`.
 
 ## Deploying
 
