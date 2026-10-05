@@ -1,0 +1,146 @@
+[
+ {
+  "series": "PEB30B",
+  "first": 1033,
+  "last": 2012,
+  "rings": 980,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/PEB30B.svg"
+ },
+ {
+  "series": "SRT554C",
+  "first": 600,
+  "last": 1637,
+  "rings": 1038,
+  "site": "Stanley River, Tasmania",
+  "collection": "AUS118",
+  "file": "cores/SRT554C.svg"
+ },
+ {
+  "series": "PEB10A",
+  "first": 1067,
+  "last": 2012,
+  "rings": 946,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/PEB10A.svg"
+ },
+ {
+  "series": "ERC402A",
+  "first": 11,
+  "last": 1106,
+  "rings": 1096,
+  "site": "Stanley River, Tasmania",
+  "collection": "AUS118",
+  "file": "cores/ERC402A.svg"
+ },
+ {
+  "series": "S407B",
+  "first": 368,
+  "last": 1192,
+  "rings": 825,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/S407B.svg"
+ },
+ {
+  "series": "SRT114A",
+  "first": 1077,
+  "last": 1980,
+  "rings": 904,
+  "site": "Stanley River, Tasmania",
+  "collection": "AUS118",
+  "file": "cores/SRT114A.svg"
+ },
+ {
+  "series": "PEB08A",
+  "first": 1158,
+  "last": 2012,
+  "rings": 855,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/PEB08A.svg"
+ },
+ {
+  "series": "SRT052A",
+  "first": 900,
+  "last": 1899,
+  "rings": 1000,
+  "site": "Stanley River, Tasmania",
+  "collection": "AUS118",
+  "file": "cores/SRT052A.svg"
+ },
+ {
+  "series": "PEB21A",
+  "first": 1011,
+  "last": 1849,
+  "rings": 839,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/PEB21A.svg"
+ },
+ {
+  "series": "SRT026C",
+  "first": 1243,
+  "last": 1980,
+  "rings": 738,
+  "site": "Stanley River, Tasmania",
+  "collection": "AUS118",
+  "file": "cores/SRT026C.svg"
+ },
+ {
+  "series": "S795A",
+  "first": 296,
+  "last": 1110,
+  "rings": 815,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/S795A.svg"
+ },
+ {
+  "series": "SRT270B",
+  "first": 1329,
+  "last": 1992,
+  "rings": 664,
+  "site": "Stanley River, Tasmania",
+  "collection": "AUS118",
+  "file": "cores/SRT270B.svg"
+ },
+ {
+  "series": "PEB11B",
+  "first": 1185,
+  "last": 2011,
+  "rings": 827,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/PEB11B.svg"
+ },
+ {
+  "series": "S404A",
+  "first": 450,
+  "last": 1227,
+  "rings": 778,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/S404A.svg"
+ },
+ {
+  "series": "PEB517",
+  "first": 1316,
+  "last": 2012,
+  "rings": 697,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/PEB517.svg"
+ },
+ {
+  "series": "TPK02N",
+  "first": 1397,
+  "last": 2010,
+  "rings": 614,
+  "site": "Teepookana and Pearces Basin, Tasmania",
+  "collection": "AUS123C",
+  "file": "cores/TPK02N.svg"
+ }
+]

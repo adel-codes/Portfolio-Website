@@ -1,151 +1,189 @@
-# BRIEF.md — Australian Longevity Clinic, home page
+# BRIEF.md: Australian Longevity Clinic, second scroll-craft build
 
-**Self-authored where not interviewed.** The user set the direction in two messages and asked for the scroll-craft skill to be used. Topics 1, 6, 7 and 8 below carry their words verbatim. Every other decision is authored in the brand's voice and labelled as such. Nothing below is an invented user quotation.
+**Self-authored under explicit creative delegation.** The user set the criteria in writing and asked for scroll-craft's approach to drive the design ("let its approach drive the design and don't fall back on template defaults", "Apply conversion-focused design judgment"). Their words are quoted verbatim below where they exist. Everything else is an authored decision, labelled as such. No user quotation is invented.
 
-Build folder: `australian-longevity-clinic/` (the site). Registry: `scrollcraft/FINGERPRINTS.md` (empty at the time of this build: first build, nothing to clear).
+This build replaces the first one (row `alc-home` in `scrollcraft/FINGERPRINTS.md`, commit `c576fd4`). The user's verdict on that generation of work: "The current design looks far too Claude-generated. Nothing in the final result should read as an AI template."
 
 ---
 
 ## Step 0: the eight topics
 
-1. **Vibe in three to five words, plus references.**
-   User, verbatim: "premium, trusted", "more editorial rather than a bunch of different AI-generated assets", "more premium".
-   Authored references (medium, not sites): a clinical journal's front section; a Penguin paperback with one spot colour; a well-set observation chart.
+1. **Vibe, plus references.**
+   User, verbatim: "premium, trusted", "more editorial rather than a bunch of different AI-generated assets", "not like a world that we'd be flying through", "more premium". For the audience: "quality, science-backed credibility and exclusivity".
+   Authored references (not websites): a botanical specimen sheet from a state herbarium; the plates in a dendrochronology monograph; a Swiss pharmaceutical package insert; a museum accession label.
 
-2. **The scroll journey, section by section.**
-   Authored. Title page, then five chapters and a colophon: what this is; the four programs; how care works here; standards you can check; the doctors; where and when, and the one action.
+2. **The journey, section by section.**
+   Authored. A specimen first, read in full. Then the four programs as plates. Then the standards the clinic holds itself to. Then the assessment itself, as the ending.
 
 3. **The energy curve.**
-   Authored. Quiet open, quieter ledger, the one loud chapter in the middle (the pathway drawing), a hard dark cut that is heavy rather than loud, then a slow settle to small type.
+   Authored. Still and dark at the open. The one loud moment early: the core leaving the round. Cool and orderly through the programs. Low and steady through the standards. Quiet and focused at the form, which is the end.
 
-4. **Feeling stage by stage, and the ONE moment.**
-   Authored. See the feeling curve and the peak below.
+4. **Feeling stage by stage, and the ONE moment.** See the feeling curve and the peak below.
 
-5. **One thing this site should do that no site they have seen does.**
-   Authored. Draw the patient's whole pathway in front of them, including the exit. Longevity sites sell forward motion; this one draws the line back to review and a square that means stop.
+5. **One thing no site they have seen does.**
+   Authored. Show what "reading someone's history" means with a real record: pull a core out of a real thousand-year-old tree and lay every ring out as a timeline the visitor can read. Longevity clinics show smiling people and IV bags; this one shows a measured life.
 
 6. **How far from premium-minimal.**
-   User, verbatim: "more editorial". Family: **Editorial** (paper, folios, measure, restraint).
+   User, verbatim: "more editorial", "premium". Family: **Editorial with a scientific register.** Plates, figure numbers, captions, scale bars, measured data. Not minimal-luxury dark-and-gold.
 
 7. **One unbroken world, or distinct scenes?**
-   User, verbatim: "not like a world that we'd be flying through". **Distinct chapters.** Worldflight is excluded by the brief.
+   User, verbatim: "not like a world that we'd be flying through". **Distinct scenes.** Worldflight is excluded.
 
 8. **What assets do they already have?**
-   User, verbatim: "not a bunch of different AI-generated assets". No photography, footage or brand kit was supplied, and the live site could not be fetched from this environment (host blocked by network policy). **No assets are generated.** Photo positions are typographic plates with captions, to be replaced by the clinic's own photography. The chart in chapter III is drawn in SVG from the page's own code.
+   None usable. Every image on the live site is AI-generated (a caduceus badge, product vials labelled for a different clinic, stock people in navy-and-gold rooms). The user asked for bespoke assets "using image generation and any other tools available". No diffusion image generator is available in this environment (no KIE key), and a diffusion model would reproduce the AI look the user is rejecting. **So every asset is generated from real data**: NOAA tree-ring measurements of Huon pine and OpenStreetMap streets, drawn with code. See the asset list.
 
 ## Step 1: journey first
 
-- **What is this, and who is it for?** A doctor-led clinic in Annerley, Brisbane, for IV infusion therapy, peptide programs, testosterone therapy and medical weight management, for adults who want these things handled as medicine rather than as a menu. (From public listings.)
-- **What must the visitor believe by the end?** *This clinic will assess me before it treats me, and it will tell me if it should not.*
-- **What does the visitor do next?** Book a consultation. One label, used everywhere: **Book a consultation**.
-- **What do you already have?** Verified public facts only: name, address (628 Ipswich Road, Annerley QLD 4103), hours (Mon–Fri 8:00am–6:00pm, Sat 9:00am–2:00pm), email, services, team qualifications (MBBS, FRACGP, MRCGP, DRCOG; AHPRA registered), suburbs served. No phone, no doctor names, no prices. Placeholders are explicit where facts are missing.
-- **Art direction.** Paper and ink with a single cobalt spot colour. The world is typographic; where a photograph will sit, a captioned plate holds the place. No generated imagery (user's instruction).
+- **What is this, and who is it for?** A doctor-led longevity clinic at 628 Ipswich Road, Annerley, Brisbane: IV infusion therapy, peptide programs, testosterone therapy and medical weight management. User, verbatim, on the audience: "Health-conscious people who are willing to invest significant money in their health."
+- **What must the visitor believe by the end?** *These doctors will read my whole history and my pathology before they prescribe anything, and they will tell me if something is not for me.*
+- **What does the visitor do next?** Begin the assessment: a health questionnaire, a $75 fee, a doctor's review and a phone consultation. One label everywhere: **Begin your assessment**.
+- **Real facts used** (all from the live site, 2026-10-05): address; hours (Mon to Fri 8am to 6pm, Sat 9am to 2pm); email; ABN 85 618 922 848; MBBS and FRACGP; the $75 fee via Stripe; the doctor calls within 1 to 2 business days, Mon to Fri 9am to 5pm AEST; the phone consultation runs 15 to 25 minutes; not bulk billed; no referral for most services; iron infusion needs pathology within 3 months and a GP referral; infusion durations; TRT needs confirmed pathology. **Not available, so not invented:** doctor names, photographs, a phone number, prices of any treatment.
 
-### The journey (beats)
+### Journey beats
 
 ```
-1  Recognition   a field full of promises; a person who wants a doctor          title page + chapter I
-2  Orientation   the four programs, set as a ledger, facts not pitch           chapter II
-3  Clarity       how care works here, drawn in front of them, exit included    chapter III  (PEAK)
-4  Weight        standards they can check, on an ink ground                    chapter IV
-5  Trust         the people and how they practise                              chapter V
-6  Resolve       where, when, and the one action as a line of running text     colophon
+1  Arrival      a real specimen, measured, and a clinic that reads before it treats     act 1 open
+2  Turn         the core leaves the tree and becomes a thousand-year record             act 1 peak
+3  Orientation  four programs, each with its own plate and the same label schema       act 2
+4  Weight       the standards, as a protocol the visitor can check                    act 3
+5  Commitment   the assessment itself, on the page, with everything it costs           act 4 (close)
 ```
 
 ## Step 2: grammar, signature move, gate, curve, score
 
-### Grammar: chaptered editorial
+### Grammar: specimen study (new)
 
-The page is a printed feature. Hard cuts between chapter grounds, intertitles, dense asymmetric spreads, media in its own column with a caption, a folio in the margin instead of a fixed bar, a title page instead of a media hero, a colophon instead of a CTA island.
+A named new grammar, defined by structure, not by a label:
 
-Why the other seven lost:
+- **The unit is the plate, not the chapter or the act.** Every visual is a numbered figure with a caption that states what it is, where the data came from and what is illustrative. Copy is annotation keyed to the figure.
+- **One specimen anchors the page.** The page opens on it, and the peak is an operation performed on it (extraction), not a camera move around it.
+- **Sequence:** specimen, operation, plates, protocol, input. Magnification and order change between acts; the subject does not.
+- **Navigation:** a slim fixed label strip, the clinic's accession line, which carries the site's real page links and the one action. No margin folio, no chapter index, no progress readout.
+- **Ending:** an instrument. The page ends in the assessment form, not a CTA island and not a colophon.
+- **Forbids:** decorative imagery (an image that is not a measured or drawn specimen); generic iconography (the decade-dot convention is the only icon system); cards; testimonials; any visual that does not carry a figure number and a source; worldflight; `scrub` (there is no footage, and inventing footage would be decoration); `spotlight` and `magnet`.
 
-- **Filmic one-shot**: the brief rejects being carried through a film ("not a world we'd be flying through"); a clinic needs to be read, not watched.
-- **Live surface**: there is no product surface; the clinic is people and process.
+Why the other eight lost:
+
+- **Filmic one-shot**: the brief rejects being carried ("not a world we'd be flying through"), and its pinned close with a magnetic CTA is the template default the user is reacting against.
+- **Chaptered editorial**: taken by `alc-home`, the build being replaced. Re-using it would be the re-skin the gate exists to stop.
+- **Live surface**: there is no product surface. The form is real, but a clinic is not software.
 - **Continuous world**: excluded by the brief in so many words.
-- **Typographic poster**: one claim at extreme scale cannot hold the substance a medical service must show (process, standards, eligibility), and it forbids the ledger and the chart.
-- **Gallery / catalog**: the visitor's question is "should I trust you", which that grammar explicitly does not answer; four programs are not a walkable collection.
-- **Split stage**: there is no two-sided argument to resolve.
-- **Rhythmic cutlist**: pulse and speed are the opposite of the calm a clinic has to project.
+- **Typographic poster**: a medical service has to show process, eligibility and standards. One sentence at 40vw cannot carry them.
+- **Gallery / catalog**: the visitor's question is "should I trust you", which a collection does not answer. The programs do borrow its label schema inside one act.
+- **Split stage**: there is no two-sided argument here.
+- **Rhythmic cutlist**: pulse and speed are the opposite of what this audience is buying.
 
-### Signature move: the pathway that draws its own exit
+### Signature move: the core leaves the round
 
-In chapter III the stage pins and a clinical pathway chart draws itself under the reader's hand. Page-local JS reads the act's `--sc-p`, drives the main stroke's `stroke-dashoffset`, lands four stations in sequence (Consultation, Assessment, Program, Review) with their dimension-line callouts cueing in, then draws the two things no longevity page draws: a dashed return line from Review back to Program, and a short terminal to a square end-mark labelled **or stop**. The stage publishes `data-sc-verify-state` (rounded draw progress and stations landed) so the harness can see the motion. Under reduced motion the chart is shown complete. The engine is untouched.
+Act 1 pins. The round is a real Huon pine cross-section, every ring drawn from core PEB07A (1,010 rings, AD 1003 to 2012). As the visitor scrolls, a borer line runs in from the bark to the pith along the measured radius. The core then slides out of the round, the round falls away, and the core grows to the full width of the screen. Decade dots arrive in the standard dendrochronology convention, the centuries are labelled, and three rings are called out. Because the round's radius along that line is the measured cumulative width, the core's rings line up exactly with the round's rings at the moment of extraction. Page-local JS reads the act's `--sc-p` and publishes `data-sc-verify-state`. The engine is untouched. Under reduced motion the core is shown laid out, with no pin.
 
-### Fingerprint gate
+### Fingerprint gate against every existing row
 
-Registry is empty. First build: nothing to clear. Row appended after shipping.
+| Dimension | `alc-home` | This build | Differs |
+|---|---|---|---|
+| Grammar | Chaptered editorial | Specimen study (new, defined above) | yes |
+| Nav treatment | Margin folio listing every chapter, no bar | Fixed accession strip with site links and the one action; switches ground with the section | yes |
+| Hero device | Title page, type alone on paper, no media | Layered specimen on a dark ground: defocused far plane, sharp round, near label; pointer parallax | yes |
+| Act-sequence shape | Title + 5 chapters + colophon = 7 acts, one pinned (span 2.4), about 8.9vh | pin (peak, span 4.8) > pan (3.6) > flow > reveal holding the form, then a footer: 4 acts, about 12.5vh | yes |
+| Close pattern | Colophon plate, CTA as running text | The assessment form is the ending; the page resolves into an input | yes |
+| Signature move | Self-drawing care-pathway chart | A core extracted from a real round and laid out as a timeline | yes |
+
+**6 of 6. Passes.** Shared with `alc-home`: the clinic's facts and the refusal to use stock imagery.
 
 ### The feeling curve
 
 ```
-0  Title page    Calm         type alone on paper, present on landing; the thesis in one line
-1  Chapter I     Recognition  the visitor's situation, named plainly; the numeral wipes in like a page turn
-2  Chapter II    Orientation  four programs as a ledger; the quietest spread on the page (authored silence before the peak)
-3  Chapter III   Clarity      the pathway draws under the hand; the last strokes are the return line and the stop mark   PEAK
-4  Chapter IV    Weight       hard cut to ink; six standards, one of them a public register you can open
-5  Chapter V     Trust        the people: qualifications, how they practise; one portrait column moving at its own rate
-6  Colophon      Resolve      small type, address, hours, the one action as running text; the page stops and holds
+1  Stillness, then awe   a dark ground and one specimen in sharp focus, a real label beside it; then the borer goes in and the core comes out
+2  Clarity               the core across the full screen, a thousand years readable at a glance, and the line that says this is what they do with you
+3  Orientation           a hard cut to a pale ground; four plates travel sideways, each a different magnification of the same tree
+4  Assurance             a protocol set as a table: what happens, who does it, what they will not do
+5  Resolve               the form, the fee, the timeline and the privacy terms in one place; the page stops at an input
 ```
 
-**The peak**, as the visitor would say it: *"the care pathway drew itself across the page as I scrolled, and the last thing it drew was the line back to review and a small square that said stop."* Lives in chapter III, the largest span on the page.
+Act 1 holds two feelings because the peak needs a still open in front of it. The first fifth of the act is that authored stillness: the specimen holds while the headline reads, and nothing moves except under the pointer.
 
-**Tell-someone sentence:** It's the site where the clinic draws your whole pathway, including the exit, before it asks you to book.
+### The peak
 
-**Authored silence:** chapter II is deliberately still (a ledger that rises once and then holds) so chapter III has something to arrive from. It is a flow act and is excluded from dead-scroll detection by design.
+> "You scroll and a core slides out of this huge tree cross-section and turns into a timeline of a thousand years. Then it says that's how they read you."
+
+Lives in act 1, from 0.22 to 0.78 of its span. It has the largest span on the page (4.8, against 3.6 for the pan) and the only bespoke animation.
+
+### Tell-someone sentence
+
+**It's the site where you pull a core out of a thousand-year-old tree and read its whole life, ring by ring.**
+
+### Authored silence
+
+Act 1, `p` 0 to 0.2: the hero holds still under scroll on purpose (the specimen settles, the headline stays). The harness may report the first slice of act 1 as low-change; that is the silence before the borer.
 
 ### Score
 
-| Beat | Act | Device | Why this one |
+| Beat | Device | Why this one |
+|---|---|---|
+| Arrival and Turn | `pin` + `parallax` planes + bespoke extraction from `--sc-p` | One held frame lets the operation happen in place; the planes give the specimen depth before it moves |
+| Orientation | `pan` | Four programs read as breadth, not hierarchy; sideways travel through plates like turning a folio |
+| Weight | `flow` + `in` | Credentials and process are information; compress them (feel.md §5) |
+| Commitment | `reveal`: the paper ground wipes up over the dark, holding a real form | A change of state from reading to doing; the form itself is the close |
+
+Four device families, none twice in a row, no `scrub`.
+
+### Layer contract (hero)
+
+| Plane | Asset | Movement | Rule |
 |---|---|---|---|
-| Recognition | 0 title page | `flow`, greet | A title page is present the instant the page lands; nothing competes with the sentence |
-| Recognition | 1 chapter I | `reveal` (left) on the intertitle numeral, `flow` + `in` on the spread | A page turn is a wipe; the spread rises once and stays |
-| Orientation | 2 chapter II | `flow` + `in` with stagger, no other device | Reading, not watching. The authored quiet before the peak |
-| Clarity | 3 chapter III | `pin` (span 2.4) + bespoke stroke draw + cues | Scroll is the pencil; the largest span on the page by a visible margin |
-| Weight | 4 chapter IV | hard ground cut to ink, `reveal` (left) on the numeral, `flow` + `in` | A cut is a change of state; the ground changes under the reader |
-| Trust | 5 chapter V | `flow` + `parallax` inside the media column | Depth without spectacle; the prose stays still |
-| Resolve | 6 colophon | `flow`, holds | The last screen stands still with content on it |
+| Far | `round-far.webp`: a 2x macro crop of the outer rings and a check, defocused | Smallest scroll and pointer displacement | Never overlaps the headline at more than 25% opacity |
+| Mid | `round-1400.avif`: the sharp round | Moderate; recentres for the extraction | The core line is aligned to its measured radius |
+| Near | The specimen label, HTML | Strongest restrained pointer displacement | Occludes the round's lower edge; never the headline |
+| Type | `h1`, lede, the one action | Stable, greets | Fully readable on landing |
 
-Checks: four device families (`flow`+`in`, `reveal`, `pin` with the bespoke draw, `parallax`); no principal device repeated back to back; no `scrub`, `spotlight`, `magnet`, `drift` or kinetic crossfade type, per the grammar's bans; one peak with the largest span; planned length about 9 to 10 viewport-heights, which is short for a reason (editorial grammar, complete journey).
+## Assets (all generated in this repository; generators in `tools/alc-assets/`)
 
-## Step 3: assets
-
-None generated, by instruction. Plates are typographic frames with a caption naming the photograph to be supplied. The chart is inline SVG.
-
-## Step 4: build notes
-
-- Engine files copied verbatim to `assets/scrollcraft/`; themed by tokens only.
-- Type: Newsreader (display and prose; the grammar is a printed feature, which is the one case the taste floor allows a serif without argument) and Geist (labels, folio, tables). Two families.
-- Colour: bone paper, near-black ink, tinted secondary ink, one cobalt accent. Chapter IV hard-cuts to an ink ground with `color` restated and the accent re-stopped to a lighter cobalt of the same hue, the licensed two-stop case for pages that cut between grounds. No cream-and-brass.
-- Chrome: no fixed bar. A folio in the left margin (chapter numeral and title, all chapters listed, current one in ink, clickable). On phones the folio is a small fixed tag at the top left that opens the same list.
-- No eyebrows, no scroll cue, no counters (no verified figures), no testimonials (National Law), no prescription-medicine names (TGA advertising code), no em dashes.
-- Mobile composition is authored separately: the title page steps down two type rungs, the chart turns vertical, the media column stacks under the prose.
-
-## Step 5: verification plan
-
-- Serve locally, run the harness at 1440×900, 390×844 and under reduced motion; read the contact sheets; walk focus order; run the feel check cold and diff it against the curve above.
-- What a green run will not cover here: a real phone (no device available), and the harness is running Playwright's Chromium rather than installed Chrome. That matters only for h264 clips, and this page has none.
+| Asset | Replaces on the live site | Source |
+|---|---|---|
+| The round (hero), far plane | AI hero imagery | NOAA ITRDB AUS123C, series PEB07A, every ring |
+| The core strip (signature) | none (new) | The same radius, the same rings |
+| Plate: tracheids | AI IV-bag and vial images | Measured widths of 1664 to 1666; cells illustrative |
+| Plate: branchlet | AI peptide imagery | Drawn from the species' habit; illustrative |
+| Plate: cross-dating | AI hormone imagery | PEB07A against PEB07B, 1446 to 1505, five matched narrow rings |
+| Plate: century ledger | AI weight-loss imagery | PEB07A, 1003 to 2012, 30-year running mean |
+| Mark and favicon | AI caduceus badge | Four rings of the same round, and its core line |
+| Location plate | none (address only) | OpenStreetMap, ODbL |
+| Journal cores (16) | AI blog thumbnails | Sixteen other series from AUS123C and AUS118 |
+| Decade-dot notation | generic icon set | The dendrochronology marking convention |
+| Social card | none | The round and the wordmark |
 
 ---
 
-## Step 5: what was verified, and the feel check
+## Step 5: verification (2026-10-05)
 
-**Harness.** Served locally with the web fonts served from disk (the sandbox's TLS proxy blocks Google Fonts in headless Chromium; the published page loads them normally). `shoot.mjs` at 1440×900, 390×844 and under reduced motion, six samples per act plus the page ends: **no dead scroll, every cue reaches full opacity, every graded line clears 4.5:1 at its worst frame, no console errors, no failed requests.** Contact sheets and per-frame screenshots are in `scrollcraft/lab/` (not committed). Links and chapter anchors across all eight pages resolve. No horizontal overflow at 390px on any page.
+Harness (`shoot.mjs`, engine untouched), final code:
 
-**Feel check, run cold on the contact sheets before rereading the curve above.**
+| Run | Length | Acts | Dead scroll | Contrast at worst frame |
+|---|---|---|---|---|
+| Desktop 1440 x 900 | 12.7vh | pin > pan > flow > flow (reveal) | none | all cues clear 4.5:1 |
+| Phone 390 x 844 | 16.7vh | same | none | all clear |
+| Compact 360 x 640 | 19.3vh | same | none | all clear |
+| Reduced motion, 1440 x 900 | 10.4vh | same | none | all clear |
 
-| Act | Intended | Felt, first pass | Change made |
+Phone lengths run long because the protocol table and the form are long in one column. That is content, not pinned scroll. The pan's span drops to 4.4 on phones, and the specimen act to 2.6 under reduced motion.
+
+Findings fixed during verification, in order: the strip computed its ground before the engine pinned act 1, so it rendered dark on dark. The far plane showed hard rectangular edges, now feathered with a radial mask. The 1003 note collided with the figure line. Decade dots squashed to nothing inside the non-uniformly scaled SVG, so they are now an HTML layer. The engine's tabular figures opened gaps before commas in table text. On phones, the rail figure kept its desktop aspect ratio, and the hero round sat below the fold. The `hidden` attribute lost to author `display` rules, which left conditional questions, an empty result box and a step-one Back button showing. The harness flagged one contrast failure: the hero copy box overlapped the paper label, though the text itself never did. It was fixed by narrowing the box, and it reads clean now.
+
+Form: 39 of 39 functional checks pass (see README). Every page at 390px: no horizontal overflow, no console errors, no failed requests.
+
+Not verified: a real phone, a screen reader end to end, and the live endpoint and Stripe link (neither exists yet).
+
+## Feel check
+
+Not cold: the checker built the page. Read from the final contact sheets, one word per act, then diffed:
+
+| Act | Intended | Felt | Change made |
 |---|---|---|---|
-| Title | Calm | Calm | none |
-| I | Recognition | Settled | none; the lede names the field's noise, which is the recognition |
-| II | Orientation | Orderly | none |
-| III | Clarity | Waiting, then clarity | the empty opening was the finding: the line now begins at the first station, which is present with its label the moment the pin starts, and the dotted grid that ran behind the labels became a ruler of ticks under the line |
-| IV | Weight | Weight | the ink ground now cuts full-bleed under the folio instead of leaving a paper strip |
-| V | Trust | Credentialed, unfinished | none possible here: the portrait plate reads as the placeholder it is until the clinic's photography goes in |
-| Colophon | Resolve | Resolve | the email address no longer breaks mid-word |
+| 1 open | Stillness | Composed | none |
+| 1 peak | Awe | Intrigue, at first: the drawn core was a hairline and the moment read as delicate | The core was thickened during extraction, and the round dims to 38% as the core slides out. The drawn core now reads as an object, and the lay-out across the full width is the largest change on the sheet. |
+| 1 close | Clarity | Clarity | none |
+| 2 | Orientation | Browsing | none (same intent) |
+| 3 | Assurance | Steadiness | none |
+| 4 | Resolve | Readiness | none |
 
-**Peak.** Chapter III has the most scroll room by a clear margin and is the only moment the page answers the hand. On a static sheet the hard cut to ink in chapter IV is the loudest single frame; in scroll it reads as weight, not spectacle, and it arrives after the peak rather than competing with it. Noted honestly rather than softened.
-
-**Two authored departures from the device notes.** The station labels, caption and closing line in chapter III hold once they arrive (one-value cues) instead of closing by the end of the pin. The rule exists to stop a held line travelling over the section that follows; these cues live inside the sticky stage and leave with it, so nothing can stray, and the chart stays complete through its exit slide. And the page carries a `<noscript>` style so that the engine's hidden-until-revealed content is visible when JavaScript is off: a clinic page should never be blank.
-
-**Not verified.** A real phone (none available here); Playwright's Chromium rather than installed Chrome, which only matters for h264 clips and this page has none; and the fonts in the harness came from disk rather than Google's CDN.
+Peak checks: the largest visual change on the sheet is the core laid out (act 1, 0.54 to 0.68). Act 1 has the most scroll room (span 4.8). The authored stillness of 0 to 0.12 comes before it. The page resolves into the form: its last content screen is an input with the fee beside it.

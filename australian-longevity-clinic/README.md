@@ -1,139 +1,94 @@
-# Australian Longevity Clinic — website redesign
+# Australian Longevity Clinic: website rebuild
 
-A premium, editorial redesign of [australianlongevityclinic.com.au](https://australianlongevityclinic.com.au/).
-Plain HTML, CSS and a small amount of JavaScript. No framework, no build step, no tracking.
+A rebuild of [australianlongevityclinic.com.au](https://australianlongevityclinic.com.au/) as a static site: HTML, CSS and a little JavaScript. No framework, no tracking, no third-party requests.
 
-The home page was built with the **scroll-craft** skill (github.com/nateherkai/scroll-craft) as a chaptered editorial: a title page, five chapters, a colophon, a folio in the margin instead of a fixed bar, and one engineered peak. The design decisions, the feeling curve and the verification results are recorded in `BRIEF.md`; the build's row is in `../scrollcraft/FINGERPRINTS.md`.
+Built with the **scroll-craft** skill as a *specimen study*. The home page opens on one real specimen, a Huon pine cross-section drawn ring by ring from NOAA tree-ring measurements. As you scroll, a core is drawn out of it and laid across the screen as a thousand-year record. That is the clinic's argument made visible: read the whole history before prescribing anything. Every image on the site is drawn from real data. None of it comes from an image generator. The brief, the fingerprint gate and the verification results are in `BRIEF.md`.
 
-Open `index.html` in a browser, or serve the folder:
+## Preview
 
 ```bash
 cd australian-longevity-clinic
-python3 -m http.server 8080
-# http://localhost:8080
+python3 -m http.server 8080          # then open http://localhost:8080
 ```
+
+Opening `index.html` straight from disk also works. The browser will log harmless font-preload warnings that do not happen on a real server.
+
+## Before launch: things only the clinic can do
+
+| | What | Why |
+|---|---|---|
+| **Blocking** | Connect the assessment form. Set `data-endpoint` (where the answers are POSTed as JSON) and `data-checkout-url` (a Stripe Payment Link for the $75 fee) on `<form id="intake">` in `tools/alc-site/build.mjs`, then rebuild. | Until then the form runs as a preview. It validates and reviews, then says plainly that nothing was sent and nothing was charged. It never shows false success. |
+| **Blocking** | The endpoint must store health information securely in Australia (for example a practice-management system's intake API, or a form backend with an Australian region and a signed agreement). | It is sensitive information under the Privacy Act. |
+| **Blocking** | Have the clinic's compliance adviser review the content listed under *Content changes* below, especially the journal. | TGA advertising rules and AHPRA's advertising guidelines. |
+| Recommended | Add the doctors' names and AHPRA registration numbers to `our-team/`. | For this audience, a named, checkable doctor is the strongest trust signal there is. The live site names nobody, so this build invents nobody. |
+| Recommended | Connect the journal sign-up (`data-endpoint` on `form.news`). | It says it is a preview until connected. |
+| Recommended | Redirect `/blog/ozempic-vs-mounjaro-brisbane` and `/blog/bpc-157-gut-health-brisbane` to `/blog/`. | Those two articles are not carried over (see below). |
+| Optional | The privacy policy (carried over word for word) mentions cookies, analytics and document uploads. This build has none of them. Leave the policy as is, or update it. | Accuracy. |
+
+How the form hands over: on submit it POSTs the answers, expects `2xx` with an optional `{ "id": "...", "checkoutUrl": "..." }`, and then opens Stripe with `client_reference_id` and `prefilled_email` set so each payment matches its answers. Without JavaScript, the form still posts every step's fields (never by GET).
 
 ## Pages
 
-| File | Purpose |
-| --- | --- |
-| `index.html` | Home, built with scroll-craft: title page; I What this is; II Four programs; III How care works here (the pathway that draws itself); IV Standards (ink ground); V The doctors; colophon with address, hours and the one action |
-| `iv-therapy.html` | IV infusion therapy |
-| `peptide-programs.html` | Peptide programs |
-| `trt.html` | Testosterone replacement therapy |
-| `weight-management.html` | Medical weight management |
-| `our-doctors.html` | The medical team (placeholder cards, see below) |
-| `contact.html` | Address, hours, enquiry form, map |
-| `policies.html` | Privacy, appointments, fees, consent, feedback and complaints |
-| `assets/scrollcraft/` | The scroll-craft engine (`scrollcraft.js`, `scrollcraft.css`), copied verbatim and never edited |
-| `assets/css/home.css` | Home page: token theme over the engine's floor, chapters, folio, chart |
-| `assets/js/home.js` | Home page: engine mount, folio, the self-drawing pathway chart |
-| `assets/css/site.css` | The secondary pages' design system, commented by section |
-| `assets/js/site.js` | Secondary pages: menu, reveal on scroll, form handling |
-| `assets/img/` | Logo mark and favicon (SVG) |
-| `BRIEF.md` | The scroll-craft brief: grammar, signature move, feeling curve, peak, score, verification |
+| Path | What |
+|---|---|
+| `index.html` | Home: the specimen act (the signature move), four program plates on a sideways rail, the protocol, and the assessment as the ending |
+| `iv-drips/` `peptide-therapy/` `testosterone-therapy/` `weight-management/` | One page per program. Same URLs as the live site; weight management is new. |
+| `our-team/` | The doctors: qualifications, how they practise, and how to check a registration on the AHPRA register |
+| `contact/` | Address, hours, the location plate, the full assessment and its FAQs |
+| `blog/` and `blog/<slug>/` | The journal: 14 of the clinic's 16 articles, each filed with a different tree core |
+| `privacy-policy/` | The clinic's policy, carried over word for word |
+| `404.html` | Not-found page (root-relative links, so hosts can serve it at any depth) |
 
-## Design intent
+Every page is generated by `../tools/alc-site/build.mjs` from shared parts: the header, footer and assessment form are identical everywhere. Edit the builder, not the HTML, then run `node tools/alc-site/build.mjs` from the repository root.
 
-The brief was premium, trusted and editorial rather than a scroll-through "world" or a wall of generated imagery.
-So the site is carried by typography, structure and copy:
+## The assets, and what each one replaces
 
-- **Type.** Newsreader (a text serif with optical sizes) for display and prose, Geist for labels, the folio and tables. Two families. Loaded from Google Fonts; the stack falls back to Iowan Old Style, Palatino and Georgia.
-- **Colour.** Bone paper, near-black ink, tinted secondary ink, and one cobalt spot colour. Chapter IV of the home page hard-cuts to an ink ground with a lighter stop of the same cobalt. Tokens sit at the top of `home.css` and `site.css`.
-- **Structure.** On the home page: chapters with Roman intertitles, a margin folio that tracks the chapter you are in, dense asymmetric spreads, media in its own column with a caption, a colophon rather than a call-to-action island. Secondary pages keep a static running head, hairline rules and an "On this page" rail.
-- **The peak.** Chapter III pins while a care-pathway chart draws itself under the reader's hand: consultation, assessment, program, review, then a dashed return line and a square mark that means stop. It is page-local SVG and JavaScript driven from the engine's `--sc-p`; the engine is untouched.
-- **Motion.** One gentle rise on entry, wipes on the chapter numerals, a parallax plate in the doctors' chapter, and the chart. Nothing scroll-jacked. Reduced motion shows the chart complete and keeps every fade that carries meaning. Without JavaScript the page still reads in full.
-- **Imagery.** None generated. Photo positions are "plates": tonal fields with a grain texture, a small label naming the intended subject, and a numbered caption. They are designed to look deliberate until the clinic's own photography is dropped in.
+The live site's imagery is all AI-generated: a caduceus badge, product vials labelled for a different clinic, and stock people in navy-and-gold rooms. Each was replaced with something drawn from real data, in one line style, in one palette:
 
-## Content: what is verified and what is not
+| Asset | File | Replaces | Drawn from |
+|---|---|---|---|
+| The round (hero) | `assets/img/round-1400.avif` and fallbacks | AI hero imagery | Every ring of Huon pine core **PEB07A**: 1,010 rings, AD 1003 to 2012, Teepookana, western Tasmania (NOAA ITRDB AUS123C, K. Allen). The ring widths along the core line are exact; the outline is modelled. |
+| Far plane | `round-far.webp` | AI background gradients | A 2x macro crop of the same round, defocused |
+| The core (signature move) | inline in `index.html` | none (new) | The same radius, with decade dots placed by the dendrochronology convention |
+| Plate: tracheids | `plate-tracheids.svg` | AI IV-bag images | The measured widths of 1664, 1665 and 1666. Cells are drawn for illustration, as the caption says. |
+| Plate: branchlet | `plate-branchlet.svg` | AI peptide imagery | Pen-and-ink drawing of the species' weeping habit, illustrative |
+| Plate: cross-dating | `plate-crossdate.svg` | AI hormone imagery | PEB07A against PEB07B, 1446 to 1505 (r = 0.78), with five narrow rings shared by both cores |
+| Plate: century ledger | `plate-ledger.svg` | AI weight-loss imagery | PEB07A, 1003 to 2012, with a 30-year running mean |
+| Mark and favicon | `mark.svg`, `favicon.svg` | AI caduceus badge | Four rings of the same round and its core line |
+| Progress rings | inline in the form | generic step indicators | Five rings of the same round, one closing per step |
+| Location plate | `map-annerley*.svg` | an address with no map | OpenStreetMap streets around 628 Ipswich Road (© OpenStreetMap contributors, ODbL) |
+| Journal cores | `assets/img/cores/*.svg` | AI blog thumbnails | 16 other measured series from AUS123C and AUS118 (Stanley River) |
+| Social card | `og.jpg` | none | The round and the wordmark |
+| Icons | none | generic icon sets | The decade-dot convention is the only iconography on the site |
 
-The live site could not be fetched from this environment (its host was blocked by the network policy), so facts were taken from what search engines have indexed about it. Please check everything before publishing.
+The generators live in `../tools/alc-assets/`: `gen_round.py`, `gen_core.py`, `gen_plates.py`, `gen_mark.py`, `gen_map.py`, `gen_journal.py`, `export_rasters.py` and `og.mjs`. Ring data: NOAA NCEI World Data Service for Paleoclimatology, International Tree-Ring Data Bank, collections AUS123C and AUS118. Fonts: Schibsted Grotesk and Azeret Mono (SIL Open Font License), self-hosted.
 
-| Item | Status | Where it appears |
-| --- | --- | --- |
-| Clinic name, positioning as a doctor-led IV therapy and peptide clinic | From public listings | Everywhere |
-| Address: 628 Ipswich Road, Annerley QLD 4103 | From public listings | Masthead menu, home, contact, footer, structured data |
-| Hours: Mon–Fri 8:00am–6:00pm, Sat 9:00am–2:00pm, Sun closed | From public listings | Home, contact, footer, structured data |
-| Email: reception@australianlongevityclinic.com.au | From public listings | Contact, footer, form fallback |
-| Services: IV infusions, peptide programs, TRT, weight management | From public listings | Home index, service pages |
-| Team qualifications: MBBS, FRACGP, MRCGP, DRCOG; AHPRA registered | From public listings | Home, doctors page |
-| Suburbs served (Yeronga, Moorooka, Fairfield, Greenslopes, CBD) | From public listings | Home visit section |
-| **Phone number** | **Placeholder** | `contact.html` ("[Phone number to be supplied]") |
-| **Doctor names, bios, portraits, AHPRA numbers** | **Placeholder** | `our-doctors.html` |
-| **ABN** | **Placeholder** | Footer |
-| Infusion duration "30 to 90 minutes" | Typical, confirm | IV page, home FAQ |
-| 24 hours' cancellation notice | Assumed, confirm | `policies.html` |
-| "Reception aims to respond within one business day" | Assumed, confirm | Contact page |
-| All service copy, FAQs, safety text, policies | Written for this redesign | Service pages, policies |
+## Content changes from the live site
 
-The clinical and legal copy was written carefully and conservatively, but it must be reviewed by the clinic's doctors and whoever advises on compliance before it goes live.
+Facts were taken from the live site on 5 October 2026: address, hours, email, ABN, the legal entity (Horizon Medical Pty Ltd), qualifications (MBBS, FRACGP), the $75 fee and process, call times, durations and pathology rules. Nothing was invented, and what the clinic has not published (doctor names, a phone number, treatment prices) is left out. Deliberate changes:
 
-## Compliance choices built into the copy
+- **No prescription medicine is named on the program pages.** The live pages name Ferrosig, Wegovy, Mounjaro, semaglutide, tirzepatide, BPC-157, TB-500, GHK-Cu, Epitalon, CJC-1295, Ipamorelin, AOD-9604, Selank and others, plus a peptide price list. The TGA does not allow prescription medicines to be advertised to the public, so the pages describe goals and process instead and say why.
+- **Therapeutic claims were cut back** to what the clinic's own FAQs state (for example the long vitamin D benefits paragraph).
+- **Testimonials:** none, and the site explains why (AHPRA). The live site has none either.
+- **Two articles were not carried over**, because each is built around a named prescription medicine: *Ozempic vs Mounjaro* and *BPC-157 for Gut Health*.
+- **The other 14 articles are carried over as written.** The cleanup was mechanical: markup simplified, em dashes set as spaced en dashes, in-article calls to action removed. Eight of them still name prescription medicines and need the compliance adviser's review before launch:
 
-These were deliberate and are worth keeping:
+| Article | Named |
+|---|---|
+| peptide-therapy-brisbane-what-you-need-to-know | BPC-157, CJC-1295, Epitalon, GHK-Cu, Ipamorelin, Mounjaro, Selank, semaglutide, TB-500, thymosin, tirzepatide, Wegovy |
+| is-peptide-therapy-safe-brisbane | BPC-157, CJC-1295, GHK-Cu, Ipamorelin, PT-141, thymosin |
+| peptides-longevity-brisbane-guide | BPC-157, Epitalon, GHK-Cu, PT-141, thymosin |
+| menopause-hormone-therapy-brisbane | BPC-157, Epitalon, GHK-Cu, oestradiol, progesterone |
+| peptide-therapy-weight-management-brisbane | CJC-1295, Ipamorelin |
+| how-long-does-iron-infusion-take | Ferinject, ferric carboxymaltose, iron polymaltose |
+| iv-therapy-women-brisbane | ferric carboxymaltose |
+| low-testosterone-symptoms-women-brisbane, testosterone-replacement-therapy-brisbane-mens-health | DHEA, oestradiol, progesterone |
 
-1. **No prescription medicines are named.** The Therapeutic Goods Advertising Code prohibits advertising prescription-only (Schedule 4) medicines to the public. The current live site names specific peptides and other S4 products; this redesign describes service categories and says that specific medicines are discussed in consultation. That is both safer and, on the page, more credible.
-2. **No testimonials or before-and-after images.** Section 133 of the Health Practitioner Regulation National Law prohibits testimonials in advertising a regulated health service. The standards section says so explicitly.
-3. **Consultation before treatment** is stated on every page, and the footer carries a general-information disclaimer.
-4. **Compounded medicines** are described honestly as not evaluated by the TGA in the way approved products are.
-5. **PBS and specialist criteria** for subsidised testosterone are mentioned rather than glossed over.
+- **Inconsistencies in the clinic's own content**, kept as written and worth fixing at the source. The iron infusion article says the infusion takes 15 to 60 minutes, while the IV page and FAQ say 1 to 4 hours (this build uses 1 to 4 hours). The consultation is described as 15 to 20 minutes in one FAQ and 15 to 25 minutes in another (this build uses 15 to 25). The IV page describes an in-clinic consultation, while the contact page describes a phone consultation (this build says "consultation" on the IV page and "by phone" for the assessment).
 
-## Replacing the plates with photography
+## Verification (5 October 2026)
 
-Each plate is a `<div class="plate …">`. Put an `<img>` inside it and the CSS will cover-fit the image to the frame:
-
-```html
-<div class="plate plate--wide">
-  <img src="assets/img/consulting-rooms.jpg" alt="The consulting rooms at 628 Ipswich Road" width="1600" height="686">
-</div>
-```
-
-Remove the `<span class="plate__hint">` once a real image is in place. Suggested photography, all in natural light, no stock:
-
-| Page | Plate | Aspect | Subject |
-| --- | --- | --- | --- |
-| Home | Fig. 01 | 21:9 | Consulting rooms or reception, wide, quiet |
-| Home | Fig. 02 | 4:5 | The medical team, together, environmental portrait |
-| Home | Fig. 03 | 16:9 | Street frontage on Ipswich Road |
-| IV therapy | Fig. 01 | 21:9 | Infusion suite, a chair and the view, no needles |
-| Peptide programs | Fig. 02 | 21:9 | A consulting room, two chairs, conversation implied |
-| TRT | Fig. 03 | 21:9 | Pathology collection area or paperwork detail |
-| Weight management | Fig. 04 | 21:9 | Consultation in progress, from behind or in profile |
-| Our doctors | Portraits | 3:4 | One per doctor, same light, same background |
-
-Export JPEGs around 1600px wide at quality 80. Add `loading="lazy"` to everything except the home hero.
-
-## Wiring up bookings and the enquiry form
-
-- **Book a consultation** buttons all point to `contact.html`. If the clinic uses an online booking system (HotDoc, HealthEngine, Halaxy, Cliniko and similar are common in Brisbane), change those links to the booking URL. Search `contact.html"` across the HTML files.
-- **The enquiry form** has no backend by design. Without one, submitting it opens the visitor's email app with the enquiry drafted to reception. To send enquiries to a server instead, add a `data-endpoint` attribute to the `<form>` with a URL that accepts a JSON POST (a form service such as Formspree or Basin, or the clinic's own handler) and the script will use it.
-- **The map** is a standard Google Maps embed with no API key. It is styled in muted tones to sit with the page. A "Get directions" link is provided as a fallback.
-
-## Verifying the home page the way it was built
-
-The skill's harness walks the page at six scroll positions per act and reports dead scroll, cues that never reach full opacity, and contrast measured on the composited page. To run it yourself:
-
-```bash
-# from the repository root, with the scroll-craft repo cloned beside it
-node <scroll-craft>/plugins/nateherk-design/skills/scroll-craft/scripts/serve.mjs --root australian-longevity-clinic --port 4500 &
-cd scrollcraft/.tools && npm i playwright-core
-node <scroll-craft>/.../scripts/shoot.mjs --url http://localhost:4500 --out ../lab/desktop
-node <scroll-craft>/.../scripts/shoot.mjs --url http://localhost:4500 --out ../lab/mobile --width 390 --height 844
-node <scroll-craft>/.../scripts/shoot.mjs --url http://localhost:4500 --out ../lab/reduced --reduced-motion
-```
-
-Then read `sheet.png` in each folder. The last run before handoff was clean on all three; the results are summarised at the end of `BRIEF.md`.
-
-## Deploying
-
-The folder is self-contained and relative-linked, so it can be served from any static host or from a subfolder.
-
-- On GitHub Pages for this repository it will be available under `/australian-longevity-clinic/`.
-- To move it to the clinic's own domain, copy the folder's contents to the web root.
-- Consider adding `robots.txt` and `sitemap.xml` at the root of the final domain, and an `og:image` once photography exists.
-
-## Known gaps
-
-- No analytics, consent banner or cookie notice. Add according to the clinic's privacy policy if tracking is introduced.
-- Policies are a sensible baseline, not legal advice.
-- The doctors page is structurally complete but contains placeholder people. Do not publish it until real names, bios and AHPRA numbers are in.
+- scroll-craft harness: desktop 1440 x 900, phone 390 x 844, compact phone 360 x 640, and reduced motion. No dead scroll, and every cue clears 4.5:1 contrast at its worst frame. No console errors and no failed requests.
+- The assessment form: 39 of 39 functional checks pass. They cover required fields, formats, under-18 and impossible dates, conditional questions, the error summary and `aria-invalid`, keyboard order, Enter to advance, review and edit, persistence across a reload, preview mode, a wired success (POST, then Stripe with reference and email) and a server error (reported honestly, answers kept), plus no-JavaScript posting.
+- Every page at 390 px wide: no horizontal overflow, no console errors.
+- Not verified: a real phone (headless Chrome is not Safari on an iPhone), screen-reader output beyond the automated checks above, and the live endpoint and Stripe link, which do not exist yet.

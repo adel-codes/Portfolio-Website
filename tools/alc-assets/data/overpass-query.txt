@@ -1,0 +1,10 @@
+[out:json][timeout:90];
+(
+  way["highway"~"^(motorway|trunk|primary|secondary|tertiary|residential|unclassified|living_street|pedestrian|busway|motorway_link|trunk_link|primary_link|secondary_link|tertiary_link)$"](around:1700,-27.51741,153.03014);
+  way["railway"~"^(rail|light_rail)$"](around:1700,-27.51741,153.03014);
+  way["waterway"~"^(river|stream|creek|canal|drain)$"](around:1700,-27.51741,153.03014);
+  way["leisure"~"^(park|pitch|sports_centre|golf_course)$"](around:1700,-27.51741,153.03014);
+  way["natural"="water"](around:1700,-27.51741,153.03014);
+  way["building"](around:60,-27.51741,153.03014);
+);
+out geom;

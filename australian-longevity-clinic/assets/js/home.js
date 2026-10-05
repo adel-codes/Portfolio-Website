@@ -1,129 +1,218 @@
-/* Australian Longevity Clinic — home page behaviour.
-   The engine (scrollcraft.js) drives the acts. This file adds the page's own
-   two things: the margin folio, and the signature move in chapter III, a
-   pathway chart drawn from the act's --sc-p. The engine is never edited. */
+/* Home: mounts the scrollcraft engine and runs the page's own choreography.
+
+   The signature move lives here, not in the engine. Act 1 pins; this file
+   reads the act's progress and moves the round, the borer and the core
+   between four poses:
+
+     hero      the round at rest on the right, the label over its edge
+     aligned   the round recentred; the borer runs bark to pith along the
+               measured radius; the core appears exactly on that radius
+     drawn     the core slides out past the bark
+     laid out  the core spans the page; decades, centuries and notes arrive
+
+   The round's radius along that line is the measured cumulative ring width,
+   so the core's ring lines coincide with the round's rings when it appears.
+   Only transform and opacity are written. Under reduced motion nothing
+   moves: the round fades, the core appears laid out, and the act is shorter. */
 (function () {
   "use strict";
+  if (!window.ScrollCraft) return;
 
-  var doc = document;
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduce = window.ScrollCraft.reduce;
+  var mobileMQ = matchMedia("(max-width: 860px)");
+  var fine = matchMedia("(hover: hover) and (pointer: fine)").matches && !reduce;
 
-  /* Mount the engine on the page. */
-  if (window.ScrollCraft) ScrollCraft.mount(doc.body);
+  var act = document.querySelector(".specimen");
+  var pan = document.querySelector(".programs");
+  // Spans are authored for a desktop at full motion; adjust before mounting.
+  if (act && reduce) act.setAttribute("data-sc-span", "2.6");
+  if (pan && mobileMQ.matches && !reduce) pan.setAttribute("data-sc-span", "4.4");
 
-  /* ---------------------------------------------------------- the folio -- */
-  var folio = doc.querySelector(".folio");
-  var toggle = folio && folio.querySelector(".folio__toggle");
-  var numOut = folio && folio.querySelector("[data-folio-num]");
-  var titleOut = folio && folio.querySelector("[data-folio-title]");
-  var links = folio ? Array.prototype.slice.call(folio.querySelectorAll(".folio__list a")) : [];
-  var chapters = Array.prototype.slice.call(doc.querySelectorAll("[data-chapter]"));
+  var sc = window.ScrollCraft.mount(document);
+  if (!act) return;
+  var A = sc.acts.filter(function (a) { return a.el === act; })[0];
+  var P = pan ? sc.acts.filter(function (a) { return a.el === pan; })[0] : null;
 
-  function setCurrent(section) {
-    if (!folio || !section) return;
-    var id = "#" + section.id;
-    links.forEach(function (a) {
-      if (a.getAttribute("href") === id) a.setAttribute("aria-current", "true");
-      else a.removeAttribute("aria-current");
-    });
-    if (numOut) numOut.textContent = section.getAttribute("data-chapter") || "";
-    if (titleOut) titleOut.textContent = section.getAttribute("data-chapter-title") || "";
-    folio.classList.toggle("is-on-ink", section.classList.contains("chapter--ink"));
+  var stage = act.querySelector("[data-sc-stage]");
+  var round = act.querySelector(".sp-round");
+  var far = act.querySelector(".sp-far");
+  var label = act.querySelector(".sp-label");
+  var borer = act.querySelector(".sp-borer");
+  var borerNote = act.querySelector(".sp-borer-note");
+  var core = act.querySelector(".sp-core");
+  var strip = act.querySelector(".sp-core__strip");
+  var head = act.querySelector(".sp-core__head");
+  var ticks = act.querySelector(".sp-core__ticks");
+  var spanEl = act.querySelector(".sp-core__span");
+  var notes = [].slice.call(act.querySelectorAll(".cr-note"));
+  var svg = strip.querySelector("svg");
+  var fBark = parseFloat(stage.getAttribute("data-bark")) || 0.44;
+  round.style.setProperty("--bark", fBark);
+
+  // core.svg viewBox is "-4 0 (L + 22) 64": pith at x = 0, bark at x = L.
+  var vb = svg.getAttribute("viewBox").split(/\s+/).map(parseFloat);
+  var VB0 = vb[0], VBW = vb[2], L = VBW - 22;
+
+  var clamp = function (x, a, b) { return x < a ? a : x > b ? b : x; };
+  var seg = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
+  var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+
+  var G = null;          // geometry, measured per layout
+  function measure() {
+    // Measure the authored layout with every transform cleared.
+    [round, far, label, strip].forEach(function (el) { el.style.transform = "none"; });
+    var s = stage.getBoundingClientRect();
+    var r = round.getBoundingClientRect();
+    var c = strip.getBoundingClientRect();
+    var vw = s.width, vh = s.height, mob = mobileMQ.matches;
+    var D0 = r.width;
+    var c0 = { x: r.left - s.left + D0 / 2, y: r.top - s.top + D0 / 2 };
+    var D1 = mob ? vw * 0.58 : Math.min(vh * 0.66, vw * 0.42);
+    var c1 = mob ? { x: vw * 0.31, y: vh * 0.44 } : { x: vw * 0.27, y: vh * 0.56 };
+    var R1 = fBark * D1;
+    var W = c.width, H = c.height;
+    var X0 = W * (0 - VB0) / VBW;                 // pith, px from the strip's left edge
+    var len = W * L / VBW;                         // pith to bark, px, laid out
+    var sxA = R1 / len;
+    var syA = Math.max(9, R1 * 0.034) / H;        // a little thicker than life, so the core reads as an object
+    var base = { x: c.left - s.left, y: c.top - s.top + H / 2 };
+    var A_ = { tx: c1.x - base.x - X0 * sxA, ty: c1.y - base.y, sx: sxA, sy: syA };
+    var B_ = { tx: A_.tx + R1 + vw * 0.035, ty: A_.ty, sx: sxA, sy: syA };
+    G = { vw: vw, vh: vh, mob: mob, D0: D0, D1: D1, c0: c0, c1: c1, A: A_, B: B_ };
+    last = -1;
   }
 
-  if (chapters.length && "IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) setCurrent(e.target);
-      });
-    }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
-    chapters.forEach(function (c) { io.observe(c); });
+  // pointer depth on the hero: three planes, three rates
+  var ptr = { x: 0, y: 0, tx: 0, ty: 0 };
+  if (fine) {
+    addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      ptr.tx = (e.clientX / innerWidth) * 2 - 1;
+      ptr.ty = (e.clientY / innerHeight) * 2 - 1;
+    }, { passive: true });
   }
-  setCurrent(chapters[0]);
 
-  if (toggle) {
-    var setOpen = function (open) {
-      folio.classList.toggle("is-open", open);
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  function poseCore(t, from, to) {
+    return {
+      tx: lerp(from.tx, to.tx, t), ty: lerp(from.ty, to.ty, t),
+      sx: lerp(from.sx, to.sx, t), sy: lerp(from.sy, to.sy, t)
     };
-    toggle.addEventListener("click", function () { setOpen(!folio.classList.contains("is-open")); });
-    doc.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
-    doc.addEventListener("click", function (e) { if (!folio.contains(e.target)) setOpen(false); });
-    links.forEach(function (a) { a.addEventListener("click", function () { setOpen(false); }); });
   }
+  var FINAL = { tx: 0, ty: 0, sx: 1, sy: 1 };
 
-  /* ---------------------------- chapter III: the pathway that draws itself -- */
-  var act = doc.getElementById("chapter-3");
-  var stage = act && act.querySelector("[data-sc-stage]");
-  if (act && stage) {
-    var charts = Array.prototype.slice.call(stage.querySelectorAll(".chart__svg"));
-    var prepared = charts.map(function (svg) {
-      var pick = function (sel) { return svg.querySelector(sel); };
-      var main = pick(".chart__main"), ret = pick(".chart__return"), stop = pick(".chart__stopline");
-      var lengths = { main: main ? main.getTotalLength() : 0, stop: stop ? stop.getTotalLength() : 0 };
-      /* solid strokes draw by dash offset; the dashed return line keeps its own
-         pattern and is revealed through a mask whose stroke draws instead */
-      [main, stop].forEach(function (el, i) {
-        if (!el) return;
-        var L = i === 0 ? lengths.main : lengths.stop;
-        el.style.strokeDasharray = String(L);
-        el.style.strokeDashoffset = String(L);
-      });
-      /* stations carry the fraction of the main stroke at which they land */
-      var stations = Array.prototype.slice.call(svg.querySelectorAll(".chart__station"));
-      var leaders = Array.prototype.slice.call(svg.querySelectorAll(".chart__leader"));
-      var mask = pick(".chart__retmask");
-      var maskL = mask ? mask.getTotalLength() : 0;
-      if (mask) { mask.style.strokeDasharray = String(maskL); mask.style.strokeDashoffset = String(maskL); }
-      var stopmark = pick(".chart__stopmark");
-      return { svg: svg, main: main, ret: ret, stop: stop, mask: mask, maskL: maskL, lengths: lengths, stations: stations, leaders: leaders, stopmark: stopmark };
-    });
-
-    var clamp01 = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x; };
-    var last = "";
-
-    function draw(p) {
-      /* the baseline draws over the first two thirds of the pin; the return line
-         and the stop over the last third. One idea per act: scroll is the pencil. */
-      var f = clamp01(p / 0.66);
-      var g = clamp01((p - 0.70) / 0.14);
-      var h = clamp01((p - 0.86) / 0.08);
-      var landed = 0;
-      prepared.forEach(function (c) {
-        if (c.main) c.main.style.strokeDashoffset = (c.lengths.main * (1 - f)).toFixed(1);
-        if (c.mask) c.mask.style.strokeDashoffset = (c.maskL * (1 - g)).toFixed(1);
-        if (c.stop) c.stop.style.strokeDashoffset = (c.lengths.stop * (1 - h)).toFixed(1);
-        if (c.stopmark) c.stopmark.classList.toggle("is-landed", h >= 1);
-        var n = 0;
-        c.stations.forEach(function (s, i) {
-          var at = parseFloat(s.getAttribute("data-at")) || 0;
-          var on = f >= at;
-          s.classList.toggle("is-landed", on);
-          if (c.leaders[i]) c.leaders[i].classList.toggle("is-landed", on);
-          if (on) n++;
-        });
-        landed = Math.max(landed, n);
-      });
-      /* what the harness sees: the rendered values, rounded, not raw progress */
-      var state = "line:" + f.toFixed(2) + " return:" + g.toFixed(2) + " stop:" + h.toFixed(2) + " stations:" + landed;
-      if (state !== last) { stage.setAttribute("data-sc-verify-state", state); last = state; }
-    }
+  var last = -1, lastPtr = "";
+  function render(p) {
+    if (!G) return;
+    var g = G;
+    var depth = 1 - seg(p, 0.1, 0.22);                 // pointer weight, hero only
+    var px = ptr.x * depth, py = ptr.y * depth;
 
     if (reduce) {
-      /* fewer and gentler, not zero: the finished drawing, present. */
-      draw(1);
-      stage.setAttribute("data-sc-verify-hold", "true");
-    } else {
-      var lastP = -1;
-      (function loop() {
-        var p = parseFloat(act.style.getPropertyValue("--sc-p"));
-        if (isNaN(p)) p = 0;
-        if (p !== lastP) { draw(p); lastP = p; }
-        requestAnimationFrame(loop);
-      })();
+      var fade = 1 - seg(p, 0.22, 0.38);
+      round.style.opacity = fade.toFixed(3);
+      far.style.opacity = (0.62 * fade).toFixed(3);
+      label.style.opacity = fade.toFixed(3);
+      var on = seg(p, 0.34, 0.46);
+      strip.style.opacity = on.toFixed(3);
+      core.style.setProperty("--dots", seg(p, 0.42, 0.5).toFixed(3));
+      [head, ticks, spanEl].concat(notes).forEach(function (el) { el.style.opacity = seg(p, 0.44, 0.54).toFixed(3); });
+      stage.setAttribute("data-sc-verify-state", "p=" + p.toFixed(2) + " reduced");
+      return;
     }
+
+    // 1. the round: hero pose to the extraction pose, then it falls away
+    var tm = ease(seg(p, 0.12, 0.3));
+    var s1 = lerp(1, g.D1 / g.D0, tm);
+    var dx = lerp(0, g.c1.x - g.c0.x, tm), dy = lerp(0, g.c1.y - g.c0.y, tm);
+    var drift = -seg(p, 0, 0.14) * 26;                 // the specimen settles while the headline reads
+    var away = ease(seg(p, 0.53, 0.68));
+    dx -= away * g.vw * 0.08;
+    var rOp = 1 - 0.62 * seg(p, 0.44, 0.54) - 0.38 * away;
+    round.style.transform = "translate3d(" + (dx + px * 9).toFixed(1) + "px," + (dy + drift + py * 7).toFixed(1) + "px,0) scale(" + (s1 * (1 - 0.04 * away)).toFixed(4) + ")";
+    round.style.opacity = rOp.toFixed(3);
+
+    // far plane: least movement, opposite the pointer
+    var farOp = 0.62 * (1 - 0.7 * seg(p, 0.14, 0.32)) * (1 - seg(p, 0.5, 0.64));
+    far.style.transform = "translate3d(" + (-px * 14 - tm * g.vw * 0.05).toFixed(1) + "px," + (-py * 10 + drift * 0.5).toFixed(1) + "px,0)";
+    far.style.opacity = farOp.toFixed(3);
+
+    // near plane: the label moves most, then leaves first
+    var lOut = ease(seg(p, 0.1, 0.22));
+    label.style.transform = "translate3d(" + (px * 22).toFixed(1) + "px," + (py * 16 + drift * 1.8 + lOut * 70).toFixed(1) + "px,0)";
+    label.style.opacity = (1 - lOut).toFixed(3);
+
+    // 2. the borer: bark to pith, then gone when the core replaces it
+    var b = ease(seg(p, 0.28, 0.4));
+    borer.style.transform = "scaleX(" + b.toFixed(4) + ")";
+    borer.style.opacity = (1 - seg(p, 0.41, 0.44)).toFixed(3);
+    borerNote.style.opacity = (seg(p, 0.29, 0.34) * (1 - seg(p, 0.42, 0.47))).toFixed(3);
+
+    // 3. the core: appears on the radius, slides out, is laid out
+    var cp;
+    if (p < 0.42) cp = g.A;
+    else if (p < 0.54) cp = poseCore(ease(seg(p, 0.42, 0.53)), g.A, g.B);
+    else cp = poseCore(ease(seg(p, 0.54, 0.68)), g.B, FINAL);
+    strip.style.transform = "translate3d(" + cp.tx.toFixed(1) + "px," + cp.ty.toFixed(1) + "px,0) scale(" + cp.sx.toFixed(4) + "," + cp.sy.toFixed(4) + ")";
+    strip.style.opacity = seg(p, 0.39, 0.42).toFixed(3);
+    // decade lines carry the extraction; the dots arrive once it is laid out
+    core.style.setProperty("--dots", seg(p, 0.62, 0.7).toFixed(3));
+    head.style.opacity = seg(p, 0.66, 0.71).toFixed(3);
+    ticks.style.opacity = seg(p, 0.63, 0.69).toFixed(3);
+    spanEl.style.opacity = seg(p, 0.68, 0.72).toFixed(3);
+    notes.forEach(function (n, i) { n.style.opacity = seg(p, 0.66 + i * 0.025, 0.7 + i * 0.025).toFixed(3); });
+
+    var phase = p < 0.12 ? "hero" : p < 0.28 ? "recentre" : p < 0.42 ? "bore" : p < 0.54 ? "draw" : p < 0.68 ? "lay" : "read";
+    stage.setAttribute("data-sc-verify-state", "p=" + p.toFixed(2) + " " + phase + " borer=" + b.toFixed(2));
   }
 
-  /* ---------------------------------------------------------------- misc -- */
-  doc.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = String(new Date().getFullYear()); });
+  function progress(a) {
+    var vh = innerHeight;
+    return clamp((scrollY - a.top) / Math.max(a.height - vh, 1), 0, 1);
+  }
+
+  // ----------------------------------------------------------- the rail --
+  var rail = pan && pan.querySelector("[data-sc-pan]");
+  var items = rail ? [].slice.call(rail.children).slice(1) : [];
+  function settleRail() {
+    if (!rail || reduce) return;
+    var vw = innerWidth;
+    items.forEach(function (it) {
+      var x = it.getBoundingClientRect().left;
+      var t = clamp((vw - x) / (vw * 0.42), 0, 1);
+      it.style.setProperty("--in", (0.55 + 0.45 * t).toFixed(3));
+    });
+  }
+  // Keyboard focus inside the rail scrolls the page so the focused plate is
+  // in view; the rail's transform is the only way to reach it.
+  if (rail && P) {
+    rail.addEventListener("focusin", function (e) {
+      var item = e.target.closest(".rail > *");
+      if (!item || reduce) return;
+      var over = rail.scrollWidth - innerWidth;
+      if (over <= 0) return;
+      var total = over * (1 + (P.railExtra || 0));
+      var want = clamp((item.offsetLeft + item.offsetWidth / 2 - innerWidth / 2) / total, 0, 1);
+      var y = P.top + want * Math.max(P.height - innerHeight, 1);
+      var r = item.getBoundingClientRect();
+      if (r.left < 0 || r.right > innerWidth) window.scrollTo({ top: y, behavior: "instant" });
+    });
+  }
+
+  function frame() {
+    ptr.x += (ptr.tx - ptr.x) * 0.08;
+    ptr.y += (ptr.ty - ptr.y) * 0.08;
+    var p = progress(A);
+    var key = p.toFixed(4) + (fine ? ptr.x.toFixed(3) + ptr.y.toFixed(3) : "");
+    var live = scrollY < A.top + A.height + innerHeight;
+    if (live && key !== lastPtr) { render(p); lastPtr = key; }
+    if (P && scrollY > P.top - innerHeight * 1.2 && scrollY < P.top + P.height) settleRail();
+    requestAnimationFrame(frame);
+  }
+
+  function relayout() { measure(); lastPtr = ""; }
+  addEventListener("resize", function () { requestAnimationFrame(relayout); }, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  relayout();
+  requestAnimationFrame(frame);
 })();
