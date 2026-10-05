@@ -183,8 +183,8 @@
 .route { grid-area: 1 / 1; max-width: 50rem; }
 
 /* scripted: one panel at a time, rows rise in */
-.route-act.is-scripted .route { opacity: 0; visibility: hidden; transition: opacity 260ms var(--sc-ease-out), visibility 0s linear 260ms; }
-.route-act.is-scripted .route.is-active { opacity: 1; visibility: visible; transition: opacity 260ms var(--sc-ease-out), visibility 0s; }
+.route-act.is-scripted .route { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 260ms var(--sc-ease-out), visibility 0s linear 260ms; }
+.route-act.is-scripted .route.is-active { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 260ms var(--sc-ease-out), visibility 0s; }
 .route-act.is-scripted .route__tests li,
 .route-act.is-scripted .route__block--rule,
 .route-act.is-scripted .route__block--again,

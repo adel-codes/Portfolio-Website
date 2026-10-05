@@ -159,7 +159,15 @@
     if (key === lastKey) return;
     lastKey = key;
     if (i !== current) {
-      panels.forEach(function (el, j) { el.classList.toggle("is-active", j === i); });
+      // A panel that is left resets, so nothing in it stays visible (or in
+      // the way of a tap) behind the next one, and its rows rise again on
+      // the way back.
+      panels.forEach(function (el, j) {
+        el.classList.toggle("is-active", j === i);
+        if (j === i) return;
+        el.classList.remove("is-later");
+        [].forEach.call(el.querySelectorAll(".is-on"), function (x) { x.classList.remove("is-on"); });
+      });
       routeLinks.forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("data-goal") === keys[i] ? "true" : "false"); });
       current = i;
     }
