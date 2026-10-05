@@ -28,8 +28,7 @@
   var result = form.querySelector("[data-result]");
   var reviewEl = form.querySelector("[data-review]");
   var section = form.closest(".assess") || document;
-  var rings = [].slice.call(section.querySelectorAll(".progress-rings .pr"));
-  var ringCore = section.querySelector(".progress-rings");
+  var segs = [].slice.call(section.querySelectorAll(".progress-steps .pr"));
   var stepNum = section.querySelector("[data-step-num]");
   var stepName = section.querySelector("[data-step-name]");
   var submitLabel = btnSubmit.textContent;
@@ -261,11 +260,10 @@
 
   // ---------------------------------------------------------- stepping --
   function paintProgress() {
-    rings.forEach(function (r, k) {
+    segs.forEach(function (r, k) {
       r.classList.toggle("is-done", k < cur);
       r.classList.toggle("is-current", k === cur);
     });
-    if (ringCore) ringCore.style.setProperty("--core-off", cur === steps.length - 1 ? "0" : "1");
     tabs.forEach(function (t, k) {
       t.disabled = k > reached;
       t.classList.toggle("is-done", k < reached && k !== cur);

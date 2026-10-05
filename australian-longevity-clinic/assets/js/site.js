@@ -1,4 +1,4 @@
-/* Shared behaviour for every page: the accession strip, its menus, the
+/* Shared behaviour for every page: the header strip, its menus, the
    phone assessment bar, program presets and the journal sign-up. */
 (function () {
   "use strict";
@@ -19,8 +19,7 @@
       if (grounds[i].getBoundingClientRect().top <= mid) under = grounds[i];
     }
     if (under) strip.setAttribute("data-ground", under.getAttribute("data-ground"));
-    var overSpecimen = under && under.classList.contains("specimen");
-    strip.classList.toggle("is-solid", scrollY > 4 && !overSpecimen);
+    strip.classList.toggle("is-solid", scrollY > 4);
     // a pinned act owns the whole screen; the bar would cover its content
     underPinned = !!under && /^(pin|pan|scrub)$/.test(under.getAttribute("data-sc-act") || "");
     paintBar();

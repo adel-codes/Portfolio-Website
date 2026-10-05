@@ -1,228 +1,225 @@
-# BRIEF.md: Australian Longevity Clinic, second scroll-craft build
+# BRIEF.md: Australian Longevity Clinic, third scroll-craft build
 
-**Self-authored under explicit creative delegation.** The user set the criteria in writing and asked for scroll-craft's approach to drive the design ("let its approach drive the design and don't fall back on template defaults", "Apply conversion-focused design judgment"). Their words are quoted verbatim below where they exist. Everything else is an authored decision, labelled as such. No user quotation is invented.
+**Directed by the client.** Revision notes received 5 October 2026, after review of the second build. The client's words are quoted verbatim below. Anything the notes did not cover is an authored decision and is labelled as one. No quotation is invented.
 
-This build replaces the first one (row `alc-home` in `scrollcraft/FINGERPRINTS.md`, commit `c576fd4`). The user's verdict on that generation of work: "The current design looks far too Claude-generated. Nothing in the final result should read as an AI template."
+The second build (row `alc-specimen` in `scrollcraft/FINGERPRINTS.md`) is replaced, not re-skinned. What the client kept and what went:
+
+| Kept | Gone |
+|---|---|
+| The navy, quartz and gold system, the type, the header with the clinic's medallion | The tree: the Huon pine round, the core, the four drawn plates, the journal cores |
+| The list of services ("the list of services, that's a really good part") | "Every ring is measured before anything is said about the tree" and every figure caption about wood |
+| The doctors' photographs and records | "Two doctors run the clinic." ("don't kind of show it off as like, oh, it's only two doctors because that's a weakness") |
+| The assessment form, unchanged | |
+| The humanised journal and program copy | |
 
 ---
 
 ## Step 0: the eight topics
 
 1. **Vibe, plus references.**
-   User, verbatim: "premium, trusted", "more editorial rather than a bunch of different AI-generated assets", "not like a world that we'd be flying through", "more premium". For the audience: "quality, science-backed credibility and exclusivity".
-   Authored references (not websites): a botanical specimen sheet from a state herbarium; the plates in a dendrochronology monograph; a Swiss pharmaceutical package insert; a museum accession label.
+   Client, verbatim: "real peptide therapy done by real doctors", "a more like a data-driven approach".
+   Authored references (not websites): a pathology report that a patient can actually read; the label on a pharmacy dispensing bag; a strength coach's training card.
 
 2. **The journey, section by section.**
-   Authored. A specimen first, read in full. Then the four programs as plates. Then the standards the clinic holds itself to. Then the assessment itself, as the ending.
+   Client, verbatim: "I would simply first skip to what the clinic does and kind of read it as a more like a data-driven approach." "You can include the faces and kind of profiles of the two doctors ... These are our head doctors and this is how much experience they have." Authored order: what the clinic does and for whom, the programs, what gets checked before anything is prescribed, the lead doctors, the assessment.
 
 3. **The energy curve.**
-   Authored. Still and dark at the open. The one loud moment early: the core leaving the round. Cool and orderly through the programs. Low and steady through the standards. Quiet and focused at the form, which is the end.
+   Authored. Direct and confident at the top. Lighter while browsing the programs. Loudest at the moment the tests assemble. Calm with the doctors. Decisive at the form.
 
 4. **Feeling stage by stage, and the ONE moment.** See the feeling curve and the peak below.
 
 5. **One thing no site they have seen does.**
-   Authored. Show what "reading someone's history" means with a real record: pull a core out of a real thousand-year-old tree and lay every ring out as a timeline the visitor can read. Longevity clinics show smiling people and IV bags; this one shows a measured life.
+   Authored from the client's notes. You say what you want ("better skin", "lose weight", "feel big and strong"), and the page shows the exact tests a doctor would run first, what has to be true before anything is prescribed, and when you would be re-tested. The choice then carries into the assessment.
 
 6. **How far from premium-minimal.**
-   User, verbatim: "more editorial", "premium". Family: **Editorial with a scientific register.** Plates, figure numbers, captions, scale bars, measured data. Not minimal-luxury dark-and-gold.
+   Authored. **Dense, pulled toward premium.** Information-forward panels and real test names on the approved navy and quartz system. No luxury-minimal emptiness; no decoration that is not data.
 
 7. **One unbroken world, or distinct scenes?**
-   User, verbatim: "not like a world that we'd be flying through". **Distinct scenes.** Worldflight is excluded.
+   Distinct scenes. Worldflight stays excluded (the client ruled it out in the first brief).
 
 8. **What assets do they already have?**
-   None usable. Every image on the live site is AI-generated (a caduceus badge, product vials labelled for a different clinic, stock people in navy-and-gold rooms). The user asked for bespoke assets "using image generation and any other tools available". No diffusion image generator is available in this environment (no KIE key), and a diffusion model would reproduce the AI look the user is rejecting. **So every asset is generated from real data**: NOAA tree-ring measurements of Huon pine and OpenStreetMap streets, drawn with code. See the asset list.
+   The clinic's medallion (from its live site), the two doctors' photographs (from the profile image supplied with the brief), and the clinic's own published facts, which this build treats as data: test names, reference ranges, re-test intervals, timeframes. No image generation. The client's direction is "data-driven", and every visual on this page is either a photograph of a real doctor or typeset from real data.
 
 ## Step 1: journey first
 
-- **What is this, and who is it for?** A doctor-led longevity clinic at 628 Ipswich Road, Annerley, Brisbane: IV infusion therapy, peptide programs, testosterone therapy and medical weight management. User, verbatim, on the audience: "Health-conscious people who are willing to invest significant money in their health."
-- **What must the visitor believe by the end?** *These doctors will read my whole history and my pathology before they prescribe anything, and they will tell me if something is not for me.*
-- **What does the visitor do next?** Begin the assessment: a health questionnaire, a $75 fee, a doctor's review and a phone consultation. One label everywhere: **Begin your assessment**.
-- **Real facts used** (all from the live site, 2026-10-05): address; hours (Mon to Fri 8am to 6pm, Sat 9am to 2pm); email; ABN 85 618 922 848; MBBS and FRACGP; the $75 fee via Stripe; the doctor calls within 1 to 2 business days, Mon to Fri 9am to 5pm AEST; the phone consultation runs 15 to 25 minutes; not bulk billed; no referral for most services; iron infusion needs pathology within 3 months and a GP referral; infusion durations; TRT needs confirmed pathology. **Not available, so not invented:** doctor names, photographs, a phone number, prices of any treatment.
+- **What is this, and who is it for?** A doctor-led clinic at 628 Ipswich Road, Annerley, Brisbane: peptide programs, testosterone therapy, medical weight management and IV therapy. Client, verbatim, on what the audience wants: "What people want is like better skin. They want to lose weight. They want to get TRT so they feel big and strong. These are kind of the things that we should be catering to."
+- **What must the visitor believe by the end?** *Real doctors will check the right things before prescribing what I'm after, and they'll tell me if it isn't right for me.*
+- **What does the visitor do next?** Begin the assessment. One label everywhere: **Begin your assessment**.
 
 ### Journey beats
 
 ```
-1  Arrival      a real specimen, measured, and a clinic that reads before it treats     act 1 open
-2  Turn         the core leaves the tree and becomes a thousand-year record             act 1 peak
-3  Orientation  four programs, each with its own plate and the same label schema       act 2
-4  Weight       the standards, as a protocol the visitor can check                    act 3
-5  Commitment   the assessment itself, on the page, with everything it costs           act 4 (close)
+1  Recognition  what you want, said plainly, and the real doctors who prescribe it     act 1
+2  Choice       the four programs, each led by the goal it serves                       act 2
+3  Proof        pick a goal: the tests, the prescribing rule, the re-test dates         act 3 (peak)
+4  Trust        the lead doctors: faces, qualifications, the years behind them          act 4
+5  Commitment   the assessment, already set to the goal you picked                      act 5 (close)
 ```
 
 ## Step 2: grammar, signature move, gate, curve, score
 
-### Grammar: specimen study (new)
+### Grammar: goal route (new)
 
-A named new grammar, defined by structure, not by a label:
+Defined by structure, not by a label:
 
-- **The unit is the plate, not the chapter or the act.** Every visual is a numbered figure with a caption that states what it is, where the data came from and what is illustrative. Copy is annotation keyed to the figure.
-- **One specimen anchors the page.** The page opens on it, and the peak is an operation performed on it (extraction), not a camera move around it.
-- **Sequence:** specimen, operation, plates, protocol, input. Magnification and order change between acts; the subject does not.
-- **Navigation:** a slim fixed label strip, the clinic's accession line, which carries the site's real page links and the one action. No margin folio, no chapter index, no progress readout.
-- **Ending:** an instrument. The page ends in the assessment form, not a CTA island and not a colophon.
-- **Forbids:** decorative imagery (an image that is not a measured or drawn specimen); generic iconography (the decade-dot convention is the only icon system); cards; testimonials; any visual that does not carry a figure number and a source; worldflight; `scrub` (there is no footage, and inventing footage would be decoration); `spotlight` and `magnet`.
+- **The unit is the visitor's goal.** Every section is organised by what someone wants (lose weight, feel strong again, better skin and hair, more energy), not by the clinic's departments. A program appears as the answer to a goal.
+- **Sequence is the order of a consultation:** what you want, what can help, what we check, who decides, how you start. Each act answers the next question a patient would ask.
+- **Navigation:** the approved header, plus the goals themselves as an index. Every goal on the page is a control that routes to the same goal everywhere else: the hero, the programs, the route and the form.
+- **Hero:** the goals and the real doctors, on the first screen, with the call to action visible.
+- **Close:** an actual input. The assessment, opened on the goal the visitor chose.
+- **Leans on:** `pin` for the one place evidence assembles, `pan` for the range, `flow` + `in` for reading, `reveal` for the change from reading to doing, pointer response where it is useful.
+- **Bans:** metaphor imagery standing in for medicine (no trees, no molecules, no glowing DNA); stock or generated photography; invented numbers of any kind, so no counters; outcome promises; testimonials; `scrub`; kinetic headline stacks; a split header (giant heading left, small paragraph right).
 
-Why the other eight lost:
+Why the eight defined grammars lost:
 
-- **Filmic one-shot**: the brief rejects being carried ("not a world we'd be flying through"), and its pinned close with a magnetic CTA is the template default the user is reacting against.
-- **Chaptered editorial**: taken by `alc-home`, the build being replaced. Re-using it would be the re-skin the gate exists to stop.
-- **Live surface**: there is no product surface. The form is real, but a clinic is not software.
-- **Continuous world**: excluded by the brief in so many words.
-- **Typographic poster**: a medical service has to show process, eligibility and standards. One sentence at 40vw cannot carry them.
-- **Gallery / catalog**: the visitor's question is "should I trust you", which a collection does not answer. The programs do borrow its label schema inside one act.
-- **Split stage**: there is no two-sided argument here.
-- **Rhythmic cutlist**: pulse and speed are the opposite of what this audience is buying.
+| Grammar | Why not |
+|---|---|
+| Filmic one-shot | Carries the burden of proof, and the client asked for "data", not a film |
+| Chaptered editorial | The first build (`alc-home`) used it; editorial distance is what the client is moving away from |
+| Live surface | Forbids marketing chrome and display headlines, and this page has to sell to consumers |
+| Continuous world | Ruled out by the client in the first brief |
+| Typographic poster | Bans the `pan` rail, which the client wants to keep |
+| Gallery / catalog | Forbids persuasion in the labels; the client wants copy that caters to what people want |
+| Split stage | Bans `pan`; and "what you want" against "what we check" is a route, not a contest |
+| Rhythmic cutlist | Bans `pin`, and the proof needs a held frame |
 
-### Signature move: the core leaves the round
+### Signature move: your goal, routed
 
-Act 1 pins. The round is a real Huon pine cross-section, every ring drawn from core PEB07A (1,010 rings, AD 1003 to 2012). As the visitor scrolls, a borer line runs in from the bark to the pith along the measured radius. The core then slides out of the round, the round falls away, and the core grows to the full width of the screen. Decade dots arrive in the standard dendrochronology convention, the centuries are labelled, and three rings are called out. Because the round's radius along that line is the measured cumulative width, the core's rings line up exactly with the round's rings at the moment of extraction. Page-local JS reads the act's `--sc-p` and publishes `data-sc-verify-state`. The engine is untouched. Under reduced motion the core is shown laid out, with no pin.
+Tap a goal anywhere on the page and the page routes to it. In the pinned route act, the tests a doctor would order for that goal rise into a panel one row at a time, each with what it measures (and its reference range where the clinic publishes one), then the rule that has to be true before anything is prescribed, then when you would be re-tested. Scrolling through the act walks all four goals in turn. Choosing one sets the program in the assessment form, so the close opens on the visitor's own goal. Coded in the page from one data object that also builds the program pages' panels; the engine is untouched.
 
-### Fingerprint gate against every existing row
+The act measures its panels before it pins. A whole panel that fits is shown whole. One that doesn't is split: its tests first, then the rule and the re-test in their place. Where even half won't fit, or motion is reduced, nothing pins, the panels stack, and on phones the goals ride in a sticky row that lights the goal in view. The peak sentence holds in all three: a tapped goal always lands on its full list of tests.
 
-| Dimension | `alc-home` | This build | Differs |
-|---|---|---|---|
-| Grammar | Chaptered editorial | Specimen study (new, defined above) | yes |
-| Nav treatment | Margin folio listing every chapter, no bar | Fixed accession strip with site links and the one action; switches ground with the section | yes |
-| Hero device | Title page, type alone on paper, no media | Layered specimen on a dark ground: defocused far plane, sharp round, near label; pointer parallax | yes |
-| Act-sequence shape | Title + 5 chapters + colophon = 7 acts, one pinned (span 2.4), about 8.9vh | pin (peak, span 4.8) > pan (3.6) > flow > reveal holding the form, then a footer: 4 acts, about 12.5vh | yes |
-| Close pattern | Colophon plate, CTA as running text | The assessment form is the ending; the page resolves into an input | yes |
-| Signature move | Self-drawing care-pathway chart | A core extracted from a real round and laid out as a timeline | yes |
+### Fingerprint gate
 
-**6 of 6. Passes.** Shared with `alc-home`: the clinic's facts and the refusal to use stock imagery.
+| Dimension | `alc-home` | `alc-specimen` | This build | Differs from home | Differs from specimen |
+|---|---|---|---|---|---|
+| Grammar | Chaptered editorial | Specimen study | Goal route | yes | yes |
+| Nav treatment | Margin folio, no bar | Fixed strip that takes the ground beneath it | The same fixed strip | yes | **no** |
+| Hero device | Title page, type alone | Layered data-drawn specimen with a paper label | Goals as controls over layered real portraits and a defocused field of real test data | yes | yes |
+| Act-sequence shape | 7 acts, one pinned, about 9vh | pin (peak first) > pan > flow > flow > reveal, 5 acts, 14.2vh | flow > pan > pin (peak third) > flow > reveal, 5 acts, 13.5vh | yes | yes |
+| Close pattern | Colophon plate | The assessment form | The same form, now opened on the chosen goal | yes | **no** |
+| Signature move | A care pathway that draws its own exit | The core leaves the round | Your goal, routed | yes | yes |
+| **Total** | | | | **6 of 6** | **4 of 6** |
+
+Passes. The nav and the form are shared with `alc-specimen` on purpose: the client approved both and asked for them to stay.
 
 ### The feeling curve
 
-```
-1  Stillness, then awe   a dark ground and one specimen in sharp focus, a real label beside it; then the borer goes in and the core comes out
-2  Clarity               the core across the full screen, a thousand years readable at a glance, and the line that says this is what they do with you
-3  Orientation           a hard cut to a pale ground; four plates travel sideways, each a different magnification of the same tree
-4  Assurance             a protocol set as a table: what happens, who does it, what they will not do
-5  Resolve               the form, the fee, the timeline and the privacy terms in one place; the page stops at an input
-```
+| Act | Feeling | What on screen causes it |
+|---|---|---|
+| 1 Hero | Recognition: that's what I'm after | Their own goals as the first controls; the faces of the doctors who prescribe |
+| 2 Programs | Choice | Four programs, each led by the goal it serves, side by side |
+| 3 Route | Confidence | The exact tests, the prescribing rule and the re-test dates assemble for the goal they picked |
+| 4 Doctors | Reassurance | The lead doctors' faces, their qualifications exactly as they hold them, and their experience as the clinic gives it |
+| 5 Form | Resolve | The questionnaire opens on the goal they already chose |
 
-Act 1 holds two feelings because the peak needs a still open in front of it. The first fifth of the act is that authored stillness: the specimen holds while the headline reads, and nothing moves except under the pointer.
+No two adjacent acts share a feeling.
 
 ### The peak
 
-> "You scroll and a core slides out of this huge tree cross-section and turns into a timeline of a thousand years. Then it says that's how they read you."
+> I tapped "feel strong again" and it listed every blood test they'd run before prescribing anything, and when they'd test me again.
 
-Lives in act 1, from 0.22 to 0.78 of its span. It has the largest span on the page (4.8, against 3.6 for the pan) and the only bespoke animation.
+Act 3. It gets the largest span on the page, the only pinned frame, and the quietest act before it (the end of the programs rail, "Not sure which?").
 
 ### Tell-someone sentence
 
-**It's the site where you pull a core out of a thousand-year-old tree and read its whole life, ring by ring.**
+> It's the site where you tap what you want and it shows you the exact blood tests a doctor runs first, then fills that choice into your sign-up.
 
 ### Authored silence
 
-Act 1, `p` 0 to 0.2: the hero holds still under scroll on purpose (the specimen settles, the headline stays). The harness may report the first slice of act 1 as low-change; that is the silence before the borer.
+None. The rail's last panel ("Not sure which?") is the quiet beat before the peak, and it carries content.
 
 ### Score
 
 | Beat | Device | Why this one |
 |---|---|---|
-| Arrival and Turn | `pin` + `parallax` planes + bespoke extraction from `--sc-p` | One held frame lets the operation happen in place; the planes give the specimen depth before it moves |
-| Orientation | `pan` | Four programs read as breadth, not hierarchy; sideways travel through plates like turning a folio |
-| Weight | `flow` + `in` | Credentials and process are information; compress them (feel.md §5) |
-| Commitment | `reveal`: the paper ground wipes up over the dark, holding a real form | A change of state from reading to doing; the form itself is the close |
+| Recognition | `flow` + `parallax` planes + pointer depth | A first screen that is complete before any scroll, with depth that answers the pointer |
+| Choice | `pan` | Lateral travel reads as options. Kept at the client's request |
+| Proof | `pin` + the route panel | The frame holds while the evidence assembles. Largest span on the page |
+| Trust | `flow` + `in` | Faces and credentials at reading pace |
+| Commitment | `reveal` | The paper arrives over the dark: a change of state from reading to doing |
 
-Four device families, none twice in a row, no `scrub`.
+Five acts, five device families, none repeated in a row.
 
 ### Layer contract (hero)
 
-| Plane | Asset | Movement | Rule |
+| Plane | Content | Motion | Notes |
 |---|---|---|---|
-| Far | `round-far.webp`: a 2x macro crop of the outer rings and a check, defocused | Smallest scroll and pointer displacement | Never overlaps the headline at more than 25% opacity |
-| Mid | `round-1400.avif`: the sharp round | Moderate; recentres for the extraction | The core line is aligned to its measured radius |
-| Near | The specimen label, HTML | Strongest restrained pointer displacement | Occludes the round's lower edge; never the headline |
-| Type | `h1`, lede, the one action | Stable, greets | Fully readable on landing |
+| Far | A field of the clinic's real test names, reference ranges and re-test intervals, typeset and defocused | parallax -1.3, pointer 14px | Decorative, hidden from assistive tech |
+| Subject | The lead doctors' photographs, mounted, with their post-nominals exactly as they hold them | parallax -0.5, pointer 8px | Real photographs, not retouched |
+| Near | A paper slip listing the tests for whichever goal is under the pointer or focus | parallax +0.45, pointer -6px | Overlaps the photographs' lower edge; updates live |
+| Copy | Heading, one line of subtext, the goal chooser, the call to action | 1x | Never on a moving plane |
 
-## Assets (all generated in this repository; generators in `tools/alc-assets/`)
+Phones: copy first, then the photographs with the slip below them. The far field sits behind the photographs only. No pointer response. Reduced motion: the same composition, still.
 
-| Asset | Replaces on the live site | Source |
+## Copy: humanscope structure sheet
+
+Mode A (structure first), scoped for marketing and explainer copy. For copy at this length the decisions that transfer are the moral, emotion, references, reader address and how clean the clinic is allowed to look. Timeline, subplots and resolution are read as the page's order and ending.
+
+| # | Decision | Choice | Why |
+|---|---|---|---|
+| 1 | Timeline | Open on the result the visitor wants, then step back to how it's reached | The client: "first skip to what the clinic does" |
+| 2 | Subplots | One parallel thread: the doctors, alongside the programs | They are the proof of "real doctors" |
+| 3 | What causes the ending | Mixed: the visitor chooses, the bloods decide | It's true, and it's the measure-first rule |
+| 4 | How it ends | An action: the form | Not a realisation, not a slogan |
+| 5 | The moral | **Never stated.** No closing line explains why testing matters; the test lists make the case | Breaks the AI default hard |
+| 6 | Emotion | **Plain words**: tired, flat, fed up, strong. No body metaphors | Breaks the AI default hard |
+| 7 | How the lead enters | The visitor enters mid-want ("Lose weight"); the clinic enters through named doctors, not a description of itself | Avoids "a doctor-led clinic committed to..." |
+| 8 | References | **Named, everywhere**: HbA1c, SHBG, ferritin, Schedule 4, the RACGP, AHPRA, 628 Ipswich Road, 6 to 12 weeks | Breaks the AI default hard. Nothing vague like "cutting-edge science" |
+| 9 | Reader address | "You" in the hero and the route, not in every sentence | Natural for consumer copy |
+| 10 | Is the lead morally clean? | **No.** The clinic admits limits: "if low testosterone is the reason", "sometimes the answer is no", "the evidence is limited" | Breaks the AI default hard. For this audience, limits read as credibility |
+
+Budget: four hard breaks (5, 6, 8, 10). The rest sit where the page naturally wants them.
+
+Guardrails the copy keeps, because the law and the clinic's own pages require them: no prescription medicine named on the site's own pages; no promise of an outcome; testosterone only for men whose bloods confirm a deficiency, and never framed as bodybuilding (the clinic's testosterone page rules out performance enhancement); no testimonials; experience shown as the doctors' profile gives it, never summed across the doctors into a headline figure.
+
+## Assets
+
+| Asset | File | Source |
 |---|---|---|
-| The round (hero), far plane | AI hero imagery | NOAA ITRDB AUS123C, series PEB07A, every ring |
-| The core strip (signature) | none (new) | The same radius, the same rings |
-| Plate: tracheids | AI IV-bag and vial images | Measured widths of 1664 to 1666; cells illustrative |
-| Plate: branchlet | AI peptide imagery | Drawn from the species' habit; illustrative |
-| Plate: cross-dating | AI hormone imagery | PEB07A against PEB07B, 1446 to 1505, five matched narrow rings |
-| Plate: century ledger | AI weight-loss imagery | PEB07A, 1003 to 2012, 30-year running mean |
-| Logo, favicon, touch icons | (revision 2) the drawn ring mark is retired | The clinic's own medallion from its live site, cut from its white square, not redrawn |
-| Doctors' portraits | (revision 2) none on the live site | The profile image supplied with the brief: cropped, one light print grade, not retouched |
-| Location plate | none (address only) | OpenStreetMap, ODbL |
-| Journal cores (16) | AI blog thumbnails | Sixteen other series from AUS123C and AUS118 |
-| Decade-dot notation | generic icon set | The dendrochronology marking convention |
-| Social card | none | The round and the wordmark |
+| Data field (hero, far plane) | `assets/img/data-field-*.webp` | Typeset by `tools/alc-assets/gen_datafield.mjs` from the same data that builds the route panels, in the site's own mono face, then defocused |
+| Route panels | inline, built from `ROUTES` in `tools/alc-site/routes.mjs` | The clinic's published tests, ranges and re-test intervals; the two lines that are this build's wording are listed in the README |
+| Goal plates (programs rail) | inline type | The four goals, set as the image |
+| The doctors' portraits | `assets/img/doctors/` | The supplied profile image, cropped, one light grade |
+| Logo, favicons, touch icons | `assets/img/logo/` | The clinic's medallion |
+| Location map | `map-annerley.svg` | OpenStreetMap |
+| Social card | `og.jpg` | The headline, the medallion, both doctors' photographs, the Lose weight tests and the data field |
+| Form progress | inline | Five segments, one per step |
+| Retired | the round, its far plane, the core, the four drawn plates, the journal cores, the light round, the progress rings, the ring mark, the dark map | Removed with their generators and the ring-width data |
 
----
+## Step 5: verification
 
-## Step 5: verification (2026-10-05)
+Run on the final code, 5 October 2026. Full results are in the README.
 
-Harness (`shoot.mjs`, engine untouched), final code:
+| Run | Page length | Route mode | Result |
+|---|---|---|---|
+| Desktop 1440 x 900 | 13.5 viewport heights | whole | No dead scroll, no contrast flags, no console errors, no failed requests |
+| Phone 390 x 844 | 19.2 | split | The same |
+| Compact phone 360 x 640 | 22.5 | static | The same |
+| Reduced motion, 1440 x 900 | 12.7 | static | The same |
 
-| Run | Length | Acts | Dead scroll | Contrast at worst frame |
-|---|---|---|---|---|
-| Desktop 1440 x 900 | 12.7vh | pin > pan > flow > flow (reveal) | none | all cues clear 4.5:1 |
-| Phone 390 x 844 | 16.7vh | same | none | all clear |
-| Compact 360 x 640 | 19.3vh | same | none | all clear |
-| Reduced motion, 1440 x 900 | 10.4vh | same | none | all clear |
+Also: the route stepped through at 14 screen sizes with no panel ever running off the screen; 45 of 45 form checks, including the goal routing with and without motion; 24 pages at 320, 390 and 1440 px with no overflow or errors; 1,386 internal references with none broken; no em dashes, stock phrases or tree vocabulary anywhere.
 
-Phone lengths run long because the protocol table and the form are long in one column. That is content, not pinned scroll. The pan's span drops to 4.4 on phones, and the specimen act to 2.6 under reduced motion.
-
-Findings fixed during verification, in order: the strip computed its ground before the engine pinned act 1, so it rendered dark on dark. The far plane showed hard rectangular edges, now feathered with a radial mask. The 1003 note collided with the figure line. Decade dots squashed to nothing inside the non-uniformly scaled SVG, so they are now an HTML layer. The engine's tabular figures opened gaps before commas in table text. On phones, the rail figure kept its desktop aspect ratio, and the hero round sat below the fold. The `hidden` attribute lost to author `display` rules, which left conditional questions, an empty result box and a step-one Back button showing. The harness flagged one contrast failure: the hero copy box overlapped the paper label, though the text itself never did. It was fixed by narrowing the box, and it reads clean now.
-
-Form: 39 of 39 functional checks pass (see README). Every page at 390px: no horizontal overflow, no console errors, no failed requests.
-
-Not verified: a real phone, a screen reader end to end, and the live endpoint and Stripe link (neither exists yet).
+Found on the contact sheets and fixed before sign-off: the test rows appeared a third of a second late (a specificity slip between the hidden and shown states), the tests slip covered a doctor's photograph on phones, and the tallest panels ran off a phone screen, which is what the measured modes now prevent.
 
 ## Feel check
 
-Not cold: the checker built the page. Read from the final contact sheets, one word per act, then diffed:
+Read act by act from the final contact sheets, against the curve above.
 
-| Act | Intended | Felt | Change made |
+| Act | Intended | On the sheet | Verdict |
 |---|---|---|---|
-| 1 open | Stillness | Composed | none |
-| 1 peak | Awe | Intrigue, at first: the drawn core was a hairline and the moment read as delicate | The core was thickened during extraction, and the round dims to 38% as the core slides out. The drawn core now reads as an object, and the lay-out across the full width is the largest change on the sheet. |
-| 1 close | Clarity | Clarity | none |
-| 2 | Orientation | Browsing | none (same intent) |
-| 3 | Assurance | Steadiness | none |
-| 4 | Resolve | Readiness | none |
+| 1 Hero | Recognition | Desktop: the headline, the four goals, the button and both doctors' faces on the first screen. Phone: the headline, goals and button first, the doctors one scroll down. | Holds. On a phone the faces come second, by design: the client asked to lead with what the clinic does. |
+| 2 Programs | Choice | One goal plate at a time, each with its tests along the top and its four-row label | Holds |
+| 3 Route | Confidence | Every panel assembles: tests rise, then the rule and the re-test. "Feel strong again" lists six tests and the schedule. | Holds where it pins. On iPhones in Safari it stacks instead, and the moment of assembly is lost there; the routing and the full list are not. |
+| 4 Doctors | Reassurance | The head, then each record: face, post-nominals, experience, dated training, and what the clinic won't do | Holds |
+| 5 Form | Resolve | The paper arrives over the dark, already set to the goal the visitor picked | Holds (checked by test, not only by eye) |
 
-Peak checks: the largest visual change on the sheet is the core laid out (act 1, 0.54 to 0.68). Act 1 has the most scroll room (span 4.8). The authored stillness of 0 to 0.12 comes before it. The page resolves into the form: its last content screen is an input with the fee beside it.
+The peak sentence is true as written: tapping "Feel strong again" lands on every blood test a doctor checks first and the dates they test again. What a reviewer may still question: the defocused data behind the hero is legible in places by design, and some will read it as busy; the slip overlaps the lower half of the doctors' photographs on desktop, never their faces.
 
 ---
 
-## Revision 2 (2026-10-05): the clinic's logo, its doctors, and humanised copy
+## History
 
-The client kept the direction and asked for four changes only. What each did to the build:
-
-**Logo.** The clinic's medallion replaces the drawn ring mark everywhere a logo appears: the strip, the menu sheet, the footer, the favicons, the touch icons and the social card. It is the live site's own file, retrieved from its header, with only the white square around it removed (`logo_cutout.py`). The live site's favicon is a site-builder placeholder, not the logo, so the favicons are resizes of the medallion.
-
-**Ground.** "Stay blue-themed" did not match the build, whose dark ground was forest. The ground tokens moved to the medallion's navy (`--night #0b1526`, from its field `#0c1938`) and the ink to an ink-blue. Nothing else moved: the gold accent, the type, the plates and the acts are as approved. The plates, map, cores and social card were redrawn in the new ink. All contrast pairs still pass AA (listed in `site.css`).
-
-**The doctors.** A dedicated section, on the home page and as the doctors page. It is a register, not a team grid: one ruled entry per doctor, the photograph in the narrow column with a hairline mount, the record in the wide one. Names and post-nominals are exactly as the supplied image gives them. Each entry carries a small calendar drawn like the cores: a ruler of years from 1995 with the doctor's dated entries in gold, on the same scale for both, so the two records line up like the cross-dated cores in Fig. 4. On the home page it sits between the rail and the protocol, on the rail's ground: the rail ends on "the doctor will tell you what, if anything, makes sense", and the next thing on screen is the doctors.
-
-Grammar after the revision: pin (4.8) > pan (3.6) > flow (the doctors) > flow + in (the protocol) > reveal (the form). Still one pinned act and one peak; the added act is plain flow, so the curve gains a level stretch between orientation and assurance rather than a second climb.
-
-**Copy.** The educational copy was edited with the humanscope method (Mode B, explainer scope): program pages, FAQs, the home page's explainers and all fourteen journal articles. Every number, test, caveat and disclaimer was kept; overclaims were softened and listed. The hero lede and the measure-first passage are unchanged. Details and the clinical review list are in `README.md`.
-
-### Verification, revision 2
-
-| Run | Length | Acts | Dead scroll | Contrast at worst frame |
-|---|---|---|---|---|
-| Desktop 1440 x 900 | 14.2vh | pin > pan > flow > flow > flow (reveal) | none | all cues clear 4.5:1 |
-| Phone 390 x 844 | 18.6vh | same | none | all clear |
-| Compact 360 x 640 | 22.0vh | same | none | all clear |
-| Reduced motion, 1440 x 900 | 11.9vh | same | none | all clear |
-
-No console errors and no failed requests in any run. The added length is the doctors section, which is content in plain flow, not pinned scroll.
-
-Found and fixed: on phones of 380px and narrower the clinic's name ran under the menu button once the medallion replaced the smaller drawn mark, so it now wraps to two lines there. The rail's phone-size rule for its label rows was written against `.schema` globally, so it shrank the doctors' ledger too; it is now scoped to the rail's plates. On phones the ledger's label column squeezed the entries to a narrow strip, so below 520px each label sits above its entry.
-
-### Feel check, revision 2
-
-| Act | Intended | Felt | Change made |
-|---|---|---|---|
-| The doctors | Trust | Recognition: two faces and a ruled record after a run of drawn plates | none |
-
-The register is the first photography on the page. It is placed after the plates, never before them, so the specimen study still opens the site and the people arrive as the answer to "who reads my record".
-
+- **First build** (`alc-home`, chaptered editorial) was replaced in full.
+- **Second build** (`alc-specimen`, specimen study): a Huon pine cross-section drawn from NOAA ring data, a core drawn out of it as the signature move. Revision 2 added the clinic's own logo, the doctors' register, the navy ground and humanised copy. The client kept the logo, the doctors, the services list and the form, and asked for the tree to go. Its brief, assets and generators remain in the git history (commit `60a21d1`).
+- **Third build** (`alc-route`, goal route): this brief.

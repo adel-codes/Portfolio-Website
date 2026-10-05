@@ -36,7 +36,7 @@
     <nav class="nav" aria-label="Main">
       <div class="nav__group">
         <button class="nav__more" type="button" aria-expanded="false" aria-controls="nav-programs">Programs</button>
-        <div class="nav__menu" id="nav-programs" hidden><a href="../iv-drips/index.html" aria-current="page"><span class="fig">Fig. 2</span><span>IV therapy</span></a><a href="../peptide-therapy/index.html"><span class="fig">Fig. 3</span><span>Peptide programs</span></a><a href="../testosterone-therapy/index.html"><span class="fig">Fig. 4</span><span>Testosterone therapy</span></a><a href="../weight-management/index.html"><span class="fig">Fig. 5</span><span>Medical weight management</span></a></div>
+        <div class="nav__menu" id="nav-programs" hidden><a href="../iv-drips/index.html" aria-current="page"><span>IV therapy</span><span class="fig">More energy</span></a><a href="../peptide-therapy/index.html"><span>Peptide programs</span><span class="fig">Better skin and hair</span></a><a href="../testosterone-therapy/index.html"><span>Testosterone therapy</span><span class="fig">Feel strong again</span></a><a href="../weight-management/index.html"><span>Medical weight management</span><span class="fig">Lose weight</span></a></div>
       </div>
       <a href="../our-team/index.html">Doctors</a>
       <a href="../blog/index.html">Journal</a>
@@ -52,13 +52,13 @@
     <button class="sheet-menu__close" type="button">Close</button>
   </div>
   <nav aria-label="Menu">
-    <a href="../iv-drips/index.html"><span class="fig">Fig. 2</span>IV therapy</a>
-    <a href="../peptide-therapy/index.html"><span class="fig">Fig. 3</span>Peptide programs</a>
-    <a href="../testosterone-therapy/index.html"><span class="fig">Fig. 4</span>Testosterone therapy</a>
-    <a href="../weight-management/index.html"><span class="fig">Fig. 5</span>Medical weight management</a>
-    <a href="../our-team/index.html"><span class="fig">&nbsp;</span>Doctors</a>
-    <a href="../blog/index.html"><span class="fig">&nbsp;</span>Journal</a>
-    <a href="../contact/index.html"><span class="fig">&nbsp;</span>Visit and contact</a>
+    <a href="../iv-drips/index.html"><span>IV therapy</span><span class="fig">More energy</span></a>
+    <a href="../peptide-therapy/index.html"><span>Peptide programs</span><span class="fig">Better skin and hair</span></a>
+    <a href="../testosterone-therapy/index.html"><span>Testosterone therapy</span><span class="fig">Feel strong again</span></a>
+    <a href="../weight-management/index.html"><span>Medical weight management</span><span class="fig">Lose weight</span></a>
+    <a href="../our-team/index.html"><span>Doctors</span></a>
+    <a href="../blog/index.html"><span>Journal</span></a>
+    <a href="../contact/index.html"><span>Visit and contact</span></a>
   </nav>
   <a class="btn" href="../contact/index.html#assessment">Begin your assessment</a>
   <p class="sheet-menu__foot">628 Ipswich Road, Annerley QLD 4103<br><a href="mailto:reception@australianlongevityclinic.com.au">reception@australianlongevityclinic.com.au</a></p>
@@ -67,8 +67,7 @@
   <header class="page-head g-light" data-ground="light">
     <div class="wrap page-head__grid">
       <div>
-        <p class="fig"><b>Fig. 2</b> IV therapy</p>
-        <h1 class="d-xl" style="margin-top:1rem">IV therapy, given in the clinic.</h1>
+        <h1 class="d-xl">IV therapy for energy, recovery and low iron.</h1>
         <p class="lede">Fluids, vitamins, iron or NAD+, given by drip in the clinic at Annerley. IV therapy here is a health service, run under the direct supervision of the clinic's doctors, and every infusion starts with a consultation and an individual assessment.</p>
         <div class="page-head__actions"><a class="btn" href="../contact/index.html?program=iv#assessment" data-program="iv">Begin your assessment</a><a class="textlink" href="#how">How it works</a></div>
       </div>
@@ -77,10 +76,21 @@
   </header>
   <section class="spec g-light" data-ground="light">
     <div class="wrap spec__grid">
-      <figure class="plate spec__fig">
-        <img src="../assets/img/plate-tracheids.svg" alt="A drawing of wood cells in cross-section: rows of rounded cells, large in each year's early growth and small and thick-walled at the end of it, across three yearly rings." width="800" height="1000" decoding="async">
-        <figcaption><span class="fig"><b>Fig. 2</b></span>Tracheids, the cells that carry water up the stem, across three measured rings of Huon pine, 1664 to 1666. Ring widths from core PEB07A; cells drawn for illustration.</figcaption>
-      </figure>
+      <aside class="spec__fig route-aside" aria-label="What a doctor checks">
+        <article class="route" id="route-iv" data-goal="iv" aria-labelledby="route-iv-h">
+            
+            <div class="route__block route__block--check">
+              <h2 id="route-iv-h" class="route__label">What a doctor checks first</h2>
+              <ol class="route__tests"><li style="--i:0"><b>Serum ferritin</b><span>Your iron stores</span><em>30–300 µg/L in women, 30–400 µg/L in men</em></li><li style="--i:1"><b>Transferrin saturation</b><span>How much iron is bound for transport</span><em>20–50%</em></li><li style="--i:2"><b>Full blood count</b><span>Including haemoglobin</span><em>Haemoglobin 120–160 g/L in women, 130–170 g/L in men</em></li><li style="--i:3"><b>C-reactive protein</b><span>A marker of inflammation</span></li><li style="--i:4"><b>Vitamin D</b><span>Needed before a vitamin D injection</span></li></ol>
+              <p class="route__note">Typical adult ranges, from the clinic's <a href="../blog/iron-infusion-brisbane/index.html">guide to iron infusions</a>. Labs vary slightly.</p>
+            </div>
+            <div class="route__after">
+              <div class="route__block route__block--rule"><p class="route__label">Before anything is prescribed</p><p>Iron is given only for a deficiency your bloods confirm, with results from the last 3 months and a GP referral.</p></div>
+              <div class="route__block route__block--again"><p class="route__label">Then</p><p>A follow-up blood test 6 to 8 weeks after an iron infusion.</p></div>
+              
+            </div>
+          </article>
+      </aside>
       <div class="spec__text">
         <section><h2 class="d-md">The infusions</h2><div class="body"><p>Which infusion, and how much of it, is the doctor's call once you've been assessed. If you can't tell which of these applies to you, that's what the consultation is for.</p>
         <ul class="menu-list">
@@ -160,7 +170,7 @@
       </div>
       <div>
         <p>&copy; 2026 Australian Longevity Clinic Brisbane (trading as Australian Longevity Clinic), a registered business name of Horizon Medical Pty Ltd. ABN 85 618 922 848. <a href="../privacy-policy/index.html">Privacy policy</a>.</p>
-        <p>Figures drawn from tree-ring measurements by K. Allen and colleagues, NOAA NCEI International Tree-Ring Data Bank (AUS123C, AUS118). Map data &copy; OpenStreetMap contributors.</p>
+        <p>Map data &copy; OpenStreetMap contributors.</p>
       </div>
     </div>
   </div>

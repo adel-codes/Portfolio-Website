@@ -1,173 +1,130 @@
 /* ==========================================================================
-   Home: the specimen act, the plates rail, the protocol
+   Home: the goal route
    --------------------------------------------------------------------------
-   Act 1 is laid out here in its opening pose. home.js moves the round, the
-   borer and the core between poses from the act's progress; CSS never
-   animates layout properties, only transform and opacity.
+   Five acts in the order a consultation answers questions: what you want
+   (hero), what can help (the programs rail), what a doctor checks before
+   prescribing (the route, the peak), who decides (the lead doctors), and how
+   you start (the assessment). home.js routes every goal control on the page;
+   CSS animates transform and opacity only.
    ========================================================================== */
 
-/* ------------------------------------------------------- act 1: specimen */
-.specimen { --D: min(84svh, 50vw); }
-.specimen__stage { background: var(--night); isolation: isolate; }
+/* ------------------------------------------------------------ the goals
+   One control, used in the hero, on the rail and in the route. */
+.goals ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.55rem; }
+.goals--hero ul { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); }
+.goals--hero .goal { width: 100%; }
+.goal {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  min-height: 2.9rem; padding: 0.55rem 1.05rem;
+  border: 1px solid var(--rule-strong); border-radius: var(--sc-r-sm);
+  font-weight: 500; font-size: 1.02rem; letter-spacing: -0.01em;
+  color: var(--sc-ink); text-decoration: none;
+  transition: background-color 160ms var(--sc-ease-out), border-color 160ms var(--sc-ease-out);
+}
+.goal::before { content: ""; width: 7px; height: 7px; border-radius: 50%; border: 1px solid currentColor; opacity: 0.55; flex: none; }
+.goal:hover { background: color-mix(in oklab, var(--sc-ink) 7%, transparent); text-decoration: none; }
+.goal[aria-current="true"] { border-color: var(--sc-accent); }
+.goal[aria-current="true"]::before { background: var(--sc-accent); border-color: var(--sc-accent); opacity: 1; }
+.goals__label { font-family: var(--sc-font-mono); font-size: var(--t-mono); color: var(--sc-ink-soft); margin-bottom: 0.75rem; }
 
-.sp-far {
+/* --------------------------------------------------------- act 1: hero
+   Planes, back to front: a defocused field of the clinic's real tests, the
+   lead doctors' photographs, and a paper slip that lists the tests for the
+   goal under the pointer. The copy never rides a moving plane. */
+.hero { position: relative; overflow: hidden; background: var(--night); isolation: isolate; }
+.hero__far {
   position: absolute; z-index: 0; pointer-events: none;
-  width: min(128svh, 92vw); aspect-ratio: 1;
-  left: -16vw; top: 18svh;
-  opacity: 0.62;
-  -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent 100%);
-  mask-image: radial-gradient(closest-side, #000 35%, transparent 100%);
+  width: max(96vw, 136svh); right: -22vw; top: 4svh;
+  opacity: 0.22;
+  -webkit-mask-image: radial-gradient(52% 62% at 70% 50%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(52% 62% at 70% 50%, #000 20%, transparent 100%);
 }
-.sp-far img { width: 100%; height: 100%; }
+.hero__far img { display: block; width: 100%; height: auto; max-width: none; }
+.hero__grid {
+  position: relative; z-index: 1;
+  min-height: 100svh;
+  display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  grid-template-areas: "h1 h1" "copy scene";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(2rem, 5vw, 5.5rem);
+  padding-top: calc(var(--strip-h) + clamp(2.5rem, 7svh, 5.5rem));
+  padding-bottom: clamp(2.5rem, 6svh, 4.5rem);
+}
+.hero__h1 {
+  grid-area: h1;
+  font-size: clamp(2.3rem, 1.1rem + 4.4vw, 5.6rem); line-height: 0.98; letter-spacing: -0.038em; font-weight: 500;
+  max-width: 17ch; text-wrap: balance;
+}
+.hero__copy { grid-area: copy; align-self: start; padding-top: clamp(1.6rem, 4svh, 2.6rem); display: grid; gap: clamp(1.4rem, 3.4svh, 2.2rem); justify-items: start; }
+.hero__copy .lede { color: var(--bone); max-width: 40ch; }
+.hero__act { margin: 0; }
 
-.sp-round {
-  position: absolute; z-index: 2; margin: 0;
-  width: var(--D); height: var(--D);
-  left: calc(100vw - var(--sc-gutter) - var(--D) * 0.97);
-  top: calc(54svh - var(--D) / 2);
-  transform-origin: 50% 50%;
+.hero__scene { grid-area: scene; position: relative; align-self: start; justify-self: end; padding-top: clamp(1.2rem, 3svh, 2rem); width: min(100%, 31rem); }
+.hero__prints { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: start; }
+.hero__label { grid-column: 1 / -1; font-family: var(--sc-font-mono); font-size: var(--t-mono); color: var(--bone-2); margin-bottom: 0.2rem; }
+.print { margin: 0; }
+.print { display: flex; flex-direction: column; }
+.print:nth-of-type(2) { margin-top: 2.6rem; }
+.print img {
+  display: block; width: 100%; height: auto;
+  background: var(--sheet); padding: 0.4rem;
+  box-shadow: 0 1px 2px hsl(var(--sc-shadow-color) / 0.5), 0 16px 34px -14px hsl(var(--sc-shadow-color) / 0.75);
 }
-.sp-round picture, .sp-round img { width: 100%; height: 100%; display: block; }
+.print figcaption { order: -1; margin-bottom: 0.7rem; display: grid; gap: 0.25rem; min-height: 3.1rem; align-content: end; }
+.print figcaption b { font-weight: 600; font-size: 0.98rem; letter-spacing: -0.01em; }
+.print figcaption span { font-size: 0.78rem; letter-spacing: 0.05em; color: var(--bone-2); }
 
-/* the borer: drawn from the bark inward along the measured radius (theta 0) */
-.sp-borer {
-  position: absolute; left: 50%; top: 50%;
-  width: calc(var(--bark, 0.44) * 100%); height: 2px; margin-top: -1px;
-  background: var(--bone);
-  transform-origin: 100% 50%; transform: scaleX(0);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--night) 70%, transparent);
+.slip {
+  position: absolute; z-index: 2; left: calc(50% - 7.6rem); bottom: -3.4rem;
+  width: 15.2rem; padding: 0.9rem 1rem 1rem;
+  background: var(--quartz); color: var(--ink);
+  box-shadow: 0 2px 3px hsl(var(--sc-shadow-color) / 0.35), 0 22px 40px -18px hsl(var(--sc-shadow-color) / 0.8);
 }
-.sp-borer-note {
-  position: absolute; left: calc(50% + var(--bark, 0.44) * 100% + 1.4rem); top: calc(50% - 1.2rem);
-  width: 15rem; font-size: 0.72rem; line-height: 1.5; color: var(--bone-2);
-  opacity: 0;
-}
+.slip__label { font-family: var(--sc-font-mono); font-size: 0.68rem; color: var(--ink-2); }
+.slip__goal { font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; margin-top: 0.3rem; }
+.slip__tests { list-style: none; margin-top: 0.5rem; border-top: 1px solid color-mix(in oklab, var(--ink) 16%, transparent); }
+.slip__tests li { font-family: var(--sc-font-mono); font-size: 0.7rem; line-height: 1.35; padding: 0.24rem 0; border-bottom: 1px solid color-mix(in oklab, var(--ink) 10%, transparent); }
+.slip.is-swapping .slip__goal, .slip.is-swapping .slip__tests { opacity: 0; }
+.slip__goal, .slip__tests { transition: opacity 180ms var(--sc-ease-out); }
 
-/* near plane: a herbarium-style label laid over the round */
-.sp-label {
-  position: absolute; z-index: 4;
-  left: calc(100vw - var(--sc-gutter) - var(--D) * 1.02);
-  top: calc(54svh + var(--D) * 0.2);
-  width: 17.5rem; padding: 1rem 1.15rem 1.05rem;
-  background: var(--sheet); color: var(--ink);
-  font-size: 0.82rem; line-height: 1.45;
-  box-shadow: 0 2px 3px hsl(220 45% 4% / 0.35), 0 18px 34px -12px hsl(220 45% 4% / 0.6);
-  rotate: -1.6deg;
-}
-.sp-label > * + * { margin-top: 0.45rem; }
-.sp-label .fig { color: var(--ink-2); }
-.sp-label .fig b { color: var(--ink); }
-.sp-label__name { font-size: 0.98rem; font-weight: 600; letter-spacing: -0.01em; }
-.sp-label .mono { font-size: 0.68rem; color: var(--ink-2); }
-
-/* the opening copy. `translate` centres it; the engine owns `transform`. */
-.sp-hero {
-  position: absolute; z-index: 5;
-  left: var(--sc-gutter); top: 52%; translate: 0 -50%;
-  width: min(35rem, 37vw);
-}
-.sp-hero h1 { max-width: 11ch; }
-.sp-hero .lede { margin-top: 1.5rem; color: var(--bone); max-width: 40ch; }
-.sp-hero__act { display: flex; align-items: center; gap: 1.1rem 1.6rem; margin-top: 2rem; flex-wrap: wrap; }
-.sp-hero__fine { margin-top: 1.2rem; color: var(--bone-2); font-size: 0.72rem; }
-
-/* the core, laid out in its final pose; home.js scales it into place */
-.sp-core {
-  position: absolute; z-index: 3;
-  left: var(--sc-gutter); right: var(--sc-gutter); top: 27svh;
-}
-.sp-core__head { color: var(--bone-2); font-size: 0.72rem; margin-bottom: 1.1rem; opacity: 0; }
-.sp-core__head b { color: var(--bone); font-weight: 500; margin-right: 0.6rem; }
-.sp-core__body { position: relative; height: 58px; --strip-h-px: 58px; }
-.sp-core__strip { position: absolute; inset: 0; transform-origin: 0 50%; opacity: 0; }
-.sp-core__strip svg { width: 100%; height: 100%; overflow: visible; }
-.sp-core .core-dots { display: none; }
-.sp-core__dots { position: absolute; inset: 0; opacity: var(--dots, 0); pointer-events: none; }
-.sp-core__dots i {
-  position: absolute; top: 50%; width: 5px; translate: -50% -50%;
-  height: calc(var(--n) * 6px - 1px);
-  background: radial-gradient(circle at 50% 2.5px, var(--huon) 1.6px, transparent 2.1px) 0 0 / 5px 6px repeat-y;
-}
-.sp-core__ticks { position: absolute; left: 0; right: 0; top: calc(100% + 0.7rem); height: 1.2rem; opacity: 0; }
-.cr-tick {
-  position: absolute; top: 0; translate: -50% 0;
-  font-family: var(--sc-font-mono); font-size: 0.7rem; color: var(--bone-2); font-variant-numeric: tabular-nums;
-}
-.cr-tick::before { content: ""; position: absolute; left: 50%; top: -0.55rem; width: 1px; height: 0.4rem; background: currentColor; }
-.sp-core__span {
-  position: absolute; left: var(--x0); width: calc(var(--x1) - var(--x0));
-  top: calc(100% + 2.35rem); height: 0.5rem;
-  border: 1px solid var(--huon); border-top: 0; opacity: 0;
-}
-.cr-note {
-  position: absolute; left: var(--x); width: 14.5rem; margin: 0;
-  font-size: 0.8rem; line-height: 1.42; color: var(--bone-2); opacity: 0;
-  padding-left: 0.7rem;
-}
-.cr-note b { display: block; font-family: var(--sc-font-mono); font-weight: 500; font-size: 0.74rem; color: var(--huon); margin-bottom: 0.15rem; }
-.cr-note::before { content: ""; position: absolute; left: 0; width: 1px; background: color-mix(in oklab, var(--bone) 40%, transparent); }
-/* below the ticks: first, matched span, last. Above the strip: the lean year. */
-.cr-note--first, .cr-note--match, .cr-note--last { top: calc(100% + 3.4rem); }
-.cr-note--first::before, .cr-note--last::before { top: -3.2rem; height: 3rem; }
-.cr-note--match::before { top: -0.95rem; height: 0.8rem; }
-.cr-note--lean { bottom: calc(100% + 1.1rem); }
-.cr-note--lean::before { top: 0.2rem; bottom: -1.1rem; }
-.cr-note--first { translate: -1px 0; }
-.cr-note--last { padding-left: 0; padding-right: 0.7rem; text-align: right; translate: -100% 0; }
-.cr-note--last::before { left: auto; right: 0; }
-
-/* the statement that closes the act */
-.sp-read {
-  position: absolute; z-index: 5;
-  left: var(--sc-gutter); right: var(--sc-gutter); top: 60svh;
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem clamp(2rem, 6vw, 6rem); align-items: start;
-}
-.sp-read h2 { max-width: 19ch; }
-.sp-read__body { display: grid; gap: 1rem; color: var(--bone); padding-top: 0.6rem; max-width: 46ch; }
-.sp-read__body p:last-child { color: var(--bone); }
-.sp-static { display: none; }
-
-@media (max-width: 860px) {
-  .specimen { --D: 100vw; }
-  .sp-hero { top: calc(var(--strip-h) + 3.5svh); translate: none; width: auto; right: var(--sc-gutter); }
-  .sp-hero h1 { max-width: 12ch; font-size: clamp(2.2rem, 9.4vw, 3.2rem); }
-  .sp-hero .lede { margin-top: 1rem; font-size: 1rem; }
-  .sp-hero__act { margin-top: 1.25rem; gap: 0.9rem 1.2rem; }
-  .sp-hero__fine { display: none; }
-  .sp-round { left: calc(58vw - var(--D) / 2); top: max(calc(100svh - var(--D) * 0.9), 50svh); }
-  .sp-far { width: 150vw; left: -50vw; top: 46svh; opacity: 0.5; }
-  .sp-label { left: auto; right: var(--sc-gutter); top: auto; bottom: calc(1.4rem + env(safe-area-inset-bottom)); width: 12.6rem; font-size: 0.7rem; padding: 0.7rem 0.8rem; }
-  .sp-label > p:nth-child(3) { display: none; }
-  .sp-label__name { font-size: 0.8rem; }
-  .sp-borer-note { display: none; }
-  .sp-core { top: 21svh; }
-  .sp-core__head { font-size: 0.64rem; margin-bottom: 0.8rem; }
-  .sp-core__body { height: 40px; }
-  .sp-core__dots i { width: 4px; height: calc(var(--n) * 5px - 1px); background-size: 4px 5px; background-image: radial-gradient(circle at 50% 2px, var(--huon) 1.3px, transparent 1.7px); }
-  .cr-tick--odd { display: none; }
-  .cr-note { width: 9.5rem; font-size: 0.7rem; }
-  .cr-note--lean, .cr-note--match { display: none; }
-  .cr-note--first, .cr-note--last { top: calc(100% + 3rem); }
-  .cr-note--first::before, .cr-note--last::before { top: -2.8rem; height: 2.6rem; }
-  .sp-read { top: 47svh; grid-template-columns: 1fr; gap: 1rem; }
-  .sp-read h2 { font-size: clamp(1.7rem, 7vw, 2.4rem); }
-  .sp-read__body { font-size: 0.98rem; gap: 0.8rem; padding-top: 0; }
-}
-@media (max-width: 860px) and (max-height: 700px) {
-  .sp-hero .lede { display: none; }
-  .sp-read__body p:first-child { display: none; }
+/* pointer depth, fine pointers only; home.js writes --dx and --dy */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero__far img, .hero__prints > *, .slip > * { translate: calc(var(--dx, 0) * var(--depth, 0) * 1px) calc(var(--dy, 0) * var(--depth, 0) * 1px); }
+  .hero__far img { --depth: 14; }
+  .hero__prints > * { --depth: 8; }
+  .slip > * { --depth: -6; }
 }
 
-/* ------------------------------------------------- act 2: the plates rail */
+@media (max-width: 960px) {
+  .hero__grid { grid-template-columns: 1fr; grid-template-areas: "h1" "copy" "scene"; grid-template-rows: auto; min-height: 0; }
+  .hero__h1 { font-size: clamp(2rem, 0.9rem + 5.6vw, 3.6rem); max-width: 14ch; }
+  /* the slip tucks under the photographs' lower edge, never over a face */
+  .hero__scene { justify-self: start; width: min(100%, 26rem); margin-top: 2.6rem; padding-bottom: 1.5rem; }
+  .slip { position: relative; left: auto; bottom: auto; width: min(19rem, 86%); margin: -1.4rem 0 0 auto; }
+  .hero__far { width: 190vw; right: -70vw; top: auto; bottom: 0; opacity: 0.13; }
+}
+@media (max-width: 400px) {
+  .goal { font-size: 0.95rem; padding-inline: 0.85rem; }
+}
+
+/* ------------------------------------------------ act 2: the programs rail */
 .programs__stage { display: flex; align-items: center; padding-top: var(--strip-h); background: var(--quartz); }
 .rail { gap: clamp(2.5rem, 4.5vw, 5rem); padding-inline: var(--sc-gutter); align-items: center; }
 .rail > * { flex: none; }
 .rail__head { width: min(27rem, 30vw); display: grid; gap: 1.1rem; }
 .rail__head p { max-width: 36ch; }
 .pl { display: grid; grid-template-columns: auto minmax(0, 22rem); gap: 2rem; align-items: center; }
-.pl__fig { height: min(62svh, 40rem); aspect-ratio: 4 / 5; width: auto; display: flex; flex-direction: column; }
-.pl__fig img { height: calc(100% - 4.4rem); width: auto; aspect-ratio: 4 / 5; }
-.pl__fig figcaption { font-size: 0.8rem; margin-top: 0.7rem; max-width: 34ch; }
+/* the goal is the image: set in type on a dark plate, with the tests a
+   doctor would run for it along the top */
+.pl__plate {
+  height: min(60svh, 38rem); aspect-ratio: 4 / 5;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(1.2rem, 2.2vw, 1.8rem);
+  background: var(--night); color: var(--bone);
+}
+.pl__checks { font-family: var(--sc-font-mono); font-size: 0.72rem; line-height: 1.7; color: var(--bone-2); max-width: 30ch; }
+.pl__goal { font-weight: 500; font-size: clamp(2.2rem, 1.2rem + 2.4vw, 3.6rem); line-height: 1; letter-spacing: -0.035em; max-width: 8ch; }
+.pl__goal::after { content: ""; display: block; width: 2.6rem; height: 2px; margin-top: 1.1rem; background: var(--gold); }
 .pl__text { display: grid; gap: 0.9rem; align-content: start; }
 .pl__intro { color: var(--ink-2); font-size: 0.97rem; }
 .pl__links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; margin-top: 0.3rem; font-size: 0.94rem; }
@@ -183,9 +140,8 @@
   .rail { gap: 1.5rem; align-items: flex-start; }
   .rail__head { width: 78vw; padding-top: 2svh; }
   .pl { width: 82vw; grid-template-columns: 1fr; gap: 0.9rem; }
-  .pl__fig { height: auto; aspect-ratio: auto; display: grid; grid-template-columns: 34vw 1fr; gap: 0.9rem; align-items: end; }
-  .pl__fig img { width: 34vw; height: auto; }
-  .pl__fig figcaption { margin-top: 0; font-size: 0.72rem; }
+  .pl__plate { height: auto; aspect-ratio: auto; min-height: 11.5rem; gap: 1.4rem; }
+  .pl__goal { font-size: 2.1rem; max-width: 10ch; }
   .pl__text { gap: 0.6rem; }
   .pl__text h3 { font-size: 1.45rem; }
   .pl__intro { font-size: 0.9rem; }
@@ -202,39 +158,111 @@
   .rail__head, .rail__end { width: 100%; }
 }
 
-/* ---------------------------------------------------- the doctors
-   A plain flow section between the rail and the protocol, on the rail's
-   ground: the people come straight after "the doctor will tell you". */
-.doctors { padding: clamp(5rem, 10vw, 8.5rem) 0 clamp(3.5rem, 7vw, 6rem); border-top: 1px solid var(--rule); }
-.doctors__head { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 1.5rem clamp(2.5rem, 5vw, 5.5rem); align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
-.doctors__head h2 { max-width: 10ch; }
-.doctors__links { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.7rem 2rem; }
-@media (max-width: 960px) { .doctors__head { grid-template-columns: 1fr; } }
+/* ------------------------------------------------- act 3: the route (peak)
+   Pinned. The head and the goals hold on the left; one goal's panel at a
+   time on the right, its rows rising as the act advances. home.js measures
+   the panels first: when a whole panel won't fit the screen it is split, the
+   checks first and then the rule and the re-test in their place; when even
+   half won't fit (a short screen), or there is no script, or motion is
+   reduced, every panel is shown, one after another. */
+.route-act__stage { background: var(--night); }
+.route-act__grid {
+  height: 100%;
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  column-gap: clamp(2.5rem, 5vw, 5.5rem); align-items: center;
+  padding-top: var(--strip-h);
+}
+.route-act__head { display: grid; gap: 1.2rem; align-content: center; }
+.route-act__head h2 { font-size: clamp(2rem, 1.2rem + 1.9vw, 3.1rem); max-width: 14ch; }
+.route-act__lede { color: var(--bone-2); max-width: 34ch; }
+.goals--route ul { flex-direction: column; align-items: stretch; gap: 0.45rem; margin-top: 0.4rem; max-width: 19rem; }
+.goals--route .goal { justify-content: flex-start; }
+.route-act__chosen { font-family: var(--sc-font-mono); font-size: var(--t-mono); color: var(--gold); min-height: 1.3em; }
 
-/* ------------------------------------------------------- act 3: protocol */
-.protocol-act { padding: clamp(5rem, 10vw, 9rem) 0 clamp(4rem, 8vw, 7rem); }
-.protocol-act__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 3rem clamp(2.5rem, 5vw, 5.5rem); }
-.protocol-act__side h2 { max-width: 13ch; }
-.protocol-act__side .lede { margin-top: 1.4rem; color: var(--bone); }
-.wont { margin-top: 2.4rem; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 1rem 2rem; }
-.wont ul { list-style: none; display: grid; gap: 0.6rem; }
-.wont li { padding-left: 1.5rem; position: relative; }
-.wont li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 0.8rem; height: 1px; background: var(--huon); }
-.visit { grid-column: 1 / span 1; grid-row: 2; margin-top: 1rem; }
-.protocol-act .visit { grid-column: 1 / 2; }
-.protocol-act__grid > .visit { grid-column: 2 / 3; grid-row: 2; }
-.visit__text { grid-column: 1 / 2; grid-row: 2; align-self: end; display: grid; gap: 1.1rem; font-size: 0.97rem; }
-.visit__text address { font-style: normal; }
-.visit img { width: 100%; height: auto; border: 1px solid var(--rule); }
+.route-act__panels { display: grid; align-items: center; }
+.route { grid-area: 1 / 1; max-width: 50rem; }
+
+/* scripted: one panel at a time, rows rise in */
+.route-act.is-scripted .route { opacity: 0; visibility: hidden; transition: opacity 260ms var(--sc-ease-out), visibility 0s linear 260ms; }
+.route-act.is-scripted .route.is-active { opacity: 1; visibility: visible; transition: opacity 260ms var(--sc-ease-out), visibility 0s; }
+.route-act.is-scripted .route__tests li,
+.route-act.is-scripted .route__block--rule,
+.route-act.is-scripted .route__block--again,
+.route-act.is-scripted .route__go { opacity: 0; transform: translateY(10px); visibility: hidden; transition: opacity 340ms var(--sc-ease-out), transform 340ms var(--sc-ease-out), visibility 0s linear 340ms; }
+/* one step more specific than the hidden state, so the shown state's own
+   transition (visible at once, then fade) is the one that applies */
+.route-act.is-scripted .route__tests li.is-on,
+.route-act.is-scripted .route__after .is-on { opacity: 1; transform: none; visibility: visible; transition: opacity 340ms var(--sc-ease-out), transform 340ms var(--sc-ease-out), visibility 0s; }
+
+/* split: the checks and what follows them share one slot */
+.route-act.is-phased .route { grid-template-areas: "head" "body"; }
+.route-act.is-phased .route__head { grid-area: head; }
+.route-act.is-phased .route__block--check,
+.route-act.is-phased .route__after { grid-area: body; align-self: start; }
+.route-act.is-phased .route__block--check { transition: opacity 300ms var(--sc-ease-out), transform 300ms var(--sc-ease-out), visibility 0s; }
+.route-act.is-phased .route.is-later .route__block--check { opacity: 0; transform: translateY(-14px); visibility: hidden; transition: opacity 300ms var(--sc-ease-out), transform 300ms var(--sc-ease-out), visibility 0s linear 300ms; }
+
+/* static: every panel, one after another */
+.route-act:not(.is-scripted) .route-act__stage { height: auto; }
+.route-act:not(.is-scripted) .route-act__grid { height: auto; align-items: start; padding-block: calc(var(--strip-h) + 3rem) 4rem; }
+.route-act:not(.is-scripted) .route-act__head { position: sticky; top: calc(var(--strip-h) + 2rem); }
+.route-act:not(.is-scripted) .route-act__panels { gap: clamp(3rem, 7vw, 5rem); }
+.route-act:not(.is-scripted) .route { grid-area: auto; padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--rule-strong); }
 
 @media (max-width: 960px) {
-  .protocol-act__grid { grid-template-columns: 1fr; }
-  .protocol-act__grid > .visit, .visit__text { grid-column: 1; grid-row: auto; }
-  .wont { grid-template-columns: 1fr; }
+  .route-act__grid { grid-template-columns: 1fr; align-items: start; align-content: start; row-gap: 1.2rem; padding-top: calc(var(--strip-h) + 1rem); }
+  .route-act__head { gap: 0.7rem; }
+  .route-act__head h2 { font-size: clamp(1.7rem, 1.1rem + 2.6vw, 2.4rem); max-width: 18ch; }
+  .route-act__lede { display: none; }
+  .goals--route ul { flex-direction: row; max-width: none; }
+  .goals--route .goal { min-height: 2.5rem; padding: 0.35rem 0.75rem; font-size: 0.9rem; }
+  .route-act__chosen { display: none; }
+  .route { gap: 0.8rem; }
+  .route__goal { font-size: 1.7rem; }
+  .route__line { font-size: 0.92rem; }
+  .route__tests li { grid-template-columns: 1fr; gap: 0.1rem; padding: 0.4rem 0; }
+  .route__tests span { font-size: 0.8rem; }
+  .route__tests em { text-align: left; font-size: 0.7rem; }
+  .route__block--rule p:not(.route__label), .route__block--again p:not(.route__label) { font-size: 0.9rem; margin-top: 0.4rem; }
+  .route-act.is-scripted .route-act__panels { align-items: start; }
+  .route-act:not(.is-scripted) .route-act__head { position: static; }
+
+  /* static on a phone: the goals ride under the header in one row and
+     follow the panel in view (home.js adds is-static and lights the goal) */
+  .route-act.is-static .route-act__head { display: contents; }
+  .route-act.is-static .goals--route {
+    position: sticky; top: calc(var(--strip-h) - 1px); z-index: 3;
+    margin-inline: calc(-1 * var(--sc-gutter)); padding: 0.55rem var(--sc-gutter);
+    background: var(--night); border-bottom: 1px solid var(--rule);
+    overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain;
+  }
+  .route-act.is-static .goals--route::-webkit-scrollbar { display: none; }
+  .route-act.is-static .goals--route ul { flex-wrap: nowrap; width: max-content; margin-top: 0; }
+  /* site.js already pads anchor jumps by the header; add the goals row */
+  .route-act.is-static .route { scroll-margin-top: 3.6rem; }
 }
 
-/* ------------------------------------------------ act 4: the paper arrives
-   The assessment's ground wipes up over the dark protocol as it enters: a
-   change of state from reading to doing. Reduced motion shows it settled. */
+/* ------------------------------------------------- act 4: the lead doctors */
+.lead { padding: clamp(5rem, 10vw, 8.5rem) 0 clamp(3.5rem, 7vw, 6rem); }
+.lead__head { display: grid; gap: 1.3rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.lead__links { display: flex; flex-wrap: wrap; gap: 0.7rem 2rem; }
+.lead__visit {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 2.5rem clamp(2.5rem, 5vw, 5.5rem); align-items: start;
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+.lead__map img { border: 1px solid var(--rule); }
+.lead__rules { display: grid; gap: 1.2rem; font-size: 0.97rem; }
+.lead__rules address { font-style: normal; }
+.dashes { list-style: none; display: grid; gap: 0.6rem; }
+.dashes li { padding-left: 1.5rem; position: relative; }
+.dashes li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 0.8rem; height: 1px; background: var(--sc-accent); }
+@media (max-width: 960px) {
+  .lead__visit { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------ act 5: the paper arrives
+   The assessment's ground wipes up over the dark as it enters: a change of
+   state from reading to doing. Reduced motion shows it settled. */
 .home .assess { background: transparent; padding: 0; }
 .home .assess__sheet { background: var(--quartz); padding: clamp(4.5rem, 9vw, 8rem) 0 clamp(4rem, 8vw, 7rem); }

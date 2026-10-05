@@ -1,4 +1,5 @@
-// Render og.html to assets/img/og.jpg through a local server rooted at the site.
+// Render og.html to assets/img/og.jpg through a local server rooted at the site,
+// so the card uses the site's own fonts, photographs and data field.
 //   node og.mjs <site_dir> <base_url>
 import { createRequire } from "node:module";
 import fs from "node:fs";
@@ -15,7 +16,7 @@ const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, dev
 await page.goto(base + "_og.html", { waitUntil: "networkidle" });
 await page.evaluate(() => document.fonts.ready);
 await page.waitForTimeout(300);
-await page.screenshot({ path: path.join(site, "assets/img/og.png") });
+await page.screenshot({ path: path.join(site, "assets/img/og.jpg"), type: "jpeg", quality: 86 });
 await browser.close();
 fs.unlinkSync(tmp);
-console.log("og.png written");
+console.log("og.jpg written");

@@ -12,9 +12,10 @@ const ticks = (items) => `<ul class="ticks">${items.map((i) => `<li>${i}</li>`).
 const steps = (items) => `<ol class="steps">${items.map(([t, d]) => `<li><div><b>${t}</b><p>${d}</p></div></li>`).join("")}</ol>`;
 
 function servicePage(ctx, o) {
-  const { head, strip, footer, scripts, link, rel, CLINIC } = ctx;
-  const depth = 1, r = rel(depth);
+  const { head, strip, footer, scripts, link, rel, CLINIC, ROUTES, routePanel } = ctx;
+  const depth = 1;
   const start = link(depth, "contact") + `?program=${o.key}#assessment`;
+  const route = ROUTES.find((x) => x.key === o.key);
   return head({ title: `${o.title} · Australian Longevity Clinic`, description: o.description, depth, canonical: o.slug }) + `
 <body class="inner">
 ${strip(depth, o.slug, "light")}
@@ -22,8 +23,7 @@ ${strip(depth, o.slug, "light")}
   <header class="page-head g-light" data-ground="light">
     <div class="wrap page-head__grid">
       <div>
-        <p class="fig"><b>Fig. ${o.fig}</b> ${o.figLabel}</p>
-        <h1 class="d-xl" style="margin-top:1rem">${o.h1}</h1>
+        <h1 class="d-xl">${o.h1}</h1>
         <p class="lede">${o.lede}</p>
         <div class="page-head__actions"><a class="btn" href="${start}" data-program="${o.key}">Begin your assessment</a><a class="textlink" href="#how">How it works</a></div>
       </div>
@@ -32,10 +32,9 @@ ${strip(depth, o.slug, "light")}
   </header>
   <section class="spec g-light" data-ground="light">
     <div class="wrap spec__grid">
-      <figure class="plate spec__fig">
-        <img src="${r}assets/img/${o.plate}" alt="${o.plateAlt}" width="800" height="1000" decoding="async">
-        <figcaption><span class="fig"><b>Fig. ${o.fig}</b></span>${o.caption}</figcaption>
-      </figure>
+      <aside class="spec__fig route-aside" aria-label="What a doctor checks">
+        ${routePanel(route, { depth, level: 2, cta: false, head: false })}
+      </aside>
       <div class="spec__text">
         ${o.sections.map((s) => `<section${s.id ? ` id="${s.id}"` : ""}><h2 class="d-md">${s.h}</h2><div class="body">${s.html}</div></section>`).join("\n        ")}
       </div>
@@ -66,15 +65,12 @@ export function servicePages(ctx) {
   const pages = [];
 
   pages.push(["iv-drips/index.html", servicePage(ctx, {
-    key: "iv", slug: "iv-drips", fig: "2", figLabel: "IV therapy",
+    key: "iv", slug: "iv-drips",
     title: "IV therapy in Annerley, Brisbane",
     description: "Doctor-supervised IV infusions at 628 Ipswich Road, Annerley: hydration, vitamin C, Myers cocktail, iron, vitamin D and NAD+. Every infusion starts with a consultation and an individual assessment.",
-    h1: "IV therapy, given in the clinic.",
+    h1: "IV therapy for energy, recovery and low iron.",
     lede: "Fluids, vitamins, iron or NAD+, given by drip in the clinic at Annerley. IV therapy here is a health service, run under the direct supervision of the clinic's doctors, and every infusion starts with a consultation and an individual assessment.",
     facts: [["In the chair", "15 minutes to 4 hours, by infusion"], ["Iron", "Pathology from the last 3 months and a GP referral"], ["Vitamin D", "Pathology from the last 3 months"], ["Where", `${CLINIC.street}, ${CLINIC.suburb}`], ["Medicare", "Most infusions are not covered"]],
-    plate: "plate-tracheids.svg",
-    plateAlt: "A drawing of wood cells in cross-section: rows of rounded cells, large in each year's early growth and small and thick-walled at the end of it, across three yearly rings.",
-    caption: "Tracheids, the cells that carry water up the stem, across three measured rings of Huon pine, 1664 to 1666. Ring widths from core PEB07A; cells drawn for illustration.",
     sections: [
       { h: "The infusions", html: `<p>Which infusion, and how much of it, is the doctor's call once you've been assessed. If you can't tell which of these applies to you, that's what the consultation is for.</p>
         <ul class="menu-list">
@@ -113,15 +109,12 @@ export function servicePages(ctx) {
   })]);
 
   pages.push(["peptide-therapy/index.html", servicePage(ctx, {
-    key: "peptides", slug: "peptide-therapy", fig: "3", figLabel: "Peptide programs",
+    key: "peptides", slug: "peptide-therapy",
     title: "Peptide programs in Annerley, Brisbane",
     description: "Doctor-prescribed peptide programs at Australian Longevity Clinic, Annerley. Every program starts with a consultation, a review of your history and medicines, and a prescription only if suitable.",
-    h1: "Peptide programs, prescribed around one goal.",
+    h1: "Peptide therapy, prescribed by real doctors.",
     lede: "Peptides are short chains of amino acids that the body uses as signals. A program here is built around one goal of yours, and only after a doctor has been through your history and the medicines you take.",
     facts: [["Prescription", "Most therapeutic peptides are Schedule 4 medicines"], ["Program", "Weeks to months, reviewed as you go"], ["Given as", "Usually a small injection under the skin, taught by the clinic"], ["Not for", "Pregnancy or breastfeeding"], ["Medicare", "Not covered"]],
-    plate: "plate-branchlet.svg",
-    plateAlt: "A pen drawing of a weeping Huon pine branchlet: slender hanging shoots covered in small overlapping scale leaves.",
-    caption: "A branchlet of <i>Lagarostrobos franklinii</i>, Huon pine: small scale leaves pressed close along each hanging shoot. Drawn for illustration.",
     sections: [
       { h: "Goals a program can be built around", html: `${ticks(["Repair and recovery", "Sleep", "Weight and metabolic health", "Skin and hair", "Support through menopause", "Gut health", "Focus and cognitive vitality", "Athletic performance and recovery"])}
         <p>Whether a peptide suits your goal, and which one, is something you and the doctor decide together after your assessment.</p>
@@ -145,15 +138,12 @@ export function servicePages(ctx) {
   })]);
 
   pages.push(["testosterone-therapy/index.html", servicePage(ctx, {
-    key: "testosterone", slug: "testosterone-therapy", fig: "4", figLabel: "Testosterone therapy",
+    key: "testosterone", slug: "testosterone-therapy",
     title: "Testosterone therapy in Annerley, Brisbane",
     description: "Doctor-led testosterone replacement therapy for men with pathology-confirmed testosterone deficiency, at Australian Longevity Clinic, Annerley. Consultation, pathology, prescription and ongoing monitoring.",
-    h1: "Testosterone therapy, on confirmed pathology.",
+    h1: "Feel strong again, if low testosterone is the reason.",
     lede: "For men whose testosterone deficiency is confirmed by blood tests and whose symptoms affect their quality of life. Testosterone is a Schedule 4 prescription medicine, and nothing is prescribed on symptoms alone.",
     facts: [["Requires", "A confirmed diagnosis on pathology"], ["Program", "Ongoing, with repeat pathology and review"], ["Referral", "Not needed to book"], ["Form", "Injection, gel or other, as prescribed"], ["First step", "A consultation, then blood tests"]],
-    plate: "plate-crossdate.svg",
-    plateAlt: "A cross-dating chart: two tree cores at top and bottom, with vertical bars marking narrow rings in each, and five years where both cores agree highlighted in gold.",
-    caption: "Two cores from one Huon pine, PEB07A and PEB07B, cross-dated 1446 to 1505. A year is trusted only when both agree; five narrow rings in both are marked in gold.",
     sections: [
       { h: "What it is", html: `<p>Testosterone plays a part in muscle mass, bone density, energy, mood and libido. Levels fall with age. When they drop below the clinically normal range and cause significant symptoms, the doctor may consider testosterone replacement therapy.</p>
         <p>At the clinic it is only ever a prescription medical service. That means an assessment first, pathology that confirms the deficiency, and a treatment plan made for you.</p>` },
@@ -176,15 +166,12 @@ export function servicePages(ctx) {
   })]);
 
   pages.push(["weight-management/index.html", servicePage(ctx, {
-    key: "weight", slug: "weight-management", fig: "5", figLabel: "Medical weight management",
+    key: "weight", slug: "weight-management",
     title: "Medical weight management in Annerley, Brisbane",
     description: "Doctor-led medical weight management at Australian Longevity Clinic, Annerley: an assessment, a plan, prescription treatment only where clinically appropriate, and regular monitoring.",
-    h1: "Medical weight management, read as a trend.",
+    h1: "Lose weight, with a doctor's help.",
     lede: "For adults whose weight has become a medical question. A doctor looks at your history, your metabolic health and your medicines first, and prescribes only where it's clinically appropriate.",
     facts: [["First step", "A consultation, with pathology where needed"], ["Treatment", "Prescription only where appropriate"], ["Program", "Months, with regular monitoring"], ["Alongside", "Nutrition and lifestyle guidance"], ["Medicare", "Not bulk billed"]],
-    plate: "plate-ledger.svg",
-    plateAlt: "A chart of a thousand years of ring widths set out a century to a row, fine bars for single years under a smooth gold trend line.",
-    caption: "Core PEB07A from 1003 to 2012, a century to a row. Bars are single years; the gold line is a 30-year running mean. A single year says little; the trend says a lot.",
     sections: [
       { h: "What the assessment covers", html: `${ticks(["Your weight history, and what has and hasn't worked", "The medicines you take and any medical conditions", "Your metabolic health, with pathology where it would change the decision", "What you want, and what a realistic program looks like"])}` },
       { h: "Treatment", html: `<p>If it's clinically appropriate and you're eligible, a prescription medicine may be part of your plan, prescribed and monitored by the clinic's doctors. At the consultation the doctor goes through the options with you: what the evidence shows, the risks, and the cost.</p>
@@ -208,7 +195,7 @@ export function servicePages(ctx) {
 
 export function teamPage(ctx) {
   const { head, strip, footer, scripts, link, rel, CLINIC, DOCTORS, register } = ctx;
-  const depth = 1, r = rel(depth);
+  const depth = 1;
   const areas = ["IV infusion therapy", "Peptide therapy", "Testosterone replacement therapy", "Women's health", "Men's health", "Menopausal medicine", "Integrative wellness", "Preventive medicine", "Hormonal health", "Metabolic health", "Healthy ageing", "Sports and athletic performance", "Gut health", "Sleep medicine"];
   const people = {
     "@context": "https://schema.org",
@@ -220,8 +207,8 @@ export function teamPage(ctx) {
     })),
   };
   return head({
-    title: "The doctors · Australian Longevity Clinic",
-    description: "Australian Longevity Clinic is run by Dr Raman Bohra (MRCGP, FRACGP) and Dr Rekha Bohra (MB BS, DRCOG, MRCGP (U.K), FRACGP). Every consultation is one to one with a doctor.",
+    title: "Our lead doctors · Australian Longevity Clinic",
+    description: "Australian Longevity Clinic is led by Dr Raman Bohra (MRCGP, FRACGP) and Dr Rekha Bohra (MB BS, DRCOG, MRCGP (U.K), FRACGP). Every consultation is one to one with a doctor.",
     depth, canonical: "our-team",
     extraHead: `<script type="application/ld+json">${JSON.stringify(people)}</script>\n`,
   }) + `
@@ -231,8 +218,8 @@ ${strip(depth, "our-team", "light")}
   <header class="page-head g-light" data-ground="light">
     <div class="wrap page-head__grid">
       <div>
-        <h1 class="d-xl">Doctors who read first.</h1>
-        <p class="lede">The clinic is run by Dr Raman Bohra and Dr Rekha Bohra, both Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor, and nothing is prescribed until a doctor has read your history and, where a decision depends on it, your pathology.</p>
+        <h1 class="d-xl">The doctors who lead the clinic.</h1>
+        <p class="lede">Dr Raman Bohra and Dr Rekha Bohra are Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor, and nothing is prescribed until a doctor has read your history and, where a decision depends on it, your pathology.</p>
         <div class="page-head__actions"><a class="btn" href="${link(depth, "contact")}#assessment">Begin your assessment</a></div>
       </div>
       ${facts([["Doctors", "Dr Raman Bohra<br>Dr Rekha Bohra"], ["Registration", "Current medical registration with AHPRA"], ["Consultations", "One to one with a doctor"], ["Languages", "English and Hindi. Dr Raman Bohra also speaks Punjabi."]])}
@@ -245,10 +232,13 @@ ${strip(depth, "our-team", "light")}
   </section>
   <section class="spec g-light" data-ground="light">
     <div class="wrap spec__grid">
-      <figure class="plate spec__fig">
-        <picture><source type="image/avif" srcset="${r}assets/img/round-light-900.avif"><img src="${r}assets/img/round-light-900.webp" alt="The Huon pine cross-section from the home page, drawn in dark ink on pale stone: about a thousand rings." width="900" height="900" loading="lazy" decoding="async"></picture>
-        <figcaption><span class="fig"><b>Fig. 1</b></span>The same round as the home page. Every ring is drawn from the measured widths of core PEB07A, AD 1003 to 2012. The outline is modelled.</figcaption>
-      </figure>
+      <aside class="spec__fig spec__check">
+        <h2 class="d-md">Check a registration yourself</h2>
+        <div class="body">
+          <p>Every doctor practising in Australia is on a public register kept by the Australian Health Practitioner Regulation Agency (AHPRA). Search for either doctor by name to see their registration, including any conditions on it.</p>
+          <p><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Search the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+        </div>
+      </aside>
       <div class="spec__text">
         <section><h2 class="d-md">How they practise</h2><div class="body">
           <p>The doctor reads your questionnaire before the call. On the call they go through your history and your goals, and check for anything that would make a treatment unsafe for you.</p>
@@ -256,10 +246,6 @@ ${strip(depth, "our-team", "light")}
           <p>The doctors keep up with the evidence on IV therapy, peptides and integrative medicine through ongoing professional development.</p>
         </div></section>
         <section><h2 class="d-md">Areas the clinic works in</h2><div class="body">${ticks(areas)}</div></section>
-        <section><h2 class="d-md">Check a registration yourself</h2><div class="body">
-          <p>Every doctor practising in Australia is on a public register kept by the Australian Health Practitioner Regulation Agency (AHPRA). Search for either doctor by name to see their registration, including any conditions on it.</p>
-          <p><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Search the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
-        </div></section>
       </div>
     </div>
   </section>
@@ -364,14 +350,14 @@ ${strip(depth, "404", "light")}
   <header class="page-head">
     <div class="wrap">
       <p class="fig"><b>404</b> Not found</p>
-      <h1 class="d-xl" style="margin-top:1rem;max-width:14ch">This ring isn't in the record.</h1>
+      <h1 class="d-xl" style="margin-top:1rem;max-width:14ch">That page isn't here.</h1>
       <p class="lede">The page may have moved when the site was rebuilt. These are the places most people are looking for.</p>
       <ul class="menu-list" style="margin-top:2.5rem">
         <li><a href="${link(depth, "")}"><b>Home</b></a><span class="mono"></span></li>
-        <li><a href="${link(depth, "iv-drips")}"><b>IV therapy</b></a><span class="mono">Fig. 2</span></li>
-        <li><a href="${link(depth, "peptide-therapy")}"><b>Peptide programs</b></a><span class="mono">Fig. 3</span></li>
-        <li><a href="${link(depth, "testosterone-therapy")}"><b>Testosterone therapy</b></a><span class="mono">Fig. 4</span></li>
-        <li><a href="${link(depth, "weight-management")}"><b>Medical weight management</b></a><span class="mono">Fig. 5</span></li>
+        <li><a href="${link(depth, "iv-drips")}"><b>IV therapy</b></a><span class="mono">More energy</span></li>
+        <li><a href="${link(depth, "peptide-therapy")}"><b>Peptide programs</b></a><span class="mono">Better skin and hair</span></li>
+        <li><a href="${link(depth, "testosterone-therapy")}"><b>Testosterone therapy</b></a><span class="mono">Feel strong again</span></li>
+        <li><a href="${link(depth, "weight-management")}"><b>Medical weight management</b></a><span class="mono">Lose weight</span></li>
         <li><a href="${link(depth, "contact")}#assessment"><b>Begin your assessment</b></a><span class="mono"></span></li>
       </ul>
     </div>

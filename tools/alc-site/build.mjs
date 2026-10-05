@@ -10,6 +10,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { servicePages, teamPage, privacyPage, notFoundPage } from "./pages.mjs";
 import { journalPages } from "./journal.mjs";
+import { ROUTES } from "./routes.mjs";
+export { ROUTES };
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const SITE = path.resolve(HERE, "../../australian-longevity-clinic");
@@ -35,10 +37,10 @@ export const CLINIC = {
 };
 
 export const PROGRAMS = [
-  { key: "iv", slug: "iv-drips", name: "IV therapy", fig: "2" },
-  { key: "peptides", slug: "peptide-therapy", name: "Peptide programs", fig: "3" },
-  { key: "testosterone", slug: "testosterone-therapy", name: "Testosterone therapy", fig: "4" },
-  { key: "weight", slug: "weight-management", name: "Medical weight management", fig: "5" },
+  { key: "iv", slug: "iv-drips", name: "IV therapy", goal: "More energy" },
+  { key: "peptides", slug: "peptide-therapy", name: "Peptide programs", goal: "Better skin and hair" },
+  { key: "testosterone", slug: "testosterone-therapy", name: "Testosterone therapy", goal: "Feel strong again" },
+  { key: "weight", slug: "weight-management", name: "Medical weight management", goal: "Lose weight" },
 ];
 
 // The doctors, from the profile image supplied with the brief (2026-10-05).
@@ -86,25 +88,10 @@ const ABBR = {
   DFRSH: "Diploma of the Faculty of Sexual and Reproductive Healthcare",
 };
 
-// --------------------------------------------------------------- assets
-const CORE = read(path.join(IMG, "core.svg"));
-const TICKS = JSON.parse(read(path.join(IMG, "core-ticks.json")));
-const PROGRESS = read(path.join(IMG, "progress-rings.svg"));
-const META = JSON.parse(read(path.resolve(HERE, "../alc-assets/round-meta.json")));
-
-// Geometry shared with home.js: where the bark sits on the round image, and
-// how core units map to the core element.
-const BARK = META.bark_r_mm;                    // mm, pith to bark along the core
-const F_BARK = (BARK * META.scale) / META.size;   // bark radius as a fraction of the image width
-const L = BARK * 10;                             // core.svg units, pith to bark
-const VB0 = -4, VBW = L + 22;                    // core.svg viewBox x and width
-const coreX = (frac) => (((frac * L) - VB0) / VBW) * 100; // % across the core element
-const ringFrac = (year) => {
-  const i = META.years.indexOf(year);
-  const prev = i > 0 ? META.core_r_mm[i - 1] : 0;
-  return ((prev + META.core_r_mm[i]) / 2) / BARK;
-};
-const MEASURED_MM = META.core_r_mm[META.core_r_mm.length - 1];
+// ------------------------------------------------------------- the glyph
+// The assessment's progress: five steps, one segment each. The step names
+// are announced by the form's own tabs, so this is hidden from readers.
+const progressGlyph = () => `<ol class="progress-steps" aria-hidden="true">${[0, 1, 2, 3, 4].map(() => `<li class="pr"></li>`).join("")}</ol>`;
 
 // ------------------------------------------------------------- partials
 export const rel = (depth) => (depth ? "../".repeat(depth) : "");
@@ -119,9 +106,9 @@ export const logoImg = (depth, size = 52, cls = "brand__logo", alt = "") => {
 };
 
 // The doctors' register: one ruled entry per doctor, never a card grid.
-// Each entry carries a small calendar drawn like the cores, a ruler of years
-// with the doctor's dated entries marked on it. Both use the same scale, so
-// the two records line up like the cross-dated cores in Fig. 4.
+// Each entry carries a small calendar, a ruler of years with the doctor's
+// dated entries marked on it. Both use the same scale, so the records line up
+// and the years behind each doctor read at a glance.
 const CAL0 = 1995, CAL1 = new Date().getFullYear();
 const calX = (y) => (((y - CAL0) / (CAL1 - CAL0)) * 100).toFixed(2);
 const withAbbr = (s) => esc(s).replace(/MB BS|DRCOG|MRCGP|FRACGP|DFRSH/g, (m) => `<abbr title="${ABBR[m]}">${m}</abbr>`);
@@ -130,17 +117,27 @@ function calendar(d) {
   for (let y = CAL0; y <= CAL1; y++) ticks.push(`<i class="career__tick${y % 10 ? "" : " career__tick--dec"}" style="left:${calX(y)}%">${y % 10 ? "" : `<b>${y}</b>`}</i>`);
   return `<div class="career" aria-hidden="true"><span class="career__line" style="left:${calX(d.dated[0][0])}%"></span>${ticks.join("")}${d.dated.map(([y]) => `<span class="career__ev" style="left:${calX(y)}%"></span>`).join("")}</div>`;
 }
+// The line under a doctor's name: the experience figure the clinic supplied,
+// as given, or, where none was supplied, the year they qualified. Never a
+// sum of the two: the supplied figure and the graduation year don't agree
+// (see the README), and a reader who does the arithmetic should not have to.
+const experience = (d) => {
+  const given = d.rows.find(([k]) => k === "Experience");
+  return given ? `${given[1]}' experience` : `Qualified ${d.dated[0][0]}`;
+};
 export function register(depth, { full = false, level = 3 } = {}) {
   const r = rel(depth), h = `h${level}`;
   return `<ul class="register${full ? " register--full" : ""}">
     ${DOCTORS.map((d) => {
-      const rows = [...d.dated.map(([y, t]) => [String(y), withAbbr(t)]), ...d.rows, ...(full ? [["Special interests", esc(d.interests)]] : []), ["Languages", d.languages]];
+      // experience is in the line under the name, so it is not repeated here
+      const rows = [...d.dated.map(([y, t]) => [String(y), withAbbr(t)]), ...d.rows.filter(([k]) => k !== "Experience"), ...(full ? [["Special interests", esc(d.interests)]] : []), ["Languages", d.languages]];
       const src = (n) => `${r}assets/img/doctors/${d.slug}-${n}x.webp`;
       return `<li class="record" id="${d.slug}">
       <div class="record__photo"><img src="${src(1)}" srcset="${src(1)} 328w, ${src(2)} 524w" sizes="(max-width: 700px) 8.5rem, ${full ? "20rem" : "16rem"}" width="${d.photo[0]}" height="${d.photo[1]}" alt="Portrait of ${d.name}" loading="lazy" decoding="async"></div>
       <div class="record__head">
         <${h} class="record__name">${d.name}</${h}>
         <p class="record__post">${withAbbr(d.post)}</p>
+        <p class="record__since">${experience(d)}</p>
       </div>
       <div class="record__body">
         ${calendar(d)}
@@ -149,6 +146,38 @@ export function register(depth, { full = false, level = 3 } = {}) {
     </li>`;
     }).join("\n    ")}
   </ul>`;
+}
+
+// One goal's route: what a doctor checks, the rule before anything is
+// prescribed, and when it is checked again. Used on the home page and on each
+// program page, so the two can never disagree.
+export function routePanel(r, { depth = 0, level = 3, cta = true, head = true } = {}) {
+  const p = PROGRAMS.find((x) => x.key === r.key);
+  const h = `h${level}`;
+  const toForm = depth === 0 ? "#assessment" : link(depth, "contact").replace(/index\.html$/, "") + `index.html?program=${r.key}#assessment`;
+  const note = r.ranges ? `<p class="route__note">Typical adult ranges, from the clinic's <a href="${link(depth, r.ranges)}">guide to iron infusions</a>. Labs vary slightly.</p>` : "";
+  // As the aside on a program page there is no goal head: the checks' own
+  // title is the heading, so "Before anything is prescribed" stays a label.
+  const top = head
+    ? `<header class="route__head">
+              <${h} id="route-${r.key}-h" class="route__goal">${r.goal}</${h}>
+              <p class="route__line">${r.line}</p>
+            </header>`
+    : "";
+  const checkTitle = head ? `<p class="route__label">${r.checkTitle}</p>` : `<${h} id="route-${r.key}-h" class="route__label">${r.checkTitle}</${h}>`;
+  return `<article class="route" id="route-${r.key}" data-goal="${r.key}" aria-labelledby="route-${r.key}-h">
+            ${top}
+            <div class="route__block route__block--check">
+              ${checkTitle}
+              <ol class="route__tests">${r.tests.map(([t, d, range], i) => `<li style="--i:${i}"><b>${t}</b><span>${d}</span>${range ? `<em>${range}</em>` : ""}</li>`).join("")}</ol>
+              ${note}
+            </div>
+            <div class="route__after">
+              <div class="route__block route__block--rule"><p class="route__label">Before anything is prescribed</p><p>${r.rule}</p></div>
+              <div class="route__block route__block--again"><p class="route__label">Then</p><p>${r.recheck}</p></div>
+              ${cta ? `<p class="route__go"><a class="btn" href="${toForm}" data-program="${r.key}">Begin your assessment</a><a class="textlink" href="${link(depth, p.slug)}">${p.name} in detail</a></p>` : ""}
+            </div>
+          </article>`;
 }
 
 export function head({ title, description, depth, canonical, extraHead = "" }) {
@@ -187,7 +216,7 @@ export function strip(depth, current = "", startGround = "light") {
   const r = rel(depth);
   const L_ = (t) => link(depth, t);
   const cur = (k) => (k === current ? ' aria-current="page"' : "");
-  const progs = PROGRAMS.map((p) => `<a href="${L_(p.slug)}"${cur(p.slug)}><span class="fig">Fig. ${p.fig}</span><span>${p.name}</span></a>`).join("");
+  const progs = PROGRAMS.map((p) => `<a href="${L_(p.slug)}"${cur(p.slug)}><span>${p.name}</span><span class="fig">${p.goal}</span></a>`).join("");
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="strip" data-ground="${startGround}">
   <div class="strip__in">
@@ -214,10 +243,10 @@ export function strip(depth, current = "", startGround = "light") {
     <button class="sheet-menu__close" type="button">Close</button>
   </div>
   <nav aria-label="Menu">
-    ${PROGRAMS.map((p) => `<a href="${L_(p.slug)}"><span class="fig">Fig. ${p.fig}</span>${p.name}</a>`).join("\n    ")}
-    <a href="${L_("our-team")}"><span class="fig">&nbsp;</span>Doctors</a>
-    <a href="${L_("blog")}"><span class="fig">&nbsp;</span>Journal</a>
-    <a href="${L_("contact")}"><span class="fig">&nbsp;</span>Visit and contact</a>
+    ${PROGRAMS.map((p) => `<a href="${L_(p.slug)}"><span>${p.name}</span><span class="fig">${p.goal}</span></a>`).join("\n    ")}
+    <a href="${L_("our-team")}"><span>Doctors</span></a>
+    <a href="${L_("blog")}"><span>Journal</span></a>
+    <a href="${L_("contact")}"><span>Visit and contact</span></a>
   </nav>
   <a class="btn" href="${current === "" || current === "contact" ? "#assessment" : L_("contact") + "#assessment"}">Begin your assessment</a>
   <p class="sheet-menu__foot">${CLINIC.street}, ${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}<br><a href="mailto:${CLINIC.email}">${CLINIC.email}</a></p>
@@ -270,7 +299,7 @@ export function footer(depth, current = "") {
       </div>
       <div>
         <p>&copy; 2026 ${CLINIC.legal}, a registered business name of Horizon Medical Pty Ltd. ABN ${CLINIC.abn}. <a href="${L_("privacy-policy")}">Privacy policy</a>.</p>
-        <p>Figures drawn from tree-ring measurements by K. Allen and colleagues, NOAA NCEI International Tree-Ring Data Bank (AUS123C, AUS118). Map data &copy; OpenStreetMap contributors.</p>
+        <p>Map data &copy; OpenStreetMap contributors.</p>
       </div>
     </div>
   </div>
@@ -319,8 +348,8 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
     </header>
 
     <aside class="assess__aside" aria-label="What the assessment involves">
-      <div class="assess__rings">
-        ${PROGRESS}
+      <div class="assess__progress">
+        ${progressGlyph()}
         <p class="mono assess__step" aria-hidden="true"><span data-step-num>1</span> of 5<br><span data-step-name>Your goals</span></p>
       </div>
       <dl class="facts">
@@ -349,7 +378,7 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
           <legend>Program<span class="req">required</span></legend>
           <p class="hint">If you're not sure, choose the last option and the doctor will advise.</p>
           <div class="choices">
-            ${PROGRAMS.map((p) => choice("radio", "program", p.key, p.name, ' required', `Fig. ${p.fig}`)).join("\n            ")}
+            ${PROGRAMS.map((p) => choice("radio", "program", p.key, p.name, ' required', p.goal)).join("\n            ")}
             ${choice("radio", "program", "unsure", "Not sure yet", " required", "the doctor will advise")}
           </div>
           <p class="err" id="program-err" hidden></p>
@@ -479,117 +508,82 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
 }
 
 // --------------------------------------------------------------- home ---
+// The goal route. Five acts in the order a consultation answers questions:
+// what you want (hero), what can help (the programs rail), what a doctor
+// checks before prescribing (the route, the peak), who decides (the lead
+// doctors), and how you start (the assessment). Every goal on the page is a
+// control that routes to the same goal everywhere else; home.js wires it.
 function home() {
   const depth = 0;
   const L_ = (t) => link(depth, t);
-  const ticks = TICKS.map((t) => `<span class="cr-tick${t.year % 200 ? " cr-tick--odd" : ""}" style="left:${coreX(t.f).toFixed(3)}%">${t.year}</span>`).join("");
-  const callout = (year, cls, html) => `<p class="cr-note ${cls}" style="--x:${coreX(ringFrac(year)).toFixed(3)}%">${html}</p>`;
-  // decade dots by the standard convention, as HTML so they stay round when the strip stretches
-  const dots = META.years.filter((y) => y % 10 === 0).map((y) => {
-    const n = y % 1000 === 0 ? 4 : y % 100 === 0 ? 3 : y % 50 === 0 ? 2 : 1;
-    return `<i style="left:${coreX(ringFrac(y)).toFixed(3)}%;--n:${n}"></i>`;
-  }).join("");
-  const span = (a, b) => `style="--x0:${coreX(ringFrac(a)).toFixed(3)}%;--x1:${coreX(ringFrac(b)).toFixed(3)}%"`;
-  const plate = (p, file, alt, caption, rows, intro) => `
+  const P = Object.fromEntries(PROGRAMS.map((p) => [p.key, p]));
+  const R = Object.fromEntries(ROUTES.map((r) => [r.key, r]));
+  const goals = (cls, label) => `<nav class="goals ${cls}" aria-label="${label}">
+          <ul>${ROUTES.map((r) => `<li><a class="goal" href="#route-${r.key}" data-goal="${r.key}">${r.goal}</a></li>`).join("")}</ul>
+        </nav>`;
+  const print = (d) => `<figure class="print">
+            <img src="assets/img/doctors/${d.slug}-1x.webp" srcset="assets/img/doctors/${d.slug}-1x.webp 328w, assets/img/doctors/${d.slug}-2x.webp 524w" sizes="(max-width: 860px) 42vw, 15rem" width="${d.photo[0]}" height="${d.photo[1]}" alt="Portrait of ${d.name}" decoding="async">
+            <figcaption><b>${d.name}</b><span>${withAbbr(d.post)}</span></figcaption>
+          </figure>`;
+  const card = (r) => {
+    const p = P[r.key];
+    return `
         <article class="pl" id="program-${p.key}" aria-labelledby="pl-${p.key}">
-          <figure class="plate pl__fig">
-            <img src="assets/img/${file}" alt="${esc(alt)}" width="800" height="1000" loading="lazy" decoding="async">
-            <figcaption><span class="fig"><b>Fig. ${p.fig}</b></span>${caption}</figcaption>
-          </figure>
+          <div class="pl__plate">
+            <p class="pl__checks" aria-hidden="true">${r.tests.map(([t]) => t).join(" · ")}</p>
+            <p class="pl__goal">${r.goal}</p>
+          </div>
           <div class="pl__text">
             <h3 id="pl-${p.key}" class="d-md">${p.name}</h3>
-            <p class="pl__intro">${intro}</p>
-            <dl class="schema">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
-            <p class="pl__links"><a class="textlink" href="${L_(p.slug)}">${p.name} in detail</a> <a class="textlink" href="#assessment" data-program="${p.key}">Begin with this program</a></p>
+            <p class="pl__intro">${r.card.intro}</p>
+            <dl class="schema">${r.card.rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
+            <p class="pl__links"><a class="textlink" href="${L_(p.slug)}">${p.name} in detail</a> <a class="textlink" href="#route-${r.key}" data-goal="${r.key}">What a doctor checks</a></p>
           </div>
         </article>`;
-  const P = Object.fromEntries(PROGRAMS.map((p) => [p.key, p]));
+  };
 
   const body = `
 <main id="main">
-  <section class="specimen g-dark" id="top" data-ground="dark" data-sc-act="pin" data-sc-span="4.8" aria-label="Introduction">
-    <div class="specimen__stage" data-sc-stage data-bark="${F_BARK.toFixed(5)}" data-sc-verify-state="p=0">
-      <div class="sp-far" aria-hidden="true"><img src="assets/img/round-far.webp" alt="" width="1000" height="1000" decoding="async"></div>
-      <figure class="sp-round" aria-labelledby="fig1">
-        <picture>
-          <source type="image/avif" srcset="assets/img/round-1000.avif 1000w, assets/img/round-1400.avif 1400w" sizes="(max-width: 860px) 100vw, 56vw">
-          <img src="assets/img/round-1000.webp" alt="A Huon pine cross-section drawn in fine gold lines: about a thousand growth rings, with drying cracks and a thin band of bark." width="1000" height="1000" fetchpriority="high" decoding="async">
-        </picture>
-        <span class="sp-borer" aria-hidden="true"></span>
-        <p class="sp-borer-note mono" aria-hidden="true">An increment borer draws a pencil-thin core from bark to pith. It does the tree little harm.</p>
-      </figure>
-
-      <div class="sp-label" id="fig1">
-        <p class="fig"><b>Fig. 1</b></p>
-        <p class="sp-label__name"><i>Lagarostrobos franklinii</i>, Huon pine</p>
-        <p>Every ring drawn from the measured widths of core PEB07A: 1,010 rings, AD 1003 to 2012, from Teepookana in western Tasmania. The outline is modelled.</p>
-        <p class="mono">Data: K. Allen, NOAA ITRDB AUS123C</p>
-      </div>
-
-      <div class="sp-hero" data-sc-cue="0 0.19 0 0.34">
-        <h1 class="d-xl">Longevity medicine that reads before it treats.</h1>
-        <p class="lede">A doctor-led clinic at ${CLINIC.street}, ${CLINIC.suburb}. IV therapy, peptide programs, testosterone therapy and medical weight management, each prescribed only after a doctor has read your history and your pathology.</p>
-        <div class="sp-hero__act">
-          <a class="btn" href="#assessment">Begin your assessment</a>
-          <a class="textlink" href="#protocol">How it works</a>
+  <section class="hero g-dark" id="top" data-ground="dark" data-sc-act="flow" aria-labelledby="hero-h">
+    <div class="hero__far" data-sc-parallax="-1.3" aria-hidden="true">
+      <picture>
+        <source type="image/avif" srcset="assets/img/data-field-1600.avif 1600w, assets/img/data-field-2400.avif 2400w" sizes="100vw">
+        <img src="assets/img/data-field-1600.webp" srcset="assets/img/data-field-1600.webp 1600w, assets/img/data-field-2400.webp 2400w" sizes="100vw" alt="" width="2400" height="1500" decoding="async">
+      </picture>
+    </div>
+    <div class="wrap hero__grid">
+      <h1 id="hero-h" class="hero__h1">Real peptide therapy, from real doctors.</h1>
+      <div class="hero__copy">
+        <p class="lede">Testosterone, weight loss, skin and energy programs. A doctor checks your history and, where it matters, your bloods first.</p>
+        <div class="hero__goals">
+          <p class="goals__label" id="goals-l">What do you want to change?</p>
+          ${goals("goals--hero", "What do you want to change?")}
         </div>
-        <p class="sp-hero__fine mono">${CLINIC.fee} · reviewed by a doctor · a call within 1 to 2 business days</p>
+        <p class="hero__act"><a class="btn" href="#assessment">Begin your assessment</a></p>
       </div>
-
-      <div class="sp-core" aria-hidden="true">
-        <p class="sp-core__head mono"><b>Fig. 1a</b> Core PEB07A, pith to bark · 1,010 rings · ${MEASURED_MM.toFixed(1)} mm of measured wood</p>
-        <div class="sp-core__body">
-          <div class="sp-core__strip">${CORE}</div>
-          <div class="sp-core__dots">${dots}</div>
-          <div class="sp-core__ticks">${ticks}</div>
-          <div class="sp-core__span" ${span(1446, 1505)}></div>
-          ${callout(1003, "cr-note--first", "<b>1003</b> The first measured ring.")}
-          ${callout(1475, "cr-note--match", "<b>1446 to 1505</b> Matched ring for ring against a second core from the same tree. Fig. 4.")}
-          ${callout(1665, "cr-note--lean", "<b>1665</b> A narrow year between two ordinary ones. Fig. 2.")}
-          ${callout(2012, "cr-note--last", "<b>2012</b> The ring under the bark.")}
+      <div class="hero__scene">
+        <div class="hero__prints" data-depth="8" data-sc-parallax="-0.5">
+          <p class="hero__label">Our lead doctors</p>
+          ${print(DOCTORS[0])}
+          ${print(DOCTORS[1])}
         </div>
+        <aside class="slip" data-depth="-6" data-sc-parallax="0.45" aria-label="Tests for the goal you point at">
+          <p class="slip__label">Checked before anything is prescribed</p>
+          <p class="slip__goal" data-slip-goal>${R.testosterone.goal}</p>
+          <ul class="slip__tests" data-slip-tests>${R.testosterone.tests.map(([t]) => `<li>${t}</li>`).join("")}</ul>
+        </aside>
       </div>
-
-      <div class="sp-read" data-sc-cue="0.76 1 0.22 0.02">
-        <h2 class="d-lg">Every ring is measured before anything is said about the tree.</h2>
-        <div class="sp-read__body">
-          <p>In dendrochronology nothing is dated from a single reading. Every ring is measured, and each core is checked against others before a year is trusted.</p>
-          <p>Your first consultation works the same way: your history, your medicines, your pathology, then a doctor's call. A plan comes after that. Sometimes the plan is no.</p>
-        </div>
-      </div>
-
-      <div class="sp-static" aria-hidden="true"></div>
     </div>
   </section>
 
-  <section class="programs g-light" id="programs" data-ground="light" data-sc-act="pan" data-sc-span="3.6" aria-labelledby="programs-h">
+  <section class="programs g-light" id="programs" data-ground="light" data-sc-act="pan" data-sc-span="3.2" aria-labelledby="programs-h">
     <div class="programs__stage" data-sc-stage>
       <div class="rail" data-sc-pan="0.04">
         <header class="rail__head">
           <h2 id="programs-h" class="d-lg">Four programs. One way in.</h2>
           <p>Each starts the same way: your questionnaire, a doctor's review and a phone consultation, with pathology wherever a decision depends on it.</p>
-          <p class="soft">The plates are drawn from the same tree as the core.</p>
         </header>
-        ${plate(P.iv, "plate-tracheids.svg",
-          "A drawing of wood cells in cross-section: rows of rounded cells, large in each year's early growth and small and thick-walled at the end of it, across three yearly rings.",
-          "Tracheids, the cells that carry water up the stem, across three measured rings: 1664 to 1666. Cells drawn for illustration.",
-          [["What it is", "Infusions of fluids, vitamins, iron or NAD+, given in the clinic."], ["First step", "A consultation. Iron also needs pathology from the last 3 months and a GP referral."], ["Time", "30 minutes to 4 hours, by infusion."], ["Where", "In the chair at Annerley, under a doctor's supervision."]],
-          "A health service given in the clinic, under the direct supervision of its doctors.")}
-        ${plate(P.peptides, "plate-branchlet.svg",
-          "A pen drawing of a weeping Huon pine branchlet: slender hanging shoots covered in small overlapping scale leaves.",
-          "A branchlet of <i>Lagarostrobos franklinii</i>: small scale leaves pressed close along each hanging shoot. Drawn for illustration.",
-          [["What it is", "Prescription peptide programs built around one goal, such as recovery, sleep or body composition."], ["First step", "A consultation. Most therapeutic peptides are Schedule 4 medicines, prescribed only if suitable."], ["Time", "Weeks to months, reviewed as you go."], ["Where", "Prescribed by the clinic's doctors, with administration taught."]],
-          "Peptides are short chains of amino acids that act as signals in the body.")}
-        ${plate(P.testosterone, "plate-crossdate.svg",
-          "A cross-dating chart: two tree cores at top and bottom, with vertical bars marking narrow rings in each, and five years where both cores agree highlighted in gold.",
-          "Two cores from one tree, PEB07A and PEB07B, cross-dated 1446 to 1505. Five narrow rings in both, in gold, fix the calendar.",
-          [["What it is", "Testosterone replacement for men with confirmed deficiency."], ["First step", "A consultation, then pathology to confirm. Symptoms alone are not enough."], ["Time", "Ongoing, with repeat pathology and regular review."], ["Where", "Prescribed and monitored by the clinic's doctors."]],
-          "For men with symptoms whose low testosterone is confirmed by pathology.")}
-        ${plate(P.weight, "plate-ledger.svg",
-          "A chart of a thousand years of ring widths set out a century to a row, fine bars for single years under a smooth gold trend line.",
-          "PEB07A from 1003 to 2012, a century to a row. Bars are single years; the gold line is a 30-year running mean.",
-          [["What it is", "Medical weight management: an assessment, a plan, and prescription medicines only where appropriate."], ["First step", "A consultation and pathology."], ["Time", "Months, read as a trend rather than a weigh-in."], ["Where", "Prescribed and monitored by the clinic's doctors."]],
-          "For adults for whom weight has become a medical question.")}
+        ${ROUTES.map(card).join("")}
         <footer class="rail__end">
           <p class="d-sm">Not sure which?</p>
           <p>Choose &ldquo;Not sure yet&rdquo; in the assessment. The doctor will tell you what, if anything, makes sense.</p>
@@ -599,57 +593,48 @@ function home() {
     </div>
   </section>
 
-  <section class="doctors g-light" id="doctors" data-ground="light" data-sc-act="flow" aria-labelledby="doctors-h">
-    <div class="wrap">
-      <div class="doctors__head" data-sc-in>
-        <h2 id="doctors-h" class="d-lg">Two doctors run the clinic.</h2>
-        <div class="doctors__intro">
-          <p class="lede">Dr Raman Bohra and Dr Rekha Bohra both studied medicine in Jaipur, India, and both are Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor.</p>
-          <p class="doctors__links"><a class="textlink" href="${L_("our-team")}">Special interests and how they practise</a><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Check a registration on the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+  <section class="route-act g-dark" id="route" data-ground="dark" data-sc-act="pin" data-sc-span="4.6" aria-labelledby="route-h">
+    <div class="route-act__stage" data-sc-stage data-sc-verify-state="route">
+      <div class="wrap route-act__grid">
+        <header class="route-act__head">
+          <h2 id="route-h" class="d-lg">What a doctor checks before prescribing.</h2>
+          <p class="route-act__lede">Pick what you're after. Here's what a doctor may order first, and when you'd be tested again.</p>
+          ${goals("goals--route", "Goals")}
+          <p class="route-act__chosen" data-chosen aria-live="polite"></p>
+        </header>
+        <div class="route-act__panels">
+          ${ROUTES.map((r) => routePanel(r, { depth, level: 3 })).join("\n          ")}
         </div>
-      </div>
-      <div data-sc-in>
-      ${register(depth)}
       </div>
     </div>
   </section>
 
-  <section class="protocol-act g-dark" id="protocol" data-ground="dark" data-sc-act="flow" aria-labelledby="protocol-h">
-    <div class="wrap protocol-act__grid">
-      <div class="protocol-act__side" data-sc-in>
-        <h2 id="protocol-h" class="d-lg">How a program begins, and when it doesn't.</h2>
-        <p class="lede">Five steps, in the same order for everyone. Nothing is prescribed from a questionnaire alone.</p>
+  <section class="lead g-light" id="doctors" data-ground="light" data-sc-act="flow" aria-labelledby="lead-h">
+    <div class="wrap">
+      <header class="lead__head" data-sc-in>
+        <h2 id="lead-h" class="d-lg">The doctors who lead the clinic.</h2>
+        <p class="lede">Dr Raman Bohra and Dr Rekha Bohra are Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor.</p>
+        <p class="lead__links"><a class="textlink" href="${L_("our-team")}">Full records and special interests</a><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Check a registration on the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+      </header>
+      <div data-sc-in>
+      ${register(depth)}
       </div>
-      <div class="protocol-act__table" data-sc-in>
-        <table class="protocol">
-          <caption class="visually-hidden">The five steps of every program</caption>
-          <thead><tr><th scope="col">Step</th><th scope="col">What happens</th><th scope="col">Who</th><th scope="col">When</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Questionnaire</th><td class="desc">Your history, medicines, allergies and goals, in your own words. The ${CLINIC.fee} fee is paid at the end.</td><td class="who">You</td><td class="when">Today</td></tr>
-            <tr><th scope="row">Doctor's review</th><td class="desc">A doctor reads everything before calling you, and notes what needs pathology.</td><td class="who">A registered doctor</td><td class="when">Within 1 to 2 business days</td></tr>
-            <tr><th scope="row">Consultation</th><td class="desc">By phone. Your symptoms, goals and questions. If a program isn't suitable, the doctor says so.</td><td class="who">Doctor and you</td><td class="when">15 to 25 minutes</td></tr>
-            <tr><th scope="row">Pathology</th><td class="desc">Ordered wherever a decision depends on it: iron studies before an iron infusion, confirmed low testosterone before testosterone therapy.</td><td class="who">Your doctor, a collection centre</td><td class="when">Before treatment</td></tr>
-            <tr><th scope="row">Program and review</th><td class="desc">Medicines only on prescription, through proper channels. Follow-up and repeat pathology come with the program.</td><td class="who">Your doctor</td><td class="when">Ongoing</td></tr>
-          </tbody>
-        </table>
-        <div class="wont">
-          <p class="fig">What the clinic won't do</p>
-          <ul>
+      <div class="lead__visit" data-sc-in>
+        <figure class="plate lead__map">
+          <img src="assets/img/map-annerley.svg" alt="A street map of Annerley with the clinic marked at 628 Ipswich Road, between Venner Road and School Road, with Brisbane's CBD to the north." width="1200" height="900" loading="lazy" decoding="async">
+          <figcaption>${CLINIC.street}, ${CLINIC.suburb}, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
+        </figure>
+        <div class="lead__rules">
+          <h3 class="d-sm">What the clinic won't do</h3>
+          <ul class="dashes">
             <li>Prescribe from a questionnaire alone.</li>
-            <li>Publish testimonials. Australian health advertising law doesn't allow them.</li>
             <li>Promise outcomes. Responses vary, and the doctor will tell you what the evidence does and doesn't show.</li>
+            <li>Publish testimonials. Australian health advertising law doesn't allow them.</li>
           </ul>
+          <address>${CLINIC.street}<br>${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}<br><a href="mailto:${CLINIC.email}">${CLINIC.email}</a></address>
+          <dl class="facts">${CLINIC.hours.slice(0, 3).map(([d, h]) => `<dt>${d}</dt><dd>${h}</dd>`).join("")}</dl>
+          <p><a class="textlink" href="${L_("contact")}">Visit and contact</a></p>
         </div>
-      </div>
-      <figure class="plate visit" data-sc-in>
-        <img src="assets/img/map-annerley-dark.svg" alt="A street map of Annerley with the clinic marked at 628 Ipswich Road, between Venner Road and School Road." width="1200" height="900" loading="lazy" decoding="async">
-        <figcaption><span class="fig"><b>Fig. 6</b></span>${CLINIC.street}, ${CLINIC.suburb}, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
-      </figure>
-      <div class="visit__text" data-sc-in>
-        <h3 class="d-sm">The clinic</h3>
-        <address>${CLINIC.street}<br>${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}<br><a href="mailto:${CLINIC.email}">${CLINIC.email}</a></address>
-        <dl class="facts">${CLINIC.hours.slice(0, 3).map(([d, h]) => `<dt>${d}</dt><dd>${h}</dd>`).join("")}</dl>
-        <p><a class="textlink" href="${L_("contact")}">Visit and contact</a></p>
       </div>
     </div>
   </section>
@@ -658,11 +643,10 @@ function home() {
 </main>`;
 
   return head({
-    title: "Australian Longevity Clinic · Doctor-led longevity medicine in Annerley, Brisbane",
-    description: "A doctor-led longevity clinic at 628 Ipswich Road, Annerley. IV therapy, peptide programs, testosterone therapy and medical weight management, each prescribed only after a doctor has read your history and pathology.",
+    title: "Australian Longevity Clinic · Peptide therapy, testosterone and weight loss in Annerley, Brisbane",
+    description: "Real peptide therapy from real doctors in Annerley, Brisbane. Testosterone, medical weight loss, skin and IV programs, prescribed only after a doctor has checked your history and, where it matters, your bloods.",
     depth, canonical: "",
     extraHead: `<link rel="stylesheet" href="assets/css/home.css">
-<link rel="preload" as="image" type="image/avif" imagesrcset="assets/img/round-1000.avif 1000w, assets/img/round-1400.avif 1400w" imagesizes="(max-width: 860px) 100vw, 56vw">
 <script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org", "@type": "MedicalClinic", name: CLINIC.name, url: "https://australianlongevityclinic.com.au/",
       email: CLINIC.email, image: "https://australianlongevityclinic.com.au/assets/img/og.jpg",
@@ -718,7 +702,7 @@ function contact() {
     <div class="wrap">
       <figure class="plate visit-band__map">
         <img src="${rel(depth)}assets/img/map-annerley.svg" alt="A street map of Annerley with the clinic marked at 628 Ipswich Road, between Venner Road and School Road, with Brisbane's CBD to the north." width="1200" height="900" loading="lazy" decoding="async">
-        <figcaption><span class="fig"><b>Fig. 6</b></span>${CLINIC.street}, ${CLINIC.suburb}, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
+        <figcaption>${CLINIC.street}, ${CLINIC.suburb}, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
       </figure>
     </div>
   </section>
@@ -749,7 +733,7 @@ function write(rp, html) {
   return rp;
 }
 
-const ctx = { CLINIC, PROGRAMS, DOCTORS, head, strip, footer, scripts, assessment, register, link, rel, esc, logoImg, SITE };
+const ctx = { CLINIC, PROGRAMS, DOCTORS, ROUTES, head, strip, footer, scripts, assessment, register, routePanel, link, rel, esc, logoImg, SITE };
 const written = [
   write("index.html", home()),
   write("contact/index.html", contact()),
