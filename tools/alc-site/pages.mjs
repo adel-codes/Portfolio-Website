@@ -70,42 +70,44 @@ export function servicePages(ctx) {
     title: "IV therapy in Annerley, Brisbane",
     description: "Doctor-supervised IV infusions at 628 Ipswich Road, Annerley: hydration, vitamin C, Myers cocktail, iron, vitamin D and NAD+. Every infusion starts with a consultation and an individual assessment.",
     h1: "IV therapy, given in the clinic.",
-    lede: "Infusions of fluids, vitamins, iron or NAD+, delivered as a health service under the direct supervision of the clinic's doctors. Every infusion starts with a consultation and an individual assessment.",
+    lede: "Fluids, vitamins, iron or NAD+, given by drip in the clinic at Annerley. IV therapy here is a health service, run under the direct supervision of the clinic's doctors, and every infusion starts with a consultation and an individual assessment.",
     facts: [["In the chair", "15 minutes to 4 hours, by infusion"], ["Iron", "Pathology from the last 3 months and a GP referral"], ["Vitamin D", "Pathology from the last 3 months"], ["Where", `${CLINIC.street}, ${CLINIC.suburb}`], ["Medicare", "Most infusions are not covered"]],
     plate: "plate-tracheids.svg",
     plateAlt: "A drawing of wood cells in cross-section: rows of rounded cells, large in each year's early growth and small and thick-walled at the end of it, across three yearly rings.",
     caption: "Tracheids, the cells that carry water up the stem, across three measured rings of Huon pine, 1664 to 1666. Ring widths from core PEB07A; cells drawn for illustration.",
     sections: [
-      { h: "The infusions", html: `<p>The doctor recommends an infusion, and its dose, after your assessment. Not sure which applies to you? That is what the consultation is for.</p>
+      { h: "The infusions", html: `<p>Which infusion, and how much of it, is the doctor's call once you've been assessed. If you can't tell which of these applies to you, that's what the consultation is for.</p>
         <ul class="menu-list">
-          <li><b>Hydration</b><span class="mono">30 to 45 min</span><p>Saline with electrolytes and magnesium, to support fluid and electrolyte balance where a doctor finds it suitable.</p></li>
-          <li><b>Vitamin C</b><span class="mono">45 to 60 min</span><p>Considered only after an individual medical assessment, with the dose set by the doctor. Not suitable in all circumstances.</p></li>
-          <li><b>Myers cocktail</b><span class="mono">45 to 60 min</span><p>Vitamin C, B-complex vitamins, magnesium and zinc, with doses tailored to your assessment.</p></li>
-          <li><b>Iron infusion</b><span class="mono">1 to 4 hours</span><p>For confirmed iron deficiency or iron deficiency anaemia. Vital signs are monitored throughout, and a small test dose may be given first.</p></li>
-          <li><b>Vitamin D injection</b><span class="mono">15 to 20 min</span><p>An intramuscular injection for confirmed vitamin D deficiency, dosed from your blood test results.</p></li>
-          <li><b>NAD+ infusion</b><span class="mono">2 to 4 hours</span><p>Given slowly, with the rate adjusted by the medical team throughout the session.</p></li>
-          <li><b>Antioxidant</b><span class="mono">45 to 60 min</span><p>A formulation of alpha-lipoic acid, vitamin C, glutathione and selenium, given under medical supervision.</p></li>
+          <li><b>Hydration</b><span class="mono">30 to 45 min</span><p>Saline with electrolytes and magnesium, to support fluid and electrolyte balance if the doctor thinks it suits you.</p></li>
+          <li><b>Vitamin C</b><span class="mono">45 to 60 min</span><p>Only after an individual medical assessment, at a dose the doctor sets. It isn't suitable for everyone.</p></li>
+          <li><b>Myers cocktail</b><span class="mono">45 to 60 min</span><p>Vitamin C, B-complex vitamins, magnesium and zinc, with the doses set from your assessment.</p></li>
+          <li><b>Iron infusion</b><span class="mono">1 to 4 hours</span><p>For iron deficiency or iron deficiency anaemia that pathology has confirmed. Your vital signs are watched throughout, and you may be given a small test dose first.</p></li>
+          <li><b>Vitamin D injection</b><span class="mono">15 to 20 min</span><p>An injection into muscle for vitamin D deficiency that a blood test has confirmed, dosed from your results.</p></li>
+          <li><b>NAD+ infusion</b><span class="mono">2 to 4 hours</span><p>Given slowly. The medical team adjusts the rate as the session goes.</p></li>
+          <li><b>Antioxidant</b><span class="mono">45 to 60 min</span><p>Alpha-lipoic acid, vitamin C, glutathione and selenium together, given under medical supervision.</p></li>
         </ul>
         <p class="notice">IV infusions are health services delivered under the supervision of registered medical practitioners. They are not intended to diagnose, treat, cure or prevent any disease, and results vary between individuals.</p>` },
-      { h: "Before an iron infusion", html: `<p>Iron is given only when pathology confirms a deficiency. You will need results from the last 3 months that include:</p>
+      { h: "Before an iron infusion", html: `<p>Iron is only given when pathology shows a deficiency, so you'll need results from the last 3 months that include:</p>
         ${ticks(["Serum ferritin", "Transferrin saturation", "Full blood count", "C-reactive protein (CRP)"])}
-        <p>A GP referral is also required. If you don't have recent results, the clinic can provide a pathology referral before your consultation. People with iron overload, haemochromatosis or a known sensitivity to iron preparations are not suitable. A follow-up blood test 6 to 8 weeks after the infusion confirms the response.</p>` },
+        <p>You'll also need a GP referral. No recent results? The clinic can give you a pathology referral before your consultation.</p>
+        <p>An iron infusion isn't suitable if you have iron overload or haemochromatosis, or a known sensitivity to iron preparations. About 6 to 8 weeks afterwards, a follow-up blood test shows how you've responded.</p>` },
       { h: "How it works", id: "how", html: steps([
-        ["Questionnaire", "Your history, medicines, allergies and goals, completed online. The $75 fee covers the doctor's review and your consultation."],
-        ["Assessment", "A doctor reviews your answers and talks with you about whether an infusion is suitable, and which."],
-        ["Pathology, where needed", "Iron and vitamin D need recent results. Others may, depending on your history."],
-        ["The infusion", "In the clinic, seated, with a cannula in your arm. Trained clinical staff, under a doctor's supervision."],
-        ["Review", "Follow-up and repeat pathology where the infusion calls for it."]]) },
-      { h: "On the day", html: `${ticks(["Drink plenty of water in the hours before, and eat a light meal.", "Wear clothing that leaves your arm easy to reach.", "Bring a list of your medicines, supplements and allergies, and any recent blood results.", "Allow 10 to 15 minutes in the clinic afterwards before you drive."])}` },
-      { h: "Safety and cost", html: `<p>Infusions given under medical supervision are generally well tolerated. As with any intravenous procedure, there can be bruising or discomfort where the cannula goes in, mild flushing or nausea, and rarely an allergic reaction. A full medical assessment comes first, and the clinical team is trained to manage reactions.</p>
-        <p>Most IV infusions are not covered by Medicare. Some private health insurers offer partial rebates under extras cover, so check with yours. The clinic provides receipts.</p>` },
+        ["Questionnaire", "Your history, medicines, allergies and goals, online. The $75 fee covers the doctor's review and your consultation."],
+        ["Assessment", "A doctor reads your answers, then talks with you about whether an infusion makes sense, and which one."],
+        ["Pathology, where needed", "Iron and vitamin D need recent results. Others may too, depending on your history."],
+        ["The infusion", "In the clinic, seated, with a cannula in your arm. Trained clinical staff give it, under a doctor's supervision."],
+        ["Review", "Follow-up and repeat pathology, where the infusion calls for them."]]) },
+      { h: "On the day", html: `<p>Drink plenty of water in the hours before and eat something light. Wear sleeves that push up easily. Bring a list of your medicines, supplements and allergies, and any recent blood results.</p>
+        <p>Plan to stay in the clinic for 10 to 15 minutes afterwards before you drive.</p>` },
+      { h: "Safety and cost", html: `<p>Most people tolerate a supervised infusion well. Like any drip, it can leave a bruise or some soreness where the cannula went in, and some people feel flushed or slightly sick during it. Allergic reactions are rare. The full medical assessment comes first, and the clinical team is trained to manage a reaction if one happens.</p>
+        <p>Medicare doesn't cover most IV infusions. Some private health funds pay a partial rebate under extras cover, so ask yours. The clinic gives you a receipt.</p>` },
     ],
     faq: [
-      ["Do I need a referral?", "Not for most infusions. All of them need a consultation with one of the clinic's doctors first. Iron infusions need a GP referral and recent pathology, and vitamin D injections need recent pathology."],
-      ["How long does a session take?", "Hydration and vitamin infusions usually take 30 to 60 minutes. Iron infusions take 1 to 4 hours depending on the dose, and NAD+ infusions 2 to 4 hours."],
-      ["How often can I have an infusion?", "It depends on the infusion and on your health. Some people have a single session; others follow a schedule. Your doctor recommends a frequency after your assessment."],
-      ["I have a chronic condition. Can I still have IV therapy?", "You're welcome to ask. Your doctor assesses suitability individually, and some conditions need extra clearance or rule out certain infusions. Disclose your full history, medicines and allergies in the questionnaire."],
-      ["What's the difference from oral supplements?", "Oral nutrients pass through the digestive system, where absorption varies. An infusion goes straight into the bloodstream. Whether that difference matters for you is a question for your doctor."],
+      ["Do I need a referral?", "Not for most infusions, though every one needs a consultation with one of the clinic's doctors first. Iron needs a GP referral and recent pathology. A vitamin D injection needs recent pathology."],
+      ["How long does a session take?", "Hydration and vitamin infusions usually take 30 to 60 minutes. Iron takes 1 to 4 hours, depending on the dose, and NAD+ 2 to 4 hours."],
+      ["How often can I have an infusion?", "That depends on the infusion and on your health. Some people have one session; others follow a schedule. The doctor suggests how often after your assessment."],
+      ["I have a chronic condition. Can I still have IV therapy?", "Ask. The doctor looks at it case by case: some conditions need extra clearance, and some rule out particular infusions. Put your full history, medicines and allergies in the questionnaire so nothing is missed."],
+      ["What's the difference from oral supplements?", "Nutrients you swallow go through the gut, and how much gets absorbed varies. An infusion goes straight into the bloodstream. Whether that difference matters for you is a question for your doctor."],
     ],
     close: "Start with the questionnaire. The doctor will say which infusion, if any, suits you.",
   })]);
@@ -115,28 +117,29 @@ export function servicePages(ctx) {
     title: "Peptide programs in Annerley, Brisbane",
     description: "Doctor-prescribed peptide programs at Australian Longevity Clinic, Annerley. Every program starts with a consultation, a review of your history and medicines, and a prescription only if suitable.",
     h1: "Peptide programs, prescribed around one goal.",
-    lede: "Peptides are short chains of amino acids that act as signalling molecules in the body. The clinic's doctors design programs around a single goal, after a consultation and a review of your history and medicines.",
+    lede: "Peptides are short chains of amino acids that the body uses as signals. A program here is built around one goal of yours, and only after a doctor has been through your history and the medicines you take.",
     facts: [["Prescription", "Most therapeutic peptides are Schedule 4 medicines"], ["Program", "Weeks to months, reviewed as you go"], ["Given as", "Usually a small injection under the skin, taught by the clinic"], ["Not for", "Pregnancy or breastfeeding"], ["Medicare", "Not covered"]],
     plate: "plate-branchlet.svg",
     plateAlt: "A pen drawing of a weeping Huon pine branchlet: slender hanging shoots covered in small overlapping scale leaves.",
     caption: "A branchlet of <i>Lagarostrobos franklinii</i>, Huon pine: small scale leaves pressed close along each hanging shoot. Drawn for illustration.",
     sections: [
-      { h: "Goals programs are built around", html: `${ticks(["Repair and recovery", "Sleep", "Weight and metabolic health", "Skin and hair", "Support through menopause", "Gut health", "Focus and cognitive vitality", "Athletic performance and recovery"])}
-        <p>Whether a peptide is appropriate for your goal, and which one, is a decision your doctor makes with you after an assessment. This site doesn't name peptides: Australian law doesn't allow prescription medicines to be advertised to the public, and the right choice depends on you.</p>` },
+      { h: "Goals a program can be built around", html: `${ticks(["Repair and recovery", "Sleep", "Weight and metabolic health", "Skin and hair", "Support through menopause", "Gut health", "Focus and cognitive vitality", "Athletic performance and recovery"])}
+        <p>Whether a peptide suits your goal, and which one, is something you and the doctor decide together after your assessment.</p>
+        <p>You won't find peptides named on this site. Australian law doesn't allow prescription medicines to be advertised to the public, and the right one depends on you anyway.</p>` },
       { h: "How a program runs", id: "how", html: steps([
-        ["Consultation", "Your goals, history, current medicines and any contraindications, with one of the clinic's doctors."],
-        ["Prescription and program design", "If a peptide is suitable, the doctor prescribes it and sets the program: dose, schedule and length."],
-        ["Administration", "Most programs use a small injection under the skin. The clinic shows you how, and gives full written instructions."],
-        ["Monitoring and review", "Regular reviews to check your response and adjust the program, or stop it."]]) },
-      { h: "Suitability and safety", html: `<p>Peptide programs are not suitable for everyone. They are not recommended during pregnancy or breastfeeding, and active cancer, autoimmune disorders or significant organ impairment need careful individual assessment.</p>
-        <p>Side effects depend on the peptide. Common mild ones include redness or discomfort where the injection goes in, mild fatigue, or water retention. Combinations with other treatments are assessed individually, so disclose every medicine and supplement you take.</p>
-        <p>Responses vary widely. Some people notice changes within weeks; others need months. Programs work best alongside sleep, nutrition and exercise.</p>` },
+        ["Consultation", "With one of the clinic's doctors: your goals, your history, the medicines you take, and anything that would rule a peptide out."],
+        ["Prescription and plan", "If a peptide suits you, the doctor prescribes it and sets the dose, the schedule and how long the program runs."],
+        ["Administration", "Most programs use a small injection under the skin. The clinic shows you how and gives you written instructions to take home."],
+        ["Monitoring and review", "Regular reviews of how you're responding. The program is adjusted, or stopped, from there."]]) },
+      { h: "Suitability and safety", html: `<p>Peptide programs aren't for everyone. They aren't recommended in pregnancy or while breastfeeding. If you have active cancer, an autoimmune disorder or significant organ impairment, the doctor needs to look at your situation carefully before anything is decided.</p>
+        <p>Side effects depend on the peptide. The common ones are mild: redness or soreness where the injection goes in, some tiredness, or fluid retention. Tell the doctor about every medicine and supplement you take, because each combination is assessed on its own.</p>
+        <p>People respond very differently. Some notice a change within weeks; for others it takes months. A program works alongside your sleep, nutrition and exercise.</p>` },
     ],
     faq: [
-      ["Do I need a prescription?", "Yes. Most therapeutic peptides are Schedule 4 prescription medicines in Australia. A consultation is required before anything is prescribed."],
-      ["How are peptides given?", "Depending on the peptide and the program: an injection under the skin, an injection into muscle, or in some cases a nasal spray or oral preparation. Your doctor advises the route and teaches you how."],
-      ["Can a peptide program be combined with other treatments?", "Often, with IV therapy or hormone treatment for example, but combinations are assessed individually to avoid interactions."],
-      ["Is it covered by Medicare or private health insurance?", "Peptide programs are generally not covered by Medicare. Check with your insurer about extras cover; the clinic provides itemised receipts."],
+      ["Do I need a prescription?", "Yes. Most therapeutic peptides are Schedule 4 prescription medicines in Australia, so you'll have a consultation before anything is prescribed."],
+      ["How are peptides given?", "It depends on the peptide and the program. Usually it's an injection under the skin; sometimes it's an injection into muscle, a nasal spray or something taken by mouth. The doctor tells you which, and shows you how."],
+      ["Can a peptide program be combined with other treatments?", "Often, for example with IV therapy or hormone treatment. Each combination is checked individually for interactions."],
+      ["Is it covered by Medicare or private health insurance?", "Generally not by Medicare. Ask your health fund about extras cover; the clinic gives you an itemised receipt."],
     ],
     close: "Start with the questionnaire. Tell the doctor your goal; they'll tell you whether a program fits it.",
   })]);
@@ -152,22 +155,22 @@ export function servicePages(ctx) {
     plateAlt: "A cross-dating chart: two tree cores at top and bottom, with vertical bars marking narrow rings in each, and five years where both cores agree highlighted in gold.",
     caption: "Two cores from one Huon pine, PEB07A and PEB07B, cross-dated 1446 to 1505. A year is trusted only when both agree; five narrow rings in both are marked in gold.",
     sections: [
-      { h: "What it is", html: `<p>Testosterone plays a part in muscle mass, bone density, energy, mood and libido. Levels decline with age, and when they fall below the clinically normal range and cause significant symptoms, testosterone replacement therapy may be considered.</p>
-        <p>At the clinic it is provided only as a prescription medical service: after a thorough assessment, confirmed pathology, and an individual treatment plan.</p>` },
-      { h: "Symptoms that can be associated with low testosterone", html: `${ticks(["Persistent fatigue and low energy", "Reduced muscle mass and increased body fat", "Lower libido and sexual function", "Low mood, irritability or poor concentration", "Reduced bone density", "Disturbed sleep", "Reduced motivation and drive"])}
+      { h: "What it is", html: `<p>Testosterone plays a part in muscle mass, bone density, energy, mood and libido. Levels fall with age. When they drop below the clinically normal range and cause significant symptoms, the doctor may consider testosterone replacement therapy.</p>
+        <p>At the clinic it is only ever a prescription medical service. That means an assessment first, pathology that confirms the deficiency, and a treatment plan made for you.</p>` },
+      { h: "Symptoms that can go with low testosterone", html: `${ticks(["Tiredness that doesn't lift, and low energy", "Less muscle and more body fat", "Lower libido, or reduced sexual function", "Feeling low or irritable, or finding it hard to concentrate", "Reduced bone density", "Poor sleep", "Less motivation and drive"])}
         <p class="notice"><b>These symptoms have many possible causes.</b> They can't diagnose low testosterone on their own. A blood test and a medical assessment can.</p>` },
       { h: "How it works", id: "how", html: steps([
-        ["Consultation", "Your symptoms, history, medicines and overall health, with one of the clinic's doctors. A mandatory first step."],
-        ["Pathology and diagnosis", "The doctor arranges blood tests and reads them against your symptoms. Treatment needs a confirmed diagnosis."],
-        ["Prescription", "If it's clinically appropriate, an individual program. The form, such as injection or gel, depends on your needs and preferences."],
-        ["Monitoring and review", "Follow-up consultations and repeat pathology are part of safe treatment, not optional extras."]]) },
-      { h: "Who it isn't for", html: `<p>Testosterone therapy isn't appropriate for men with normal testosterone levels, for performance enhancement, or with certain medical conditions. The doctor will discuss the options, risks and benefits before anything is prescribed.</p>` },
+        ["Consultation", "Your symptoms, history, medicines and general health, with one of the clinic's doctors. Everyone starts here."],
+        ["Pathology and diagnosis", "The doctor orders blood tests and reads them against your symptoms. Treatment needs a confirmed diagnosis."],
+        ["Prescription", "If it's clinically appropriate, a program for you. Whether that's an injection, a gel or another form depends on your needs and what you prefer."],
+        ["Monitoring and review", "Follow-up consultations and repeat pathology are how treatment stays safe, so they're built into the program."]]) },
+      { h: "Who it isn't for", html: `<p>It isn't for men whose testosterone is normal, it isn't for performance enhancement, and some medical conditions rule it out. Before anything is prescribed, the doctor goes through the options with you, along with the risks and benefits.</p>` },
     ],
     faq: [
-      ["Is it suitable for everyone?", "No. It is only appropriate for men with a clinically confirmed diagnosis of testosterone deficiency, established through pathology and medical assessment."],
-      ["How long does treatment last?", "It is usually an ongoing program rather than a short course. Duration and frequency depend on your response, your pathology results and your goals."],
-      ["Are there risks or side effects?", "Like all prescription medicines, yes, and they vary between individuals. They're discussed in detail at your consultation, and regular monitoring is part of managing them."],
-      ["Do I need a referral?", "No referral is needed to book an initial consultation. Treatment needs a medical assessment and confirmed pathology."],
+      ["Is it suitable for everyone?", "No. Only for men whose testosterone deficiency has been confirmed clinically, through pathology and a medical assessment."],
+      ["How long does treatment last?", "Usually it's ongoing rather than a short course. How long, and how often, depends on how you respond, your pathology results and your goals."],
+      ["Are there risks or side effects?", "Yes, as with any prescription medicine, and they vary from person to person. The doctor goes through them in detail at your consultation, and regular monitoring is how they're managed."],
+      ["Do I need a referral?", "Not to book the first consultation. Treatment itself needs a medical assessment and confirmed pathology."],
     ],
     close: "Start with the questionnaire. The first step is finding out whether there is a deficiency at all.",
   })]);
@@ -177,25 +180,25 @@ export function servicePages(ctx) {
     title: "Medical weight management in Annerley, Brisbane",
     description: "Doctor-led medical weight management at Australian Longevity Clinic, Annerley: an assessment, a plan, prescription treatment only where clinically appropriate, and regular monitoring.",
     h1: "Medical weight management, read as a trend.",
-    lede: "For adults for whom weight has become a medical question. The clinic's doctors assess your history, metabolic health and medicines first, and prescribe only where it is clinically appropriate.",
+    lede: "For adults whose weight has become a medical question. A doctor looks at your history, your metabolic health and your medicines first, and prescribes only where it's clinically appropriate.",
     facts: [["First step", "A consultation, with pathology where needed"], ["Treatment", "Prescription only where appropriate"], ["Program", "Months, with regular monitoring"], ["Alongside", "Nutrition and lifestyle guidance"], ["Medicare", "Not bulk billed"]],
     plate: "plate-ledger.svg",
     plateAlt: "A chart of a thousand years of ring widths set out a century to a row, fine bars for single years under a smooth gold trend line.",
     caption: "Core PEB07A from 1003 to 2012, a century to a row. Bars are single years; the gold line is a 30-year running mean. A single year says little; the trend says a lot.",
     sections: [
-      { h: "What the assessment covers", html: `${ticks(["Your weight history and what has and hasn't worked", "Current medicines and medical conditions", "A metabolic health review, with pathology where it would change the decision", "Your goals, and what a realistic program looks like"])}` },
-      { h: "Treatment", html: `<p>Where it's clinically appropriate, a prescription medicine may be part of your plan, prescribed and monitored by the clinic's doctors for eligible patients. Your doctor will explain the options, the evidence, the risks and the costs at your consultation.</p>
+      { h: "What the assessment covers", html: `${ticks(["Your weight history, and what has and hasn't worked", "The medicines you take and any medical conditions", "Your metabolic health, with pathology where it would change the decision", "What you want, and what a realistic program looks like"])}` },
+      { h: "Treatment", html: `<p>If it's clinically appropriate and you're eligible, a prescription medicine may be part of your plan, prescribed and monitored by the clinic's doctors. At the consultation the doctor goes through the options with you: what the evidence shows, the risks, and the cost.</p>
         <p class="notice">This site doesn't name prescription medicines. Australian law doesn't allow them to be advertised to the public, and whether one suits you depends on your assessment.</p>` },
       { h: "How it works", id: "how", html: steps([
-        ["Questionnaire", "Your history, medicines, height and weight, and goals."],
-        ["Assessment", "A doctor reviews your answers, talks through your history, and orders pathology where it's needed."],
-        ["A plan", "Prescription treatment only where appropriate, alongside nutrition and activity guidance."],
+        ["Questionnaire", "Your history, medicines, height and weight, and what you're aiming for."],
+        ["Assessment", "A doctor reads your answers, talks through your history with you, and orders pathology if it's needed."],
+        ["A plan", "Prescription treatment only where appropriate, alongside advice on food and activity."],
         ["Monitoring", "Regular reviews to track progress, manage side effects and adjust the plan. Progress is read over months, not week to week."]]) },
     ],
     faq: [
-      ["Do I need a referral?", "No referral is needed to start with the questionnaire and a consultation."],
-      ["Is it covered by Medicare?", "Consultations are not bulk billed. Some consultations may attract a Medicare rebate depending on their clinical nature, and the cost of any medicine depends on what is prescribed."],
-      ["How long does a program last?", "Months rather than weeks, with regular reviews. Your doctor will set expectations at the first consultation."],
+      ["Do I need a referral?", "No. You can start with the questionnaire and a consultation."],
+      ["Is it covered by Medicare?", "Consultations aren't bulk billed. Some may attract a Medicare rebate, depending on their clinical nature, and the cost of any medicine depends on what's prescribed."],
+      ["How long does a program last?", "Months rather than weeks, with regular reviews. The doctor will tell you what to expect at the first consultation."],
     ],
     close: "Start with the questionnaire. Include your height and weight; the doctor will take it from there.",
   })]);
@@ -204,10 +207,24 @@ export function servicePages(ctx) {
 }
 
 export function teamPage(ctx) {
-  const { head, strip, footer, scripts, link, rel, CLINIC } = ctx;
+  const { head, strip, footer, scripts, link, rel, CLINIC, DOCTORS, register } = ctx;
   const depth = 1, r = rel(depth);
-  const expertise = ["IV infusion therapy", "Peptide therapy", "Testosterone replacement therapy", "Women's health", "Men's health", "Menopausal medicine", "Integrative wellness", "Preventive medicine", "Hormonal health", "Metabolic health", "Healthy ageing", "Sports and athletic performance", "Gut health", "Sleep medicine"];
-  return head({ title: "The doctors · Australian Longevity Clinic", description: "Australian Longevity Clinic is led by registered medical practitioners with MBBS and FRACGP qualifications. Every consultation is one to one with a doctor.", depth, canonical: "our-team" }) + `
+  const areas = ["IV infusion therapy", "Peptide therapy", "Testosterone replacement therapy", "Women's health", "Men's health", "Menopausal medicine", "Integrative wellness", "Preventive medicine", "Hormonal health", "Metabolic health", "Healthy ageing", "Sports and athletic performance", "Gut health", "Sleep medicine"];
+  const people = {
+    "@context": "https://schema.org",
+    "@graph": DOCTORS.map((d) => ({
+      "@type": "Person", name: d.name.replace(/^Dr /, ""), honorificPrefix: "Dr", honorificSuffix: d.post,
+      knowsLanguage: d.languages.split(", "),
+      image: `https://australianlongevityclinic.com.au/assets/img/doctors/${d.slug}-2x.jpg`,
+      worksFor: { "@type": "MedicalClinic", name: CLINIC.name, url: "https://australianlongevityclinic.com.au/" },
+    })),
+  };
+  return head({
+    title: "The doctors · Australian Longevity Clinic",
+    description: "Australian Longevity Clinic is run by Dr Raman Bohra (MRCGP, FRACGP) and Dr Rekha Bohra (MB BS, DRCOG, MRCGP (U.K), FRACGP). Every consultation is one to one with a doctor.",
+    depth, canonical: "our-team",
+    extraHead: `<script type="application/ld+json">${JSON.stringify(people)}</script>\n`,
+  }) + `
 <body class="inner">
 ${strip(depth, "our-team", "light")}
 <main id="main" class="page">
@@ -215,27 +232,32 @@ ${strip(depth, "our-team", "light")}
     <div class="wrap page-head__grid">
       <div>
         <h1 class="d-xl">Doctors who read first.</h1>
-        <p class="lede">The clinic is led by registered medical practitioners committed to personalised, evidence-informed care. Every consultation is one to one with a doctor, and nothing is prescribed without an individual assessment.</p>
+        <p class="lede">The clinic is run by Dr Raman Bohra and Dr Rekha Bohra, both Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor, and nothing is prescribed until a doctor has read your history and, where a decision depends on it, your pathology.</p>
         <div class="page-head__actions"><a class="btn" href="${link(depth, "contact")}#assessment">Begin your assessment</a></div>
       </div>
-      ${facts([["Qualifications", "MBBS, FRACGP"], ["Registration", "Current medical registration with AHPRA"], ["Consultations", "One to one with a doctor"], ["Prescribing", "Through appropriate prescription channels"]])}
+      ${facts([["Doctors", "Dr Raman Bohra<br>Dr Rekha Bohra"], ["Registration", "Current medical registration with AHPRA"], ["Consultations", "One to one with a doctor"], ["Languages", "English and Hindi. Dr Raman Bohra also speaks Punjabi."]])}
     </div>
   </header>
+  <section class="team-register g-light" data-ground="light" aria-label="The doctors' records">
+    <div class="wrap">
+      ${register(depth, { full: true, level: 2 })}
+    </div>
+  </section>
   <section class="spec g-light" data-ground="light">
     <div class="wrap spec__grid">
       <figure class="plate spec__fig">
-        <picture><source type="image/avif" srcset="${r}assets/img/round-light-900.avif"><img src="${r}assets/img/round-light-900.webp" alt="The Huon pine cross-section from the home page, drawn in dark ink on pale stone: about a thousand rings." width="900" height="900" decoding="async"></picture>
+        <picture><source type="image/avif" srcset="${r}assets/img/round-light-900.avif"><img src="${r}assets/img/round-light-900.webp" alt="The Huon pine cross-section from the home page, drawn in dark ink on pale stone: about a thousand rings." width="900" height="900" loading="lazy" decoding="async"></picture>
         <figcaption><span class="fig"><b>Fig. 1</b></span>The same round as the home page. Every ring is drawn from the measured widths of core PEB07A, AD 1003 to 2012. The outline is modelled.</figcaption>
       </figure>
       <div class="spec__text">
         <section><h2 class="d-md">How they practise</h2><div class="body">
-          <p>The clinic's doctors bring experience across general medicine, integrative wellness, women's health, men's health and preventive care. They take the time to understand your history, goals and any contraindications before recommending anything.</p>
-          <p>Wellness and medicine are not separate disciplines here. Every recommendation is grounded in a clinical assessment and individual need, and the doctors say clearly what a service can and can't do.</p>
-          <p>The team keeps up with the evidence in integrative medicine, IV therapy and peptide science through ongoing professional development.</p>
+          <p>The doctor reads your questionnaire before the call. On the call they go through your history and your goals, and check for anything that would make a treatment unsafe for you.</p>
+          <p>Whatever they recommend comes out of that assessment. If a program can't do what you want it to, the doctor will say so, and will tell you what the evidence does and doesn't show.</p>
+          <p>The doctors keep up with the evidence on IV therapy, peptides and integrative medicine through ongoing professional development.</p>
         </div></section>
-        <section><h2 class="d-md">Areas of clinical experience</h2><div class="body">${ticks(expertise)}</div></section>
+        <section><h2 class="d-md">Areas the clinic works in</h2><div class="body">${ticks(areas)}</div></section>
         <section><h2 class="d-md">Check a registration yourself</h2><div class="body">
-          <p>Every doctor practising in Australia is listed on the public register kept by the Australian Health Practitioner Regulation Agency. You can search it by name to see a practitioner's registration, qualifications and any conditions.</p>
+          <p>Every doctor practising in Australia is on a public register kept by the Australian Health Practitioner Regulation Agency (AHPRA). Search for either doctor by name to see their registration, including any conditions on it.</p>
           <p><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Search the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
         </div></section>
       </div>

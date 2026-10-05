@@ -18,7 +18,7 @@ from svgfont import face
 
 W, H = 800, 1000
 INKS = {
-    "light": dict(ink="#17201b", accent="#7d5f1f", wall=0.20, line=0.78),
+    "light": dict(ink="#0f1b2d", accent="#7d5f1f", wall=0.20, line=0.78),
     "dark": dict(ink="#e8e6dd", accent="#d4b26a", wall=0.16, line=0.72),
 }
 

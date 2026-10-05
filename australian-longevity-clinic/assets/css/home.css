@@ -8,7 +8,7 @@
 
 /* ------------------------------------------------------- act 1: specimen */
 .specimen { --D: min(84svh, 50vw); }
-.specimen__stage { background: var(--forest); isolation: isolate; }
+.specimen__stage { background: var(--night); isolation: isolate; }
 
 .sp-far {
   position: absolute; z-index: 0; pointer-events: none;
@@ -35,7 +35,7 @@
   width: calc(var(--bark, 0.44) * 100%); height: 2px; margin-top: -1px;
   background: var(--bone);
   transform-origin: 100% 50%; transform: scaleX(0);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--forest) 70%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--night) 70%, transparent);
 }
 .sp-borer-note {
   position: absolute; left: calc(50% + var(--bark, 0.44) * 100% + 1.4rem); top: calc(50% - 1.2rem);
@@ -51,7 +51,7 @@
   width: 17.5rem; padding: 1rem 1.15rem 1.05rem;
   background: var(--sheet); color: var(--ink);
   font-size: 0.82rem; line-height: 1.45;
-  box-shadow: 0 2px 3px hsl(150 30% 3% / 0.35), 0 18px 34px -12px hsl(150 30% 3% / 0.6);
+  box-shadow: 0 2px 3px hsl(220 45% 4% / 0.35), 0 18px 34px -12px hsl(220 45% 4% / 0.6);
   rotate: -1.6deg;
 }
 .sp-label > * + * { margin-top: 0.45rem; }
@@ -189,7 +189,7 @@
   .pl__text { gap: 0.6rem; }
   .pl__text h3 { font-size: 1.45rem; }
   .pl__intro { font-size: 0.9rem; }
-  .schema dt, .schema dd { padding-block: 0.42rem; font-size: 0.85rem; }
+  .pl .schema dt, .pl .schema dd { padding-block: 0.42rem; font-size: 0.85rem; }
   .rail__end { width: 74vw; padding-top: 6svh; }
 }
 
@@ -202,12 +202,20 @@
   .rail__head, .rail__end { width: 100%; }
 }
 
+/* ---------------------------------------------------- the doctors
+   A plain flow section between the rail and the protocol, on the rail's
+   ground: the people come straight after "the doctor will tell you". */
+.doctors { padding: clamp(5rem, 10vw, 8.5rem) 0 clamp(3.5rem, 7vw, 6rem); border-top: 1px solid var(--rule); }
+.doctors__head { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 1.5rem clamp(2.5rem, 5vw, 5.5rem); align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.doctors__head h2 { max-width: 10ch; }
+.doctors__links { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.7rem 2rem; }
+@media (max-width: 960px) { .doctors__head { grid-template-columns: 1fr; } }
+
 /* ------------------------------------------------------- act 3: protocol */
 .protocol-act { padding: clamp(5rem, 10vw, 9rem) 0 clamp(4rem, 8vw, 7rem); }
 .protocol-act__grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 3rem clamp(2.5rem, 5vw, 5.5rem); }
 .protocol-act__side h2 { max-width: 13ch; }
 .protocol-act__side .lede { margin-top: 1.4rem; color: var(--bone); }
-.creds { margin-top: 2.6rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); display: grid; gap: 0.7rem; font-size: 0.95rem; max-width: 34ch; }
 .wont { margin-top: 2.4rem; display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 1rem 2rem; }
 .wont ul { list-style: none; display: grid; gap: 0.6rem; }
 .wont li { padding-left: 1.5rem; position: relative; }

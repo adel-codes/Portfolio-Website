@@ -19,8 +19,8 @@ M_PER_PX = SPAN_X / W
 CX, CY = W * 0.46, H * 0.54                 # where the clinic sits on the plate
 
 PAL = {
-    "light": dict(ink="#17201b", accent="#7d5f1f", ground="#e9eae4"),
-    "dark": dict(ink="#e8e6dd", accent="#d4b26a", ground="#0d1611"),
+    "light": dict(ink="#0f1b2d", accent="#7d5f1f", ground="#e8eaee"),
+    "dark": dict(ink="#e8e6dd", accent="#d4b26a", ground="#0b1526"),
 }
 
 

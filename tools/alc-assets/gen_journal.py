@@ -21,7 +21,7 @@ SITES = {"aus123c.rwl": ("Teepookana and Pearces Basin, Tasmania", "AUS123C"),
          "aus118.rwl": ("Stanley River, Tasmania", "AUS118")}
 
 
-def strip(years, widths, L=1000.0, h=40.0, seed=1, ink="#17201b", accent="#7d5f1f"):
+def strip(years, widths, L=1000.0, h=40.0, seed=1, ink="#0f1b2d", accent="#7d5f1f"):
     rng = np.random.default_rng(seed)
     cum = np.cumsum(widths)
     x = cum / cum[-1] * (L - 8) + 4

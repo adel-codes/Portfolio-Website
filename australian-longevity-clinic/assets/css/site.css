@@ -1,7 +1,7 @@
 /* ==========================================================================
    Australian Longevity Clinic: the specimen-study system
    --------------------------------------------------------------------------
-   Two grounds: forest (dark) and quartzite (light). One accent hue, Huon
+   Two grounds: night (the clinic's navy) and quartz (pale stone). One accent hue, Huon
    gold, in two lightnesses keyed to the ground, and it marks the record only:
    the core line, decade dots, matched years, the active step. Buttons are
    ink and bone, never gold.
@@ -32,35 +32,37 @@
 
 /* ----------------------------------------------------------------- tokens */
 :root {
-  --forest:   #0d1611;
-  --forest-2: #142019;
-  --forest-3: #1c2a22;
+  /* The clinic's navy, taken from its medallion (#0c1938) and deepened for
+     a ground; pale stone and an ink-blue for the light sections; Huon gold. */
+  --night:    #0b1526;
+  --night-2:  #111e34;
+  --night-3:  #192a46;
   --bone:     #e8e6dd;
-  --bone-2:   #a7afa4;
-  --quartz:   #e9eae4;
-  --quartz-2: #dfe1d9;
-  --sheet:    #f6f6f2;
-  --ink:      #17201b;
-  --ink-2:    #4d5850;
-  --huon:     #d4b26a;   /* accent on forest */
-  --huon-deep:#7d5f1f;   /* accent on quartzite: 4.8:1 */
-  --alert:    #9b2f22;   /* form errors on quartzite: 6.2:1 */
+  --bone-2:   #a6afbe;   /* on night: 8.3:1 */
+  --quartz:   #e8eaee;
+  --quartz-2: #dde1e7;
+  --sheet:    #f6f7f9;
+  --ink:      #0f1b2d;   /* on quartz: 14.4:1 */
+  --ink-2:    #4b5669;   /* on quartz: 6.2:1 */
+  --huon:     #d4b26a;   /* accent on night: 9.0:1 */
+  --huon-deep:#7d5f1f;   /* accent on quartz: 4.9:1 */
+  --alert:    #9b2f22;   /* form errors on quartz: 6.2:1 */
 
-  --sc-canvas: var(--forest);
-  --sc-surface: var(--forest-2);
+  --sc-canvas: var(--night);
+  --sc-surface: var(--night-2);
   --sc-ink: var(--bone);
   --sc-ink-soft: var(--bone-2);
   --sc-accent: var(--huon);
-  --sc-accent-ink: var(--forest);
+  --sc-accent-ink: var(--night);
   --sc-font-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
   --sc-font-text: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
   --sc-font-mono: "Azeret Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --sc-shadow-color: 150 30% 4%;
+  --sc-shadow-color: 220 45% 5%;
   --sc-r-sm: 2px; --sc-r-md: 3px; --sc-r-lg: 4px;
   --sc-maxw: 84rem;
   --sc-gutter: clamp(1rem, 4.6vw, 5.5rem);
 
-  --strip-h: 4rem;
+  --strip-h: 4.6rem;
   --t-mono: 0.78rem;
   --t-mono-sm: 0.72rem;
   --rule: color-mix(in oklab, var(--sc-ink) 16%, transparent);
@@ -70,12 +72,12 @@
 
 /* A ground sets the six roles for everything inside it. */
 .g-dark {
-  --sc-canvas: var(--forest); --sc-surface: var(--forest-2);
+  --sc-canvas: var(--night); --sc-surface: var(--night-2);
   --sc-ink: var(--bone); --sc-ink-soft: var(--bone-2);
-  --sc-accent: var(--huon); --sc-accent-ink: var(--forest);
-  --btn-bg: var(--bone); --btn-ink: var(--forest);
-  --field-bg: var(--forest-2);
-  background: var(--forest); color: var(--bone);
+  --sc-accent: var(--huon); --sc-accent-ink: var(--night);
+  --btn-bg: var(--bone); --btn-ink: var(--night);
+  --field-bg: var(--night-2);
+  background: var(--night); color: var(--bone);
   color-scheme: dark;
 }
 .g-light {
@@ -95,7 +97,7 @@
 /* ------------------------------------------------------------------- base */
 /* `hidden` must win over any display rule an author class sets. */
 [hidden] { display: none !important; }
-html { background: var(--forest); }
+html { background: var(--night); }
 body {
   font-size: clamp(1rem, 0.97rem + 0.16vw, 1.075rem);
   line-height: 1.6;
@@ -118,7 +120,7 @@ small { font-size: 0.86em; }
 abbr[title] { text-decoration: none; }
 hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
 :focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 3px; border-radius: 1px; }
-::selection { background: var(--huon); color: var(--forest); }
+::selection { background: var(--huon); color: var(--night); }
 
 .mono, .fig, .schema dt, .tag {
   font-family: var(--sc-font-mono);
@@ -134,7 +136,7 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
 }
 .skip {
   position: fixed; left: 1rem; top: -4rem; z-index: 200;
-  background: var(--bone); color: var(--forest); padding: 0.6rem 0.9rem;
+  background: var(--bone); color: var(--night); padding: 0.6rem 0.9rem;
   font-weight: 600; text-decoration: none;
 }
 .skip:focus { top: 1rem; }
@@ -196,12 +198,12 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
   position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
   height: var(--strip-h);
   color: var(--strip-ink, var(--bone));
-  background: color-mix(in oklab, var(--strip-bg, var(--forest)) var(--strip-a, 0%), transparent);
+  background: color-mix(in oklab, var(--strip-bg, var(--night)) var(--strip-a, 0%), transparent);
   border-bottom: 1px solid color-mix(in oklab, var(--strip-ink, var(--bone)) var(--strip-rule, 0%), transparent);
   transition: background-color 260ms var(--sc-ease-out), color 260ms var(--sc-ease-out), border-color 260ms var(--sc-ease-out);
 }
 .strip[data-ground="light"] { --strip-ink: var(--ink); --strip-bg: var(--quartz); }
-.strip[data-ground="dark"]  { --strip-ink: var(--bone); --strip-bg: var(--forest); }
+.strip[data-ground="dark"]  { --strip-ink: var(--bone); --strip-bg: var(--night); }
 .strip.is-solid { --strip-a: 96%; --strip-rule: 14%; }
 .strip__in {
   height: 100%; display: flex; align-items: center; gap: 1.5rem;
@@ -211,12 +213,13 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
   display: inline-flex; align-items: center; gap: 0.7rem;
   text-decoration: none; color: inherit; margin-right: auto; min-width: 0;
 }
-.brand svg { width: 2.05rem; height: 2.05rem; flex: none; }
+.brand { gap: 0.8rem; }
+/* The clinic's medallion. It carries its own gold rim, so it needs no frame,
+   only room: clear space of at least a quarter of its width on every side. */
+.brand__logo { width: 3.25rem; height: 3.25rem; flex: none; display: block; filter: drop-shadow(0 1px 1.5px hsl(220 45% 4% / 0.35)); }
 .brand__name { display: flex; flex-direction: column; line-height: 1.12; min-width: 0; }
 .brand__name b { font-weight: 600; font-size: 0.96rem; letter-spacing: -0.012em; white-space: nowrap; }
 .brand__name span { font-family: var(--sc-font-mono); font-size: 0.68rem; opacity: 0.74; letter-spacing: 0.01em; white-space: nowrap; }
-.strip .mark-core, .foot .mark-core { stroke: var(--huon); }
-.strip[data-ground="light"] .mark-core { stroke: var(--huon-deep); }
 
 .nav { display: flex; align-items: center; gap: 0.25rem; }
 .nav a, .nav button.nav__more {
@@ -245,7 +248,7 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
 .nav__menu a:hover { background: var(--quartz); text-decoration: none; }
 .nav__menu .fig { color: var(--ink-2); }
 .strip .btn { min-height: 2.6rem; padding: 0.55rem 1rem 0.55rem 0.85rem; font-size: 0.9rem; margin-left: 0.6rem;
-  --btn-bg: var(--strip-ink, var(--bone)); --btn-ink: var(--strip-bg, var(--forest)); }
+  --btn-bg: var(--strip-ink, var(--bone)); --btn-ink: var(--strip-bg, var(--night)); }
 .strip__menu { display: none; }
 
 @media (max-width: 1060px) {
@@ -259,15 +262,24 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
   }
   .strip__menu i { display: block; width: 1rem; height: 1px; background: currentColor; box-shadow: 0 -4px 0 currentColor, 0 4px 0 currentColor; }
 }
-@media (max-width: 380px) {
-  .brand__name span { display: none; }
+@media (max-width: 860px) {
+  :root { --strip-h: 4.1rem; }
+  .brand__logo { width: 2.8rem; height: 2.8rem; }
+  .brand { gap: 0.65rem; }
   .brand__name b { font-size: 0.9rem; }
+}
+@media (max-width: 380px) {
+  .strip__in { gap: 0.9rem; }
+  .brand__name span { display: none; }
+  /* On the narrowest phones the name takes two lines beside the medallion
+     rather than running under the menu button. */
+  .brand__name b { font-size: 0.9rem; white-space: normal; text-wrap: balance; }
 }
 
 /* The menu sheet on small screens. */
 .sheet-menu {
   position: fixed; inset: 0; z-index: calc(var(--sc-z-chrome) + 5);
-  background: var(--forest); color: var(--bone);
+  background: var(--night); color: var(--bone);
   display: flex; flex-direction: column;
   padding: 0 var(--sc-gutter) calc(1.5rem + env(safe-area-inset-bottom));
   overflow-y: auto;
@@ -286,7 +298,7 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
   font-size: 1.35rem; font-weight: 500; letter-spacing: -0.02em; text-decoration: none;
 }
 .sheet-menu nav a .fig { font-size: 0.72rem; }
-.sheet-menu .btn { margin-top: 1.75rem; align-self: flex-start; --btn-bg: var(--bone); --btn-ink: var(--forest); }
+.sheet-menu .btn { margin-top: 1.75rem; align-self: flex-start; --btn-bg: var(--bone); --btn-ink: var(--night); }
 .sheet-menu__foot { margin-top: auto; padding-top: 2rem; color: var(--bone-2); font-size: 0.92rem; }
 
 /* ------------------------------------------------------- figures/plates */
@@ -308,6 +320,49 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
    three per century, four per millennium. */
 .dots { display: inline-flex; gap: 3px; vertical-align: middle; }
 .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--sc-accent); }
+
+/* ---------------------------------------------------- the doctors' register
+   One ruled entry per doctor, set like a register rather than a team grid:
+   the photograph in the narrow column, the record in the wide one, and the
+   qualifications exactly as the doctors give them. */
+.register { list-style: none; border-top: 1px solid var(--rule-strong); }
+.record {
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  grid-template-areas: "photo head" "photo body";
+  grid-template-rows: auto 1fr;
+  gap: 0 clamp(2.5rem, 5vw, 5.5rem);
+  padding: clamp(2rem, 4vw, 3rem) 0 clamp(2.25rem, 4.4vw, 3.4rem);
+  border-bottom: 1px solid var(--rule);
+}
+.record__photo { grid-area: photo; justify-self: end; width: min(100%, 17rem); padding: 0.45rem; border: 1px solid var(--rule); }
+.register--full .record__photo { width: min(100%, 21rem); }
+.record__photo img { display: block; width: 100%; height: auto; background: var(--quartz-2); }
+.record__head { grid-area: head; }
+.record__name { font-size: clamp(1.6rem, 1.15rem + 1.5vw, 2.4rem); line-height: 1.06; letter-spacing: -0.024em; }
+.record__post { margin-top: 0.6rem; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.06em; color: var(--sc-ink); }
+.record__body { grid-area: body; max-width: 42rem; }
+.ledger { margin-top: 0.4rem; }
+
+/* The calendar: one tick a year from 1995, a heavier line from graduation
+   to now, and a gold dot at each dated entry. Same scale for every doctor. */
+.career { position: relative; height: 2.5rem; margin-top: 1.6rem; }
+.career::before { content: ""; position: absolute; left: 0; right: 0; top: 0.7rem; height: 1px; background: var(--rule); }
+.career__line { position: absolute; right: 0; top: calc(0.7rem - 1px); height: 3px; background: var(--sc-ink); }
+.career__tick { position: absolute; top: 0.7rem; width: 1px; height: 0.32rem; margin-left: -0.5px; background: var(--rule-strong); }
+.career__tick--dec { height: 0.6rem; background: var(--sc-ink-soft); }
+.career__tick b { position: absolute; top: 0.85rem; left: 0; transform: translateX(-50%); font: 400 0.66rem/1 var(--sc-font-mono); color: var(--sc-ink-soft); }
+.career__ev { position: absolute; top: 0.7rem; width: 9px; height: 9px; margin: -4px 0 0 -4.5px; border-radius: 50%; background: var(--sc-accent); box-shadow: 0 0 0 2px var(--sc-canvas); }
+
+@media (max-width: 700px) {
+  .record { grid-template-columns: 8.5rem minmax(0, 1fr); grid-template-areas: "photo head" "body body"; grid-template-rows: auto auto; gap: 1.6rem 1.25rem; }
+  .record__photo, .register--full .record__photo { width: 100%; justify-self: start; padding: 0.3rem; }
+  .record__head { align-self: end; }
+}
+@media (max-width: 520px) {
+  .ledger { grid-template-columns: 1fr; }
+  .ledger dt { border-bottom: 0; padding: 0.7rem 0 0.1rem; }
+  .ledger dd { padding-top: 0; }
+}
 
 /* ----------------------------------------------------------- the protocol */
 .protocol { width: 100%; border-collapse: collapse; }
@@ -340,7 +395,8 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
 .foot a { text-decoration: none; }
 .foot a:hover { text-decoration: underline; }
 .foot address { font-style: normal; line-height: 1.6; }
-.foot .brand { margin-bottom: 1.2rem; }
+.foot__logo { display: inline-block; margin-bottom: 1.4rem; border-radius: 50%; }
+.foot__medallion { width: 7.5rem; height: 7.5rem; display: block; }
 .foot__hours { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 1.2rem; }
 .foot__hours dt { color: var(--bone-2); }
 .foot__hours dd { margin: 0; }
@@ -348,9 +404,9 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
 .foot__news form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .foot__news input {
   flex: 1 1 12rem; min-height: 2.9rem; padding: 0.6rem 0.8rem; border-radius: 2px;
-  background: var(--forest-2); color: var(--bone); border: 1px solid color-mix(in oklab, var(--bone) 22%, transparent);
+  background: var(--night-2); color: var(--bone); border: 1px solid color-mix(in oklab, var(--bone) 22%, transparent);
 }
-.foot__news .btn { --btn-bg: var(--bone); --btn-ink: var(--forest); min-height: 2.9rem; }
+.foot__news .btn { --btn-bg: var(--bone); --btn-ink: var(--night); min-height: 2.9rem; }
 .foot__news .note { font-size: 0.82rem; margin-top: 0.7rem; color: var(--bone-2); }
 .foot__news [role="status"] { margin-top: 0.6rem; font-size: 0.88rem; color: var(--bone); }
 .foot__base { margin-top: clamp(2.5rem, 5vw, 4rem); padding-top: 1.5rem; border-top: 1px solid color-mix(in oklab, var(--bone) 14%, transparent);
@@ -370,11 +426,11 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
   position: fixed; left: 0; right: 0; bottom: 0; z-index: calc(var(--sc-z-chrome) - 1);
   display: none; align-items: center; justify-content: space-between; gap: 1rem;
   padding: 0.7rem var(--sc-gutter) calc(0.7rem + env(safe-area-inset-bottom));
-  background: var(--forest); color: var(--bone);
+  background: var(--night); color: var(--bone);
   border-top: 1px solid color-mix(in oklab, var(--bone) 16%, transparent);
   transform: translateY(110%); transition: transform 320ms var(--sc-ease-out);
 }
-.cta-bar .btn { --btn-bg: var(--bone); --btn-ink: var(--forest); min-height: 2.75rem; padding-block: 0.55rem; }
+.cta-bar .btn { --btn-bg: var(--bone); --btn-ink: var(--night); min-height: 2.75rem; padding-block: 0.55rem; }
 .cta-bar p { font-family: var(--sc-font-mono); font-size: 0.7rem; line-height: 1.4; color: var(--bone-2); }
 .cta-bar.is-on { transform: none; }
 @media (max-width: 860px) { .cta-bar { display: flex; } }
@@ -395,6 +451,7 @@ hr { border: 0; height: 1px; background: var(--rule); margin: 0; }
 .facts dd { margin: 0; padding: 0.55rem 0; border-bottom: 1px solid var(--rule); }
 
 /* A specimen sheet: the figure holds in its column while the text runs. */
+.team-register { padding: clamp(0.5rem, 2vw, 1.5rem) 0 clamp(1rem, 3vw, 2rem); }
 .spec { padding: clamp(3rem, 7vw, 6rem) 0; }
 .spec__grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 2.5rem clamp(2.5rem, 6vw, 6.5rem); align-items: start; }
 .spec__fig { position: sticky; top: calc(var(--strip-h) + 1.5rem); }
@@ -676,7 +733,7 @@ html:not(.js) [data-sc-cue] { opacity: 1; }
   .btn::before { transition: none; }
 }
 
-/* Inner pages sit on quartzite from the very top; the forest canvas belongs
+/* Inner pages sit on quartz from the very top; the night canvas belongs
    to the home page's specimen act and to the footer. */
 body.inner { --sc-canvas: var(--quartz); background: var(--quartz); }
 /* the core glyph belongs to forward actions only */

@@ -1,8 +1,10 @@
-"""The clinic mark: four rings of the PEB07A round with the core line drawn
-pith to bark along the measured radius, the same line the home page extracts.
+"""Ring glyphs drawn from the PEB07A round.
 
-  mark.svg     64 x 64, rings in currentColor, core in var(--accent)
-  favicon.svg  32 x 32, two rings and the core, with a dark-mode variant
+The site uses the clinic's own logo (see logo_cutout.py), so of the three
+glyphs this script can draw, only the assessment's progress rings ship:
+
+  progress-rings.svg  five rings, one per form step, drawn as steps complete
+  mark.svg, favicon.svg  (retired: the earlier drawn mark, written only with --mark)
 
   python3 gen_mark.py <rings_dir/> <out_dir/>
 """
@@ -50,7 +52,7 @@ def build(widths):
                         for p, w in zip(picks2, (2.0, 2.4)))
     bx = c + R2[-1, i02] * k2
     favicon = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none'>"
-               "<style>.r{stroke:#17201b}.c{stroke:#8a6a22}.p{fill:#17201b}"
+               "<style>.r{stroke:#0f1b2d}.c{stroke:#7d5f1f}.p{fill:#0f1b2d}"
                "@media (prefers-color-scheme:dark){.r{stroke:#e8e6dd}.c{stroke:#d4b26a}.p{fill:#e8e6dd}}</style>"
                f"{fav_rings}"
                f"<path class='c' d='M{c} {c}H{bx + 1.6:.2f}' stroke-width='2.8' stroke-linecap='square'/>"
@@ -73,7 +75,8 @@ if __name__ == "__main__":
     years, w = d["PEB07A"]
     mark, fav, progress = build(w)
     out = sys.argv[2]
-    open(os.path.join(out, "mark.svg"), "w").write(mark)
-    open(os.path.join(out, "favicon.svg"), "w").write(fav)
     open(os.path.join(out, "progress-rings.svg"), "w").write(progress)
-    print("mark", len(mark), "bytes; favicon", len(fav), "bytes")
+    if "--mark" in sys.argv:
+        open(os.path.join(out, "mark.svg"), "w").write(mark)
+        open(os.path.join(out, "favicon.svg"), "w").write(fav)
+    print("progress rings", len(progress), "bytes")

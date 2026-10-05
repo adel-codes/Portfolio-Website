@@ -1,16 +1,19 @@
 // The journal: an index and one page per article.
 //
-// Articles are the clinic's own, carried over from the live site with
-// mechanical cleanup only (see clean_posts.py). Each is filed with a
-// different measured Huon pine core in place of a stock image. Two live
-// articles are not carried over because their subject is a named prescription
-// medicine; see README.md.
+// Articles are the clinic's own, carried over from the live site (cleaned by
+// clean_posts.py) and then edited for voice with the humanscope method. An
+// edited version in content/posts-human/<slug>.json replaces the title,
+// standfirst and body; facts, numbers and caveats are unchanged (each file
+// carries its own audit). Each article is filed with a different measured
+// Huon pine core in place of a stock image. Two live articles are not carried
+// over because their subject is a named prescription medicine; see README.md.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = path.join(HERE, "content/posts");
+const HUMAN_DIR = path.join(HERE, "content/posts-human");
 const STANDFIRSTS = JSON.parse(fs.readFileSync(path.join(HERE, "content/standfirsts.json"), "utf8"));
 
 // newest first, by the date each article carries
@@ -26,6 +29,13 @@ function load() {
     p.title = p.title.replace(/\s*\u2014\s*/g, " \u2013 ");
     p.category = p.category || (s && s.category) || "Journal";
     p.minutes = p.minutes || (s && s.minutes) || null;
+    const hf = path.join(HUMAN_DIR, p.slug + ".json");
+    if (fs.existsSync(hf)) {
+      const h = JSON.parse(fs.readFileSync(hf, "utf8"));
+      p.title = h.title; p.standfirst = h.standfirst; p.html = h.html; p.edited = true;
+      const words = h.html.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+      p.minutes = Math.max(2, Math.round(words / 220));
+    }
   }
   posts.sort((a, b) => when(b.date) - when(a.date) || a.slug.localeCompare(b.slug));
   return posts;

@@ -41,8 +41,52 @@ export const PROGRAMS = [
   { key: "weight", slug: "weight-management", name: "Medical weight management", fig: "5" },
 ];
 
+// The doctors, from the profile image supplied with the brief (2026-10-05).
+// Names and post-nominals are set exactly as the image gives them, and the
+// dated entries keep its wording. Nothing is added. Two of its sentences are
+// left out on purpose, as README.md explains: one describes a personality,
+// and one announces cosmetic injectables, which this site does not offer.
+export const DOCTORS = [
+  {
+    slug: "dr-raman-bohra",
+    name: "Dr Raman Bohra",
+    post: "MRCGP, FRACGP",
+    dated: [
+      [2001, "Graduated from medical school in Jaipur, India."],
+      [2008, "Fellowship with the Royal Australian College of General Practitioners (FRACGP), obtained in the United Kingdom."],
+    ],
+    rows: [["Experience", "18 years"]],
+    interests: "Ear-nose-throat conditions, geriatric care, obesity, urinary incontinence, and occupational health care.",
+    languages: "English, Hindi, Punjabi",
+    photo: [328, 441],
+  },
+  {
+    slug: "dr-rekha-bohra",
+    name: "Dr Rekha Bohra",
+    post: "MB BS, DRCOG, MRCGP (U.K), FRACGP",
+    dated: [
+      [1999, "Graduated from medical school in Jaipur, India."],
+      [2012, "DFRSH from the Royal College of Obstetricians and Gynaecologists."],
+      [2013, "Fellowship with the Royal Australian College of General Practitioners (FRACGP), obtained in the United Kingdom."],
+    ],
+    rows: [],
+    interests: "Family planning, childhood immunisation, child health, adult gynecology, contraceptive implant insertion & removal, IUD Insertion & Removal and Pap-Smear.",
+    languages: "English, Hindi",
+    photo: [328, 442],
+  },
+];
+
+// Standard expansions, shown on hover and read by screen readers. The
+// visible text stays exactly as the doctors give it.
+const ABBR = {
+  "MB BS": "Bachelor of Medicine, Bachelor of Surgery",
+  DRCOG: "Diploma of the Royal College of Obstetricians and Gynaecologists",
+  MRCGP: "Member of the Royal College of General Practitioners",
+  FRACGP: "Fellow of the Royal Australian College of General Practitioners",
+  DFRSH: "Diploma of the Faculty of Sexual and Reproductive Healthcare",
+};
+
 // --------------------------------------------------------------- assets
-export const MARK = read(path.join(IMG, "mark.svg"));
 const CORE = read(path.join(IMG, "core.svg"));
 const TICKS = JSON.parse(read(path.join(IMG, "core-ticks.json")));
 const PROGRESS = read(path.join(IMG, "progress-rings.svg"));
@@ -66,7 +110,46 @@ const MEASURED_MM = META.core_r_mm[META.core_r_mm.length - 1];
 export const rel = (depth) => (depth ? "../".repeat(depth) : "");
 export const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 export const link = (depth, target) => rel(depth) + (target === "" ? "index.html" : target.replace(/\/?$/, "/index.html").replace(/^\/index\.html$/, "index.html"));
-export const markSvg = (cls = "") => MARK.replace("<svg ", `<svg class="${cls}" `);
+// The clinic's own logo: the medallion from its live site, cut from its
+// white square (tools/alc-assets/logo_cutout.py) and otherwise untouched.
+export const logoImg = (depth, size = 52, cls = "brand__logo", alt = "") => {
+  const r = rel(depth);
+  const pick = size > 96 ? [256, 512] : [64, 128];
+  return `<img class="${cls}" src="${r}assets/img/logo/alc-medallion-${pick[1]}.webp" srcset="${r}assets/img/logo/alc-medallion-${pick[0]}.webp 1x, ${r}assets/img/logo/alc-medallion-${pick[1]}.webp 2x" width="${size}" height="${size}" alt="${alt}" decoding="async">`;
+};
+
+// The doctors' register: one ruled entry per doctor, never a card grid.
+// Each entry carries a small calendar drawn like the cores, a ruler of years
+// with the doctor's dated entries marked on it. Both use the same scale, so
+// the two records line up like the cross-dated cores in Fig. 4.
+const CAL0 = 1995, CAL1 = new Date().getFullYear();
+const calX = (y) => (((y - CAL0) / (CAL1 - CAL0)) * 100).toFixed(2);
+const withAbbr = (s) => esc(s).replace(/MB BS|DRCOG|MRCGP|FRACGP|DFRSH/g, (m) => `<abbr title="${ABBR[m]}">${m}</abbr>`);
+function calendar(d) {
+  const ticks = [];
+  for (let y = CAL0; y <= CAL1; y++) ticks.push(`<i class="career__tick${y % 10 ? "" : " career__tick--dec"}" style="left:${calX(y)}%">${y % 10 ? "" : `<b>${y}</b>`}</i>`);
+  return `<div class="career" aria-hidden="true"><span class="career__line" style="left:${calX(d.dated[0][0])}%"></span>${ticks.join("")}${d.dated.map(([y]) => `<span class="career__ev" style="left:${calX(y)}%"></span>`).join("")}</div>`;
+}
+export function register(depth, { full = false, level = 3 } = {}) {
+  const r = rel(depth), h = `h${level}`;
+  return `<ul class="register${full ? " register--full" : ""}">
+    ${DOCTORS.map((d) => {
+      const rows = [...d.dated.map(([y, t]) => [String(y), withAbbr(t)]), ...d.rows, ...(full ? [["Special interests", esc(d.interests)]] : []), ["Languages", d.languages]];
+      const src = (n) => `${r}assets/img/doctors/${d.slug}-${n}x.webp`;
+      return `<li class="record" id="${d.slug}">
+      <div class="record__photo"><img src="${src(1)}" srcset="${src(1)} 328w, ${src(2)} 524w" sizes="(max-width: 700px) 8.5rem, ${full ? "20rem" : "16rem"}" width="${d.photo[0]}" height="${d.photo[1]}" alt="Portrait of ${d.name}" loading="lazy" decoding="async"></div>
+      <div class="record__head">
+        <${h} class="record__name">${d.name}</${h}>
+        <p class="record__post">${withAbbr(d.post)}</p>
+      </div>
+      <div class="record__body">
+        ${calendar(d)}
+        <dl class="schema ledger">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
+      </div>
+    </li>`;
+    }).join("\n    ")}
+  </ul>`;
+}
 
 export function head({ title, description, depth, canonical, extraHead = "" }) {
   const r = rel(depth);
@@ -88,8 +171,10 @@ export function head({ title, description, depth, canonical, extraHead = "" }) {
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0d1611">
-<link rel="icon" href="${r}assets/img/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0b1526">
+<link rel="icon" href="${r}assets/img/logo/favicon.ico" sizes="any">
+<link rel="icon" href="${r}assets/img/logo/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="${r}assets/img/logo/touch-icon-180.png">
 <link rel="preload" href="${r}assets/fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="${r}assets/fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${r}assets/scrollcraft/scrollcraft.css">
@@ -107,8 +192,8 @@ export function strip(depth, current = "", startGround = "light") {
 <header class="strip" data-ground="${startGround}">
   <div class="strip__in">
     <a class="brand" href="${L_("")}" aria-label="${CLINIC.name}, home">
-      ${markSvg()}
-      <span class="brand__name"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span>
+      ${logoImg(depth, 52)}
+      <span class="brand__name" aria-hidden="true"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span>
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__group">
@@ -125,7 +210,7 @@ export function strip(depth, current = "", startGround = "light") {
 </header>
 <div class="sheet-menu" id="sheet-menu" hidden role="dialog" aria-modal="true" aria-label="Menu">
   <div class="sheet-menu__top">
-    <a class="brand" href="${L_("")}">${markSvg()}<span class="brand__name"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span></a>
+    <a class="brand" href="${L_("")}" aria-label="${CLINIC.name}, home">${logoImg(depth, 48)}<span class="brand__name" aria-hidden="true"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span></a>
     <button class="sheet-menu__close" type="button">Close</button>
   </div>
   <nav aria-label="Menu">
@@ -147,7 +232,7 @@ export function footer(depth, current = "") {
   <div class="wrap">
     <div class="foot__grid">
       <div>
-        <a class="brand" href="${L_("")}">${markSvg()}<span class="brand__name"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span></a>
+        <a class="foot__logo" href="${L_("")}" aria-label="${CLINIC.name}, home">${logoImg(depth, 120, "foot__medallion", CLINIC.name + " logo")}</a>
         <address>${CLINIC.street}<br>${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}<br><a href="mailto:${CLINIC.email}">${CLINIC.email}</a></address>
       </div>
       <div>
@@ -489,7 +574,7 @@ function home() {
           "A drawing of wood cells in cross-section: rows of rounded cells, large in each year's early growth and small and thick-walled at the end of it, across three yearly rings.",
           "Tracheids, the cells that carry water up the stem, across three measured rings: 1664 to 1666. Cells drawn for illustration.",
           [["What it is", "Infusions of fluids, vitamins, iron or NAD+, given in the clinic."], ["First step", "A consultation. Iron also needs pathology from the last 3 months and a GP referral."], ["Time", "30 minutes to 4 hours, by infusion."], ["Where", "In the chair at Annerley, under a doctor's supervision."]],
-          "Delivered as a health service under the direct supervision of the clinic's doctors.")}
+          "A health service given in the clinic, under the direct supervision of its doctors.")}
         ${plate(P.peptides, "plate-branchlet.svg",
           "A pen drawing of a weeping Huon pine branchlet: slender hanging shoots covered in small overlapping scale leaves.",
           "A branchlet of <i>Lagarostrobos franklinii</i>: small scale leaves pressed close along each hanging shoot. Drawn for illustration.",
@@ -514,16 +599,26 @@ function home() {
     </div>
   </section>
 
+  <section class="doctors g-light" id="doctors" data-ground="light" data-sc-act="flow" aria-labelledby="doctors-h">
+    <div class="wrap">
+      <div class="doctors__head" data-sc-in>
+        <h2 id="doctors-h" class="d-lg">Two doctors run the clinic.</h2>
+        <div class="doctors__intro">
+          <p class="lede">Dr Raman Bohra and Dr Rekha Bohra both studied medicine in Jaipur, India, and both are Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor.</p>
+          <p class="doctors__links"><a class="textlink" href="${L_("our-team")}">Special interests and how they practise</a><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Check a registration on the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
+        </div>
+      </div>
+      <div data-sc-in>
+      ${register(depth)}
+      </div>
+    </div>
+  </section>
+
   <section class="protocol-act g-dark" id="protocol" data-ground="dark" data-sc-act="flow" aria-labelledby="protocol-h">
     <div class="wrap protocol-act__grid">
       <div class="protocol-act__side" data-sc-in>
         <h2 id="protocol-h" class="d-lg">How a program begins, and when it doesn't.</h2>
         <p class="lede">Five steps, in the same order for everyone. Nothing is prescribed from a questionnaire alone.</p>
-        <div class="creds">
-          <p class="fig">The doctors</p>
-          <p>Registered medical practitioners with MBBS and FRACGP qualifications, experienced across general practice, men's and women's health and preventive care. Every consultation is one to one with a doctor.</p>
-          <p><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Check any Australian doctor on the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
-        </div>
       </div>
       <div class="protocol-act__table" data-sc-in>
         <table class="protocol">
@@ -534,7 +629,7 @@ function home() {
             <tr><th scope="row">Doctor's review</th><td class="desc">A doctor reads everything before calling you, and notes what needs pathology.</td><td class="who">A registered doctor</td><td class="when">Within 1 to 2 business days</td></tr>
             <tr><th scope="row">Consultation</th><td class="desc">By phone. Your symptoms, goals and questions. If a program isn't suitable, the doctor says so.</td><td class="who">Doctor and you</td><td class="when">15 to 25 minutes</td></tr>
             <tr><th scope="row">Pathology</th><td class="desc">Ordered wherever a decision depends on it: iron studies before an iron infusion, confirmed low testosterone before testosterone therapy.</td><td class="who">Your doctor, a collection centre</td><td class="when">Before treatment</td></tr>
-            <tr><th scope="row">Program and review</th><td class="desc">Prescription medicines only on prescription, through proper channels. Follow-up and repeat pathology are part of the program, not extras.</td><td class="who">Your doctor</td><td class="when">Ongoing</td></tr>
+            <tr><th scope="row">Program and review</th><td class="desc">Medicines only on prescription, through proper channels. Follow-up and repeat pathology come with the program.</td><td class="who">Your doctor</td><td class="when">Ongoing</td></tr>
           </tbody>
         </table>
         <div class="wont">
@@ -571,6 +666,7 @@ function home() {
 <script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org", "@type": "MedicalClinic", name: CLINIC.name, url: "https://australianlongevityclinic.com.au/",
       email: CLINIC.email, image: "https://australianlongevityclinic.com.au/assets/img/og.jpg",
+      logo: "https://australianlongevityclinic.com.au/assets/img/logo/alc-medallion-512.png",
       address: { "@type": "PostalAddress", streetAddress: CLINIC.street, addressLocality: CLINIC.suburb, addressRegion: CLINIC.state, postalCode: CLINIC.postcode, addressCountry: "AU" },
       openingHoursSpecification: [
         { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "08:00", closes: "18:00" },
@@ -593,12 +689,12 @@ function contact() {
   const depth = 1;
   const L_ = (t) => link(depth, t);
   const faqs = [
-    ["What happens during the consultation?", "It's a phone call with one of the clinic's doctors, usually 15 to 25 minutes. The doctor has already read your questionnaire, and talks through your symptoms, goals and questions before recommending anything. You can ask questions before deciding on next steps."],
-    ["Why is there a $75 fee?", "It covers the doctor's time to read your questionnaire before calling, the medical assessment on the call, and ongoing support from your treating doctor."],
+    ["What happens during the consultation?", "It's a phone call with one of the clinic's doctors, usually 15 to 25 minutes. The doctor will already have read your questionnaire, so the call goes on your symptoms, your goals and your questions before anything is recommended."],
+    ["Why is there a $75 fee?", "It pays for the doctor's time reading your questionnaire before the call, the medical assessment on the call, and ongoing support from your treating doctor."],
     ["When will the doctor call?", `Within 1 to 2 business days of your form and payment arriving, ${CLINIC.callWindow}, on the number you give.`],
-    ["Do I need to prepare anything?", "No. If you have recent blood test results or medical reports, it helps to have them handy for the call, but it isn't essential."],
-    ["Is the consultation bulk billed?", "No. The $75 fee is a private consultation fee, paid when you send the questionnaire. Some consultations may attract a Medicare rebate depending on their clinical nature."],
-    ["What can happen after the consultation?", "Depending on your assessment, the doctor may recommend IV therapy, a peptide program, testosterone therapy, medical weight management, a combination, pathology first, or nothing at all. Every recommendation is individual."],
+    ["Do I need to prepare anything?", "No. If you have recent blood tests or medical reports, keep them nearby for the call, but you don't need them."],
+    ["Is the consultation bulk billed?", "No. The $75 is a private consultation fee, paid when you send the questionnaire. Some consultations may attract a Medicare rebate, depending on their clinical nature."],
+    ["What can happen after the consultation?", "Depending on your assessment, the doctor may recommend IV therapy, a peptide program, testosterone therapy, medical weight management or a combination. They may also recommend pathology first, or nothing at all."],
     ["Is my health information confidential?", `Yes. It is handled under Australian privacy law and the clinic's <a href="${L_("privacy-policy")}">privacy policy</a>, and used for your care.`],
     ["Do I need a referral?", "Not for most programs. Iron infusions need a GP referral and pathology from the last 3 months; the clinic can arrange a pathology referral if you don't have recent results."],
   ];
@@ -653,7 +749,7 @@ function write(rp, html) {
   return rp;
 }
 
-const ctx = { CLINIC, PROGRAMS, head, strip, footer, scripts, assessment, link, rel, esc, markSvg, SITE };
+const ctx = { CLINIC, PROGRAMS, DOCTORS, head, strip, footer, scripts, assessment, register, link, rel, esc, logoImg, SITE };
 const written = [
   write("index.html", home()),
   write("contact/index.html", contact()),

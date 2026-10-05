@@ -106,7 +106,7 @@ if __name__ == "__main__":
     d = parse_rwl(S + "aus123c.rwl")
     years, w = d["PEB07A"]
     variant = sys.argv[3] if len(sys.argv) > 3 else "dark"
-    ink = "#d4b26a" if variant == "dark" else "#17201b"
+    ink = "#d4b26a" if variant == "dark" else "#0f1b2d"
     svg, meta = build(w, years, ink=ink, annual_alpha=0.17 if variant == "dark" else 0.13)
     open(out, "w").write(svg)
     json.dump(meta, open(out.replace(".svg", ".json"), "w"))

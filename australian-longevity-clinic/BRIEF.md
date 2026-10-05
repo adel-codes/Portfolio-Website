@@ -146,7 +146,8 @@ Four device families, none twice in a row, no `scrub`.
 | Plate: branchlet | AI peptide imagery | Drawn from the species' habit; illustrative |
 | Plate: cross-dating | AI hormone imagery | PEB07A against PEB07B, 1446 to 1505, five matched narrow rings |
 | Plate: century ledger | AI weight-loss imagery | PEB07A, 1003 to 2012, 30-year running mean |
-| Mark and favicon | AI caduceus badge | Four rings of the same round, and its core line |
+| Logo, favicon, touch icons | (revision 2) the drawn ring mark is retired | The clinic's own medallion from its live site, cut from its white square, not redrawn |
+| Doctors' portraits | (revision 2) none on the live site | The profile image supplied with the brief: cropped, one light print grade, not retouched |
 | Location plate | none (address only) | OpenStreetMap, ODbL |
 | Journal cores (16) | AI blog thumbnails | Sixteen other series from AUS123C and AUS118 |
 | Decade-dot notation | generic icon set | The dendrochronology marking convention |
@@ -187,3 +188,41 @@ Not cold: the checker built the page. Read from the final contact sheets, one wo
 | 4 | Resolve | Readiness | none |
 
 Peak checks: the largest visual change on the sheet is the core laid out (act 1, 0.54 to 0.68). Act 1 has the most scroll room (span 4.8). The authored stillness of 0 to 0.12 comes before it. The page resolves into the form: its last content screen is an input with the fee beside it.
+
+---
+
+## Revision 2 (2026-10-05): the clinic's logo, its doctors, and humanised copy
+
+The client kept the direction and asked for four changes only. What each did to the build:
+
+**Logo.** The clinic's medallion replaces the drawn ring mark everywhere a logo appears: the strip, the menu sheet, the footer, the favicons, the touch icons and the social card. It is the live site's own file, retrieved from its header, with only the white square around it removed (`logo_cutout.py`). The live site's favicon is a site-builder placeholder, not the logo, so the favicons are resizes of the medallion.
+
+**Ground.** "Stay blue-themed" did not match the build, whose dark ground was forest. The ground tokens moved to the medallion's navy (`--night #0b1526`, from its field `#0c1938`) and the ink to an ink-blue. Nothing else moved: the gold accent, the type, the plates and the acts are as approved. The plates, map, cores and social card were redrawn in the new ink. All contrast pairs still pass AA (listed in `site.css`).
+
+**The doctors.** A dedicated section, on the home page and as the doctors page. It is a register, not a team grid: one ruled entry per doctor, the photograph in the narrow column with a hairline mount, the record in the wide one. Names and post-nominals are exactly as the supplied image gives them. Each entry carries a small calendar drawn like the cores: a ruler of years from 1995 with the doctor's dated entries in gold, on the same scale for both, so the two records line up like the cross-dated cores in Fig. 4. On the home page it sits between the rail and the protocol, on the rail's ground: the rail ends on "the doctor will tell you what, if anything, makes sense", and the next thing on screen is the doctors.
+
+Grammar after the revision: pin (4.8) > pan (3.6) > flow (the doctors) > flow + in (the protocol) > reveal (the form). Still one pinned act and one peak; the added act is plain flow, so the curve gains a level stretch between orientation and assurance rather than a second climb.
+
+**Copy.** The educational copy was edited with the humanscope method (Mode B, explainer scope): program pages, FAQs, the home page's explainers and all fourteen journal articles. Every number, test, caveat and disclaimer was kept; overclaims were softened and listed. The hero lede and the measure-first passage are unchanged. Details and the clinical review list are in `README.md`.
+
+### Verification, revision 2
+
+| Run | Length | Acts | Dead scroll | Contrast at worst frame |
+|---|---|---|---|---|
+| Desktop 1440 x 900 | 14.2vh | pin > pan > flow > flow > flow (reveal) | none | all cues clear 4.5:1 |
+| Phone 390 x 844 | 18.6vh | same | none | all clear |
+| Compact 360 x 640 | 22.0vh | same | none | all clear |
+| Reduced motion, 1440 x 900 | 11.9vh | same | none | all clear |
+
+No console errors and no failed requests in any run. The added length is the doctors section, which is content in plain flow, not pinned scroll.
+
+Found and fixed: on phones of 380px and narrower the clinic's name ran under the menu button once the medallion replaced the smaller drawn mark, so it now wraps to two lines there. The rail's phone-size rule for its label rows was written against `.schema` globally, so it shrank the doctors' ledger too; it is now scoped to the rail's plates. On phones the ledger's label column squeezed the entries to a narrow strip, so below 520px each label sits above its entry.
+
+### Feel check, revision 2
+
+| Act | Intended | Felt | Change made |
+|---|---|---|---|
+| The doctors | Trust | Recognition: two faces and a ruled record after a run of drawn plates | none |
+
+The register is the first photography on the page. It is placed after the plates, never before them, so the specimen study still opens the site and the people arrive as the answer to "who reads my record".
+
