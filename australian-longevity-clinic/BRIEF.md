@@ -198,9 +198,9 @@ Run on the final code, 5 October 2026. Full results are in the README.
 | Compact phone 360 x 640 | 22.5 | static | The same |
 | Reduced motion, 1440 x 900 | 12.7 | static | The same |
 
-Also: the route stepped through at 14 screen sizes with no panel ever running off the screen; 47 of 47 form and routing checks, including the goal routing with and without motion and a tap test after the whole route has been walked; 24 pages at 320, 390 and 1440 px with no overflow or errors; 1,386 internal references with none broken; no em dashes, stock phrases or tree vocabulary anywhere.
+Also: the route stepped through at 14 screen sizes with no panel ever running off the screen; 49 of 49 form and routing checks, including the goal routing with and without motion, a tap test after the whole route has been walked, and both halves of a split panel; 24 pages at 320, 390 and 1440 px with no overflow or errors; 1,386 internal references with none broken; no em dashes, stock phrases or tree vocabulary anywhere.
 
-Found and fixed before sign-off: the test rows appeared a third of a second late (a specificity slip between the hidden and shown states); rows from a goal already passed stayed live behind the current one and took its taps (found while recording the walkthrough; panels now reset when left); the tests slip covered a doctor's photograph on phones; and the tallest panels ran off a phone screen, which is what the measured modes now prevent.
+Found and fixed before sign-off: the test rows appeared a third of a second late (a specificity slip between the hidden and shown states); rows from a goal already passed stayed live behind the current one and took its taps, and in split mode the faded tests took the taps meant for the button that replaced them (both found while recording the walkthroughs; panels now reset when left, and only what is showing takes a tap); the tests slip covered a doctor's photograph on phones; and the tallest panels ran off a phone screen, which is what the measured modes now prevent.
 
 ## Feel check
 

@@ -200,7 +200,11 @@
 .route-act.is-phased .route__block--check,
 .route-act.is-phased .route__after { grid-area: body; align-self: start; }
 .route-act.is-phased .route__block--check { transition: opacity 300ms var(--sc-ease-out), transform 300ms var(--sc-ease-out), visibility 0s; }
-.route-act.is-phased .route.is-later .route__block--check { opacity: 0; transform: translateY(-14px); visibility: hidden; transition: opacity 300ms var(--sc-ease-out), transform 300ms var(--sc-ease-out), visibility 0s linear 300ms; }
+.route-act.is-phased .route.is-later .route__block--check { opacity: 0; transform: translateY(-14px); visibility: hidden; pointer-events: none; transition: opacity 300ms var(--sc-ease-out), transform 300ms var(--sc-ease-out), visibility 0s linear 300ms; }
+.route-act.is-phased .route.is-later .route__block--check .is-on { visibility: hidden; transition: visibility 0s linear 300ms; }
+/* the two halves overlap, so only what is showing takes a tap */
+.route-act.is-phased .route__after { pointer-events: none; }
+.route-act.is-phased .route__after .is-on { pointer-events: auto; }
 
 /* static: every panel, one after another */
 .route-act:not(.is-scripted) .route-act__stage { height: auto; }
