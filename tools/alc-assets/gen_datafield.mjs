@@ -1,5 +1,5 @@
 // The hero's far plane: a field of the clinic's real tests, reference ranges
-// and re-test intervals, typeset in the site's own faces and defocused.
+// and re-test intervals, typeset in the site's face and defocused.
 // Nothing on it is decoration that isn't data: every line comes from ROUTES,
 // the same object that builds the route panels.
 //
@@ -33,7 +33,6 @@ const cols = ROUTES.map((r, i) => {
 }).join("");
 
 const html = `<!doctype html><html><head><meta charset="utf-8"><style>
-@font-face { font-family: "Azeret Mono"; src: url("assets/fonts/azeret-mono-latin.woff2") format("woff2"); font-weight: 100 900; }
 @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/schibsted-grotesk-latin.woff2") format("woff2"); font-weight: 400 900; }
 html, body { margin: 0; background: transparent; }
 body { width: 2400px; height: 1500px; position: relative; overflow: hidden; color: #e8e6dd; }
@@ -45,9 +44,9 @@ section:nth-child(3) { left: 1240px; }
 section:nth-child(4) { left: 1840px; }
 p { margin: 0; }
 .g { font: 600 78px/1.02 "Schibsted Grotesk"; letter-spacing: -0.025em; opacity: 0.6; margin-bottom: 40px; }
-.t { font: 500 42px/1.15 "Azeret Mono"; opacity: 0.55; margin-top: 34px; }
-.d { font: 400 27px/1.3 "Azeret Mono"; opacity: 0.34; margin-top: 8px; }
-.a { font: 500 31px/1.3 "Azeret Mono"; color: #d4b26a; opacity: 0.62; margin-top: 46px; max-width: 520px; }
+.t { font: 600 44px/1.15 "Schibsted Grotesk"; opacity: 0.55; margin-top: 34px; }
+.d { font: 400 29px/1.3 "Schibsted Grotesk"; opacity: 0.36; margin-top: 8px; }
+.a { font: 600 32px/1.3 "Schibsted Grotesk"; color: #d4b26a; opacity: 0.62; margin-top: 46px; max-width: 520px; }
 </style></head><body><div class="field">${cols}</div></body></html>`;
 
 const tmp = path.join(site, "_datafield.html");

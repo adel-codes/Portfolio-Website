@@ -12,10 +12,11 @@ const ticks = (items) => `<ul class="ticks">${items.map((i) => `<li>${i}</li>`).
 const steps = (items) => `<ol class="steps">${items.map(([t, d]) => `<li><div><b>${t}</b><p>${d}</p></div></li>`).join("")}</ol>`;
 
 function servicePage(ctx, o) {
-  const { head, strip, footer, scripts, link, rel, CLINIC, ROUTES, routePanel } = ctx;
+  const { head, strip, footer, scripts, link, rel, CLINIC, ROUTES, routePanel, photo, GOAL_PHOTO } = ctx;
   const depth = 1;
   const start = link(depth, "contact") + `?program=${o.key}#assessment`;
   const route = ROUTES.find((x) => x.key === o.key);
+  const band = o.photo || GOAL_PHOTO[o.key];
   return head({ title: `${o.title} · Australian Longevity Clinic`, description: o.description, depth, canonical: o.slug }) + `
 <body class="inner">
 ${strip(depth, o.slug, "light")}
@@ -30,6 +31,7 @@ ${strip(depth, o.slug, "light")}
       ${facts(o.facts)}
     </div>
   </header>
+  <figure class="page-photo"><div class="page-photo__in">${photo(depth, band, "wide", { sizes: "100vw", loading: "eager" })}</div></figure>
   <section class="spec g-light" data-ground="light">
     <div class="wrap spec__grid">
       <aside class="spec__fig route-aside" aria-label="What a doctor checks">
@@ -65,7 +67,7 @@ export function servicePages(ctx) {
   const pages = [];
 
   pages.push(["iv-drips/index.html", servicePage(ctx, {
-    key: "iv", slug: "iv-drips",
+    key: "iv", slug: "iv-drips", photo: "rest",
     title: "IV therapy in Annerley, Brisbane",
     description: "Doctor-supervised IV infusions at 628 Ipswich Road, Annerley: hydration, vitamin C, Myers cocktail, iron, vitamin D and NAD+. Every infusion starts with a consultation and an individual assessment.",
     h1: "IV therapy for energy, recovery and low iron.",
@@ -74,13 +76,13 @@ export function servicePages(ctx) {
     sections: [
       { h: "The infusions", html: `<p>Which infusion, and how much of it, is the doctor's call once you've been assessed. If you can't tell which of these applies to you, that's what the consultation is for.</p>
         <ul class="menu-list">
-          <li><b>Hydration</b><span class="mono">30 to 45 min</span><p>Saline with electrolytes and magnesium, to support fluid and electrolyte balance if the doctor thinks it suits you.</p></li>
-          <li><b>Vitamin C</b><span class="mono">45 to 60 min</span><p>Only after an individual medical assessment, at a dose the doctor sets. It isn't suitable for everyone.</p></li>
-          <li><b>Myers cocktail</b><span class="mono">45 to 60 min</span><p>Vitamin C, B-complex vitamins, magnesium and zinc, with the doses set from your assessment.</p></li>
-          <li><b>Iron infusion</b><span class="mono">1 to 4 hours</span><p>For iron deficiency or iron deficiency anaemia that pathology has confirmed. Your vital signs are watched throughout, and you may be given a small test dose first.</p></li>
-          <li><b>Vitamin D injection</b><span class="mono">15 to 20 min</span><p>An injection into muscle for vitamin D deficiency that a blood test has confirmed, dosed from your results.</p></li>
-          <li><b>NAD+ infusion</b><span class="mono">2 to 4 hours</span><p>Given slowly. The medical team adjusts the rate as the session goes.</p></li>
-          <li><b>Antioxidant</b><span class="mono">45 to 60 min</span><p>Alpha-lipoic acid, vitamin C, glutathione and selenium together, given under medical supervision.</p></li>
+          <li><b>Hydration</b><span class="label">30 to 45 min</span><p>Saline with electrolytes and magnesium, to support fluid and electrolyte balance if the doctor thinks it suits you.</p></li>
+          <li><b>Vitamin C</b><span class="label">45 to 60 min</span><p>Only after an individual medical assessment, at a dose the doctor sets. It isn't suitable for everyone.</p></li>
+          <li><b>Myers cocktail</b><span class="label">45 to 60 min</span><p>Vitamin C, B-complex vitamins, magnesium and zinc, with the doses set from your assessment.</p></li>
+          <li><b>Iron infusion</b><span class="label">1 to 4 hours</span><p>For iron deficiency or iron deficiency anaemia that pathology has confirmed. Your vital signs are watched throughout, and you may be given a small test dose first.</p></li>
+          <li><b>Vitamin D injection</b><span class="label">15 to 20 min</span><p>An injection into muscle for vitamin D deficiency that a blood test has confirmed, dosed from your results.</p></li>
+          <li><b>NAD+ infusion</b><span class="label">2 to 4 hours</span><p>Given slowly. The medical team adjusts the rate as the session goes.</p></li>
+          <li><b>Antioxidant</b><span class="label">45 to 60 min</span><p>Alpha-lipoic acid, vitamin C, glutathione and selenium together, given under medical supervision.</p></li>
         </ul>
         <p class="notice">IV infusions are health services delivered under the supervision of registered medical practitioners. They are not intended to diagnose, treat, cure or prevent any disease, and results vary between individuals.</p>` },
       { h: "Before an iron infusion", html: `<p>Iron is only given when pathology shows a deficiency, so you'll need results from the last 3 months that include:</p>
@@ -353,12 +355,12 @@ ${strip(depth, "404", "light")}
       <h1 class="d-xl" style="margin-top:1rem;max-width:14ch">That page isn't here.</h1>
       <p class="lede">The page may have moved when the site was rebuilt. These are the places most people are looking for.</p>
       <ul class="menu-list" style="margin-top:2.5rem">
-        <li><a href="${link(depth, "")}"><b>Home</b></a><span class="mono"></span></li>
-        <li><a href="${link(depth, "iv-drips")}"><b>IV therapy</b></a><span class="mono">More energy</span></li>
-        <li><a href="${link(depth, "peptide-therapy")}"><b>Peptide programs</b></a><span class="mono">Better skin and hair</span></li>
-        <li><a href="${link(depth, "testosterone-therapy")}"><b>Testosterone therapy</b></a><span class="mono">Feel strong again</span></li>
-        <li><a href="${link(depth, "weight-management")}"><b>Medical weight management</b></a><span class="mono">Lose weight</span></li>
-        <li><a href="${link(depth, "contact")}#assessment"><b>Begin your assessment</b></a><span class="mono"></span></li>
+        <li><a href="${link(depth, "")}"><b>Home</b></a><span class="label"></span></li>
+        <li><a href="${link(depth, "iv-drips")}"><b>IV therapy</b></a><span class="label">More energy</span></li>
+        <li><a href="${link(depth, "peptide-therapy")}"><b>Peptide programs</b></a><span class="label">Better skin and hair</span></li>
+        <li><a href="${link(depth, "testosterone-therapy")}"><b>Testosterone therapy</b></a><span class="label">Feel strong again</span></li>
+        <li><a href="${link(depth, "weight-management")}"><b>Medical weight management</b></a><span class="label">Lose weight</span></li>
+        <li><a href="${link(depth, "contact")}#assessment"><b>Begin your assessment</b></a><span class="label"></span></li>
       </ul>
     </div>
   </header>

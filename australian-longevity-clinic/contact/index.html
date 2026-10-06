@@ -20,7 +20,6 @@
 <link rel="icon" href="../assets/img/logo/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="../assets/img/logo/touch-icon-180.png">
 <link rel="preload" href="../assets/fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../assets/fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/scrollcraft/scrollcraft.css">
 <link rel="stylesheet" href="../assets/css/site.css">
 <script>document.documentElement.classList.add("js")</script>
@@ -31,7 +30,7 @@
   <div class="strip__in">
     <a class="brand" href="../index.html" aria-label="Australian Longevity Clinic, home">
       <img class="brand__logo" src="../assets/img/logo/alc-medallion-128.webp" srcset="../assets/img/logo/alc-medallion-64.webp 1x, ../assets/img/logo/alc-medallion-128.webp 2x" width="52" height="52" alt="" decoding="async">
-      <span class="brand__name" aria-hidden="true"><b>Australian Longevity Clinic</b><span>Annerley, Brisbane</span></span>
+      <span class="brand__name" aria-hidden="true"><b>Australian Longevity Clinic</b><span>Annerley &middot; Brisbane</span></span>
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__group">
@@ -48,7 +47,7 @@
 </header>
 <div class="sheet-menu" id="sheet-menu" hidden role="dialog" aria-modal="true" aria-label="Menu">
   <div class="sheet-menu__top">
-    <a class="brand" href="../index.html" aria-label="Australian Longevity Clinic, home"><img class="brand__logo" src="../assets/img/logo/alc-medallion-128.webp" srcset="../assets/img/logo/alc-medallion-64.webp 1x, ../assets/img/logo/alc-medallion-128.webp 2x" width="48" height="48" alt="" decoding="async"><span class="brand__name" aria-hidden="true"><b>Australian Longevity Clinic</b><span>Annerley, Brisbane</span></span></a>
+    <a class="brand" href="../index.html" aria-label="Australian Longevity Clinic, home"><img class="brand__logo" src="../assets/img/logo/alc-medallion-128.webp" srcset="../assets/img/logo/alc-medallion-64.webp 1x, ../assets/img/logo/alc-medallion-128.webp 2x" width="48" height="48" alt="" decoding="async"><span class="brand__name" aria-hidden="true"><b>Australian Longevity Clinic</b><span>Annerley &middot; Brisbane</span></span></a>
     <button class="sheet-menu__close" type="button">Close</button>
   </div>
   <nav aria-label="Menu">
@@ -85,6 +84,11 @@
         <img src="../assets/img/map-annerley.svg" alt="A street map of Annerley with the clinic marked at 628 Ipswich Road, between Venner Road and School Road, with Brisbane's CBD to the north." width="1200" height="900" loading="lazy" decoding="async">
         <figcaption>628 Ipswich Road, Annerley, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
       </figure>
+      <div class="photo-strip">
+        <figure class="photo-strip__item"><picture><source type="image/avif" srcset="../assets/img/photos/queenslanders-card-360.avif 360w, ../assets/img/photos/queenslanders-card-720.avif 720w" sizes="(max-width: 760px) 92vw, 30vw"><img src="../assets/img/photos/queenslanders-card-360.webp" srcset="../assets/img/photos/queenslanders-card-360.webp 360w, ../assets/img/photos/queenslanders-card-720.webp 720w" sizes="(max-width: 760px) 92vw, 30vw" width="720" height="540" alt="Two timber houses on Waterton Street, Annerley, one a yellow Queenslander with a deep verandah." loading="lazy" decoding="async"></picture><figcaption>Queenslanders on Waterton Street. <span>Photo: John Robert McPherson, CC0</span></figcaption></figure>
+        <figure class="photo-strip__item"><picture><source type="image/avif" srcset="../assets/img/photos/ipswich-1936-tall-480.avif 480w, ../assets/img/photos/ipswich-1936-tall-746.avif 746w" sizes="(max-width: 760px) 92vw, 30vw"><img src="../assets/img/photos/ipswich-1936-tall-480.webp" srcset="../assets/img/photos/ipswich-1936-tall-480.webp 480w, ../assets/img/photos/ipswich-1936-tall-746.webp 746w" sizes="(max-width: 760px) 92vw, 30vw" width="746" height="995" alt="Ipswich Road in about 1936, a wide road with tram lines and a few shops." loading="lazy" decoding="async"></picture><figcaption>Ipswich Road just south of Cracknell Road, about 1936. <span>Photo: State Library of Queensland</span></figcaption></figure>
+        <figure class="photo-strip__item"><picture><source type="image/avif" srcset="../assets/img/photos/jubilee-card-360.avif 360w, ../assets/img/photos/jubilee-card-720.avif 720w" sizes="(max-width: 760px) 92vw, 30vw"><img src="../assets/img/photos/jubilee-card-360.webp" srcset="../assets/img/photos/jubilee-card-360.webp 360w, ../assets/img/photos/jubilee-card-720.webp 720w" sizes="(max-width: 760px) 92vw, 30vw" width="720" height="540" alt="Jubilee Hall in Annerley, a cream hall with a curved parapet, at dusk." loading="lazy" decoding="async"></picture><figcaption>Jubilee Hall, Annerley. <span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Jubilee_Hall,_Annerley,_2026,_01.jpg">Chris Olszewski</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a>, cropped and toned</span></figcaption></figure>
+      </div>
     </div>
   </section>
   <section class="assess g-light" id="assessment" data-ground="light" aria-labelledby="assess-h">
@@ -97,7 +101,7 @@
     <aside class="assess__aside" aria-label="What the assessment involves">
       <div class="assess__progress">
         <ol class="progress-steps" aria-hidden="true"><li class="pr"></li><li class="pr"></li><li class="pr"></li><li class="pr"></li><li class="pr"></li></ol>
-        <p class="mono assess__step" aria-hidden="true"><span data-step-num>1</span> of 5<br><span data-step-name>Your goals</span></p>
+        <p class="label assess__step" aria-hidden="true"><span data-step-num>1</span> of 5<br><span data-step-name>Your goals</span></p>
       </div>
       <dl class="facts">
         <dt>Fee</dt><dd>$75, paid once through Stripe. It covers the doctor's review and your phone consultation. Not bulk billed.</dd>
@@ -111,11 +115,11 @@
 
     <form class="intake" id="intake" method="post" action="" data-endpoint="" data-checkout-url="" novalidate aria-labelledby="assess-h">
       <ol class="intake__tabs" aria-label="Assessment steps">
-        <li><button type="button" data-goto="0" aria-current="step"><span class="mono">1</span>Goals</button></li>
-        <li><button type="button" data-goto="1" disabled><span class="mono">2</span>About you</button></li>
-        <li><button type="button" data-goto="2" disabled><span class="mono">3</span>Health</button></li>
-        <li><button type="button" data-goto="3" disabled><span class="mono">4</span>Contact</button></li>
-        <li><button type="button" data-goto="4" disabled><span class="mono">5</span>Review</button></li>
+        <li><button type="button" data-goto="0" aria-current="step"><span class="label">1</span>Goals</button></li>
+        <li><button type="button" data-goto="1" disabled><span class="label">2</span>About you</button></li>
+        <li><button type="button" data-goto="2" disabled><span class="label">3</span>Health</button></li>
+        <li><button type="button" data-goto="3" disabled><span class="label">4</span>Contact</button></li>
+        <li><button type="button" data-goto="4" disabled><span class="label">5</span>Review</button></li>
       </ol>
       <div class="intake__alert" role="alert" tabindex="-1" hidden></div>
 
@@ -321,7 +325,7 @@
         <h3 id="st4" class="d-sm" tabindex="-1">Review and fee</h3>
         <div class="review" data-review></div>
         <div class="fee">
-          <p class="fee__amt"><span class="mono">Consultation fee</span><b>$75</b><span class="mono">AUD, paid once</span></p>
+          <p class="fee__amt"><span class="label">Consultation fee</span><b>$75</b><span class="label">AUD, paid once</span></p>
           <ol class="fee__next">
             <li><b>Now.</b> You pay through Stripe's secure checkout. Your card details go to Stripe, not to the clinic.</li>
             <li><b>Within 1 to 2 business days.</b> A doctor reads your answers, then calls you on <span data-echo="phone">the number you gave</span>, Monday to Friday, 9am to 5pm AEST.</li>

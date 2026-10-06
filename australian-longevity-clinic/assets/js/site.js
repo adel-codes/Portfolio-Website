@@ -124,6 +124,25 @@
     });
   });
 
+  // ---------------------------------------------- photographs drift ----
+  // A page's photo band moves a little slower than the page, inside a frame
+  // cut larger than it. Transform only; nothing under reduced motion.
+  var bands = [].slice.call(document.querySelectorAll(".page-photo"));
+  if (bands.length && !reduce) {
+    var bandTick = false;
+    var paintBands = function () {
+      bandTick = false;
+      var vh = innerHeight;
+      bands.forEach(function (b) {
+        var r = b.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        b.style.setProperty("--py", (((r.top + r.height / 2 - vh / 2) / vh) * -7).toFixed(2));
+      });
+    };
+    addEventListener("scroll", function () { if (!bandTick) { bandTick = true; requestAnimationFrame(paintBands); } }, { passive: true });
+    paintBands();
+  }
+
   // in-page anchors land below the fixed strip
   if (strip) document.documentElement.style.scrollPaddingTop = (strip.offsetHeight + 12) + "px";
   if (reduce) document.documentElement.style.scrollBehavior = "auto";

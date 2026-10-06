@@ -1,4 +1,4 @@
-# BRIEF.md: Australian Longevity Clinic, third scroll-craft build
+# BRIEF.md: Australian Longevity Clinic, third scroll-craft build (revision 4)
 
 **Directed by the client.** Revision notes received 5 October 2026, after review of the second build. The client's words are quoted verbatim below. Anything the notes did not cover is an authored decision and is labelled as one. No quotation is invented.
 
@@ -218,8 +218,114 @@ The peak sentence is true as written: tapping "Feel strong again" lands on every
 
 ---
 
+## Revision 4 (6 October 2026)
+
+**Directed by the client.** Notes received 6 October 2026, after review of revision 3. The client's words are quoted verbatim, with spoken fillers cut where marked. Anything the notes did not cover is an authored decision and is labelled as one.
+
+| The client said | What changed |
+|---|---|
+| "remove the section where it says what the clinic won't do" | The list, its small map and the address beside it are gone from the doctors act. The address moves to the end of the new Annerley act. |
+| "some of the stock images there are of quite high quality, so you can pull them directly from there" | Eight of the clinic's images from its live site, as lifestyle pictures for the four goals and the inner pages |
+| "the font underneath Australian Longevity Clinic ... looks a bit Claude-like, a bit code-like", and "a ... far more professional-looking ... sign-up kind of outlay" | The monospaced face is gone. The lockup is the name in Schibsted Grotesk 600 over "ANNERLEY · BRISBANE" in spaced capitals. Authored: the same face set every label on the site, so it was replaced everywhere, not only under the name. |
+| "more imagery of, yeah, like the Annerly area", and "other images or AI generated assets you can come up with that are creative in nature and unique" | A new act over a night map of Annerley drawn from OpenStreetMap, with photographs of the suburb from Wikimedia Commons. Authored: no image service was available here (it needs an API key this environment lacks), so the new artwork is drawn in code from real data. |
+| "Potentially some visual effects while the user scrolls" | The Annerley act's camera, photographs that drift on the rail and on the inner pages, and wipes in the route act and on the doctors' photographs |
+| "The messaging of the website is quite good" | Kept. The only new lines are the Annerley act's heading, its lede and the photographs' captions. |
+
+### What the revision changes in the plan
+
+**Beats.** A sixth beat, *Place*, between Trust and Commitment: the clinic is a real door on a road the visitor knows, and it has been a high street for ninety years.
+
+```
+1  Recognition  what you want, said plainly, and the real doctors who prescribe it     act 1
+2  Choice       the four programs, each led by the goal it serves                       act 2
+3  Proof        pick a goal: the tests, the prescribing rule, the re-test dates         act 3 (peak)
+4  Trust        the lead doctors: faces, qualifications, the years behind them          act 4
+5  Place        Annerley: a 1934 print, today's streets, the road to the door           act 5 (new)
+6  Commitment   the assessment, already set to the goal you picked                      act 6 (close)
+```
+
+**Grammar bans, as amended by the client.** Photography is no longer banned outright. Allowed now: the clinic's own lifestyle pictures, and documentary photographs of Annerley with their credits. Still banned: pictures that would pass as the clinic's rooms, staff or patients; product shots and anything with a medicine's name on it; metaphor imagery; and everything else on the original list.
+
+**Feeling curve.**
+
+| Act | Feeling | What on screen causes it |
+|---|---|---|
+| 1 Hero | Recognition | Their own goals as the first controls; the faces of the doctors who prescribe |
+| 2 Programs | Choice | Four programs, each a photograph led by the goal it serves |
+| 3 Route | Confidence (peak) | The exact tests, the prescribing rule and the re-test dates assemble for the goal they picked |
+| 4 Doctors | Reassurance | The lead doctors' faces, their qualifications exactly as they hold them, their experience as the clinic gives it |
+| 5 Annerley | Nearness | Streets they know, two photographs from the 1930s, the road drawn in gold to the door |
+| 6 Form | Resolve | The questionnaire opens on the goal they already chose |
+
+No two adjacent acts share a feeling.
+
+**Score.**
+
+| Beat | Device | Why this one |
+|---|---|---|
+| Recognition | `flow` + `parallax` planes + pointer depth | Unchanged |
+| Choice | `pan` | Unchanged; the plates are now photographs that drift and settle |
+| Proof | `pin` + the route panel | Unchanged, and still the peak |
+| Trust | `flow` + `in` | The photographs wipe in with their records |
+| Place | `pin` + a camera written from the act's progress | A held frame for a slow flight. Span 3.8: print 0 to 0.3, turn 0.28 to 0.5, travel 0.42 to 0.84, settle 0.8 to 0.97 |
+| Commitment | `reveal` | Unchanged |
+
+Six acts, and no device twice in a row: flow, pan, pin, flow, pin, reveal. The peak stays the route. It keeps the longest span (4.6 whole, 5.6 split, against the Annerley act's 3.8) and it is the only act the visitor steers. The Annerley act is slower and quieter: no data and no controls, one road. The camera is CSS 3D transforms on a plane holding the map, the gold road and the standing photographs; `home.js` writes the camera from the act's progress, and the engine is untouched.
+
+**Fingerprint gate.** This is a revision of `alc-route`, not a new build. It shares that row's grammar, nav, hero, close and signature move on purpose, so a new row is appended rather than the old one edited. Against the two other builds it still passes:
+
+| Dimension | `alc-home` | `alc-specimen` | Revision 4 | Differs from home | Differs from specimen |
+|---|---|---|---|---|---|
+| Grammar | Chaptered editorial | Specimen study | Goal route | yes | yes |
+| Nav treatment | Margin folio, no bar | Fixed strip | The same fixed strip | yes | **no** |
+| Hero device | Title page | Layered data-drawn specimen | Goals as controls over real portraits and a field of real test data | yes | yes |
+| Act-sequence shape | 7 acts, one pinned, about 9vh | 5 acts, 14.2vh | flow > pan > pin > flow > pin > reveal, 6 acts, 16.6vh | yes | yes |
+| Close pattern | Colophon plate | The assessment form | The same form, opened on the chosen goal | yes | **no** |
+| Signature move | A pathway that draws its exit | The core leaves the round | Your goal, routed | yes | yes |
+| **Total** | | | | **6 of 6** | **4 of 6** |
+
+### Assets (revision 4)
+
+| Asset | File | Source |
+|---|---|---|
+| Lifestyle photographs | `assets/img/photos/` | Eight images from the clinic's live site, cropped, barely graded |
+| Annerley photographs | `assets/img/photos/` | State Library of Queensland (public domain, two prints from the 1930s), John Robert McPherson (CC0), Chris Olszewski (CC BY-SA 4.0), all via Wikimedia Commons |
+| The Annerley act's map | `assets/img/place/` | OpenStreetMap, drawn at night in the site's palette by `tools/alc-assets/gen_place.mjs`, which also writes Ipswich Road's line and the positions of the clinic and the photographs |
+| Data field, social card, location map | as before | Re-set in Schibsted Grotesk now that the monospaced face is gone |
+
+### Verification (revision 4)
+
+Run on the final code, 6 October 2026. Full results are in the README.
+
+| Run | Page length | Route | Annerley | Result |
+|---|---|---|---|---|
+| Desktop 1440 x 900 | 16.6 viewport heights | whole | moving | No dead scroll; every line over an image clears 4.5:1 in its worst frame; no console errors or failed requests |
+| Phone 390 x 844 | 21.9 | split | moving | The same |
+| Compact phone 360 x 640 | 24.9 | static | moving | The same |
+| Reduced motion, 1440 x 900 | 13.0 | static | still | No dead scroll, no errors |
+
+Also: the Annerley act sampled at 21 screen sizes, with no standing photograph under the header and the clinic never under the visit card; the 1934 print clear of the heading at 16 sizes; the still and no-JavaScript forms at phone, phone-on-its-side, short laptop and desktop sizes, and a phone turned both ways; the route at 14 sizes; 49 of 49 form and routing checks; 24 pages at 320, 390 and 1440 px; 1,669 internal references with none broken; no em dashes or stock phrases.
+
+The most important thing found and fixed: on laptops 657 to 768 px tall, the commonest sizes, the photographs standing on the map rose under the header. The camera's mark now sits lower on shorter screens. The README lists the rest.
+
+### Feel check (revision 4)
+
+| Act | Intended | On the sheet | Verdict |
+|---|---|---|---|
+| 1 Hero | Recognition | Unchanged from revision 3; the place line under the name is now spaced capitals, not code | Holds |
+| 2 Programs | Choice | One photograph per goal, the goal set over it, its tests along the top; each drifts and settles as it arrives | Holds. The photographs make the rail warmer; the tests along the top keep it factual |
+| 3 Route | Confidence | Unchanged; on large screens the goal's photograph sits under the buttons and changes with the goal | Holds |
+| 4 Doctors | Reassurance | The head, then each record, with the photographs wiping in. No list of refusals. | Holds |
+| 5 Annerley | Nearness | The 1934 print over the heading; the print drops and the map comes up; the city centre 5.5 km north; the road drawn in gold; the camera down Ipswich Road, the Waterton Street houses, the 1936 photograph standing on its corner; the clinic with the visit card | Holds where it moves. Under reduced motion and on screens 600 px tall or less it is one still frame, so the flight is lost there and the place is not. |
+| 6 Form | Resolve | Unchanged | Holds |
+
+What a reviewer may still question: the clinic's lifestyle images look AI-generated, and next to documentary photographs of Annerley the difference shows; and the Annerley act adds about three screens of scrolling before the form.
+
+---
+
 ## History
 
 - **First build** (`alc-home`, chaptered editorial) was replaced in full.
 - **Second build** (`alc-specimen`, specimen study): a Huon pine cross-section drawn from NOAA ring data, a core drawn out of it as the signature move. Revision 2 added the clinic's own logo, the doctors' register, the navy ground and humanised copy. The client kept the logo, the doctors, the services list and the form, and asked for the tree to go. Its brief, assets and generators remain in the git history (commit `60a21d1`).
 - **Third build** (`alc-route`, goal route): this brief.
+- **Revision 4** of the third build (`alc-route r4`, 6 October 2026): the list of what the clinic won't do removed, photographs from the clinic's live site and of Annerley, one typeface, and the Annerley act.

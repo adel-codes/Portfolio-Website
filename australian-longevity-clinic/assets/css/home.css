@@ -25,7 +25,7 @@
 .goal:hover { background: color-mix(in oklab, var(--sc-ink) 7%, transparent); text-decoration: none; }
 .goal[aria-current="true"] { border-color: var(--sc-accent); }
 .goal[aria-current="true"]::before { background: var(--sc-accent); border-color: var(--sc-accent); opacity: 1; }
-.goals__label { font-family: var(--sc-font-mono); font-size: var(--t-mono); color: var(--sc-ink-soft); margin-bottom: 0.75rem; }
+.goals__label { font-family: var(--sc-font-text); font-weight: 600; letter-spacing: var(--label-track); text-transform: uppercase; font-size: var(--t-label); color: var(--sc-ink-soft); margin-bottom: 0.8rem; }
 
 /* --------------------------------------------------------- act 1: hero
    Planes, back to front: a defocused field of the clinic's real tests, the
@@ -61,7 +61,7 @@
 
 .hero__scene { grid-area: scene; position: relative; align-self: start; justify-self: end; padding-top: clamp(1.2rem, 3svh, 2rem); width: min(100%, 31rem); }
 .hero__prints { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; align-items: start; }
-.hero__label { grid-column: 1 / -1; font-family: var(--sc-font-mono); font-size: var(--t-mono); color: var(--bone-2); margin-bottom: 0.2rem; }
+.hero__label { grid-column: 1 / -1; font-family: var(--sc-font-text); font-weight: 600; letter-spacing: var(--label-track); text-transform: uppercase; font-size: var(--t-label); color: var(--bone-2); margin-bottom: 0.2rem; }
 .print { margin: 0; }
 .print { display: flex; flex-direction: column; }
 .print:nth-of-type(2) { margin-top: 2.6rem; }
@@ -80,10 +80,10 @@
   background: var(--quartz); color: var(--ink);
   box-shadow: 0 2px 3px hsl(var(--sc-shadow-color) / 0.35), 0 22px 40px -18px hsl(var(--sc-shadow-color) / 0.8);
 }
-.slip__label { font-family: var(--sc-font-mono); font-size: 0.68rem; color: var(--ink-2); }
+.slip__label { font-family: var(--sc-font-text); font-weight: 600; letter-spacing: var(--label-track); text-transform: uppercase; font-size: 0.58rem; color: var(--ink-2); line-height: 1.5; }
 .slip__goal { font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; margin-top: 0.3rem; }
 .slip__tests { list-style: none; margin-top: 0.5rem; border-top: 1px solid color-mix(in oklab, var(--ink) 16%, transparent); }
-.slip__tests li { font-family: var(--sc-font-mono); font-size: 0.7rem; line-height: 1.35; padding: 0.24rem 0; border-bottom: 1px solid color-mix(in oklab, var(--ink) 10%, transparent); }
+.slip__tests li { font-size: 0.78rem; font-weight: 500; line-height: 1.35; padding: 0.24rem 0; border-bottom: 1px solid color-mix(in oklab, var(--ink) 10%, transparent); }
 .slip.is-swapping .slip__goal, .slip.is-swapping .slip__tests { opacity: 0; }
 .slip__goal, .slip__tests { transition: opacity 180ms var(--sc-ease-out); }
 
@@ -114,15 +114,30 @@
 .rail__head { width: min(27rem, 30vw); display: grid; gap: 1.1rem; }
 .rail__head p { max-width: 36ch; }
 .pl { display: grid; grid-template-columns: auto minmax(0, 22rem); gap: 2rem; align-items: center; }
-/* the goal is the image: set in type on a dark plate, with the tests a
-   doctor would run for it along the top */
+/* each goal on a photograph, the tests a doctor would run along the top and
+   the goal set large at the foot. The photograph is oversized inside its
+   frame and drifts against the rail's travel (home.js writes --px and --pz),
+   so the frames read as windows rather than cards. Scrims sit only where
+   the type does. */
 .pl__plate {
+  position: relative; margin: 0; overflow: hidden;
   height: min(60svh, 38rem); aspect-ratio: 4 / 5;
-  display: flex; flex-direction: column; justify-content: space-between;
-  padding: clamp(1.2rem, 2.2vw, 1.8rem);
   background: var(--night); color: var(--bone);
 }
-.pl__checks { font-family: var(--sc-font-mono); font-size: 0.72rem; line-height: 1.7; color: var(--bone-2); max-width: 30ch; }
+.pl__photo { position: absolute; inset: -3% -9%; }
+.pl__photo img {
+  width: 100%; height: 100%; object-fit: cover; max-width: none;
+  transform: translate3d(calc(var(--px, 0) * 1%), 0, 0) scale(var(--pz, 1));
+}
+.pl__over {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  background:
+    linear-gradient(180deg, rgb(11 21 38 / 0.78) 0%, rgb(11 21 38 / 0.38) 18%, rgb(11 21 38 / 0) 32%),
+    linear-gradient(0deg, rgb(11 21 38 / 0.86) 0%, rgb(11 21 38 / 0.5) 22%, rgb(11 21 38 / 0) 44%);
+}
+.pl__checks { font-size: 0.8rem; font-weight: 500; line-height: 1.6; color: var(--bone); max-width: 30ch; }
 .pl__goal { font-weight: 500; font-size: clamp(2.2rem, 1.2rem + 2.4vw, 3.6rem); line-height: 1; letter-spacing: -0.035em; max-width: 8ch; }
 .pl__goal::after { content: ""; display: block; width: 2.6rem; height: 2px; margin-top: 1.1rem; background: var(--gold); }
 .pl__text { display: grid; gap: 0.9rem; align-content: start; }
@@ -140,7 +155,7 @@
   .rail { gap: 1.5rem; align-items: flex-start; }
   .rail__head { width: 78vw; padding-top: 2svh; }
   .pl { width: 82vw; grid-template-columns: 1fr; gap: 0.9rem; }
-  .pl__plate { height: auto; aspect-ratio: auto; min-height: 11.5rem; gap: 1.4rem; }
+  .pl__plate { height: auto; aspect-ratio: 4 / 3; }
   .pl__goal { font-size: 2.1rem; max-width: 10ch; }
   .pl__text { gap: 0.6rem; }
   .pl__text h3 { font-size: 1.45rem; }
@@ -177,7 +192,18 @@
 .route-act__lede { color: var(--bone-2); max-width: 34ch; }
 .goals--route ul { flex-direction: column; align-items: stretch; gap: 0.45rem; margin-top: 0.4rem; max-width: 19rem; }
 .goals--route .goal { justify-content: flex-start; }
-.route-act__chosen { font-family: var(--sc-font-mono); font-size: var(--t-mono); color: var(--gold); min-height: 1.3em; }
+.route-act__chosen { font-size: 0.86rem; font-weight: 500; color: var(--gold); min-height: 1.3em; }
+/* the goal's photograph under the goals, on screens tall enough to hold it:
+   the new one wipes up over the last (home.js swaps is-on and was-on) */
+.route-act__window { display: none; position: relative; width: min(100%, 19rem); aspect-ratio: 3 / 2; overflow: hidden; background: var(--night-2); margin-top: 0.4rem; }
+.route-act__shot { position: absolute; inset: 0; clip-path: inset(100% 0 0 0); }
+.route-act__shot img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); }
+.route-act__shot.was-on { clip-path: inset(0); z-index: 1; }
+.route-act__shot.is-on { clip-path: inset(0); z-index: 2; transition: clip-path 640ms var(--sc-ease-out); }
+.route-act__shot.is-on img { transform: none; transition: transform 1400ms var(--sc-ease-out); }
+@media (min-width: 961px) and (min-height: 880px) {
+  .route-act__window { display: block; }
+}
 
 .route-act__panels { display: grid; align-items: center; }
 .route { grid-area: 1 / 1; max-width: 50rem; }
@@ -246,26 +272,178 @@
   .route-act.is-static .route { scroll-margin-top: 3.6rem; }
 }
 
-/* ------------------------------------------------- act 4: the lead doctors */
-.lead { padding: clamp(5rem, 10vw, 8.5rem) 0 clamp(3.5rem, 7vw, 6rem); }
+/* ------------------------------------------------- act 4: the lead doctors
+   The photographs wipe up as the register arrives. */
+.lead { padding: clamp(5rem, 10vw, 8.5rem) 0 clamp(4rem, 8vw, 7rem); }
 .lead__head { display: grid; gap: 1.3rem; max-width: 46rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 .lead__links { display: flex; flex-wrap: wrap; gap: 0.7rem 2rem; }
-.lead__visit {
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 2.5rem clamp(2.5rem, 5vw, 5.5rem); align-items: start;
-  margin-top: clamp(3rem, 6vw, 5rem);
-}
-.lead__map img { border: 1px solid var(--rule); }
-.lead__rules { display: grid; gap: 1.2rem; font-size: 0.97rem; }
-.lead__rules address { font-style: normal; }
-.dashes { list-style: none; display: grid; gap: 0.6rem; }
-.dashes li { padding-left: 1.5rem; position: relative; }
-.dashes li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 0.8rem; height: 1px; background: var(--sc-accent); }
-@media (max-width: 960px) {
-  .lead__visit { grid-template-columns: 1fr; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .lead__register .record__photo img { clip-path: inset(100% 0 0 0); transform: scale(1.06); transition: clip-path 1100ms var(--sc-ease-out), transform 1600ms var(--sc-ease-out); }
+  .js .lead__register.sc-in .record__photo img { clip-path: inset(0); transform: none; }
+  .js .lead__register.sc-in .record + .record .record__photo img { transition-delay: 160ms; }
 }
 
-/* ------------------------------------------------ act 5: the paper arrives
+/* ---------------------------------------------------- act 5: Annerley
+   Pinned. A print of Annerley in 1934 drops away onto today's streets, drawn
+   from OpenStreetMap; the camera tilts, swings round to look down Ipswich
+   Road and travels it to the clinic, past photographs standing where they
+   were taken. home.js writes the camera (--tilt, --rot, --zoom, --fx, --fy, --sx)
+   and each pin's --o from the act's progress. Transform and opacity only. */
+.place__stage { background: var(--night); overflow: hidden; min-height: 100svh; }
+html:not(.js) .place__stage { position: relative; }
+.place__scene {
+  position: absolute; inset: 0; perspective: 1100px; perspective-origin: 50% 34%;
+  -webkit-mask-image: radial-gradient(130% 95% at 50% 50%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(130% 95% at 50% 50%, #000 58%, transparent 100%);
+}
+.place__plane {
+  --S: 2400px;
+  position: absolute; left: 50%; top: var(--top, 60%); width: var(--S); height: var(--S);
+  transform-origin: 0 0; transform-style: preserve-3d;
+  transform: translateX(var(--sx, 0px)) rotateX(calc(var(--tilt, 0) * 1deg)) rotateZ(calc(var(--rot, 0) * 1deg)) scale(var(--zoom, 0.4))
+             translate(calc(var(--fx, 0.5) * var(--S) * -1), calc(var(--fy, 0.5) * var(--S) * -1));
+}
+.place__map { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; opacity: var(--mapo, 1); }
+.place__road { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.place__road path {
+  fill: none; stroke: var(--gold); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--draw, 0));
+}
+.place__ring { position: absolute; left: calc(var(--x) * 100%); top: calc(var(--y) * 100%); width: 0; height: 0; opacity: var(--ring, 0); }
+.place__ring::before, .place__ring::after {
+  content: ""; position: absolute; left: -60px; top: -60px; width: 120px; height: 120px; border-radius: 50%;
+  border: 3px solid var(--gold);
+}
+.place__ring::before { transform: scale(0.12); background: var(--gold); }
+@media (prefers-reduced-motion: no-preference) {
+  .place__ring::after { animation: place-pulse 2.6s var(--sc-ease-out) infinite; }
+}
+@keyframes place-pulse { from { transform: scale(0.3); opacity: 0.9; } to { transform: scale(1.5); opacity: 0; } }
+
+/* things that stand on the map: counter-rotated so they face the camera,
+   held at their own size while the map zooms */
+.place__pin { position: absolute; left: calc(var(--x) * 100%); top: calc(var(--y) * 100%); width: 0; height: 0; transform-style: preserve-3d; }
+.place__pin > * {
+  position: absolute; left: 0; top: 0; margin: 0; transform-origin: 0 0;
+  transform: scale(calc(var(--k, 1) / var(--zoom, 1))) rotateZ(calc(var(--rot, 0) * -1deg)) rotateX(calc(var(--tilt, 0) * -1deg)) translate(-50%, calc(-100% - var(--lift, 0px)));
+  opacity: var(--o, 0);
+}
+.place__card {
+  --lift: 2.6rem;
+  width: 15rem; padding: 0.45rem 0.45rem 0.7rem; background: var(--sheet); color: var(--ink);
+  box-shadow: 0 2px 3px hsl(var(--sc-shadow-color) / 0.4), 0 26px 44px -20px hsl(var(--sc-shadow-color) / 0.9);
+}
+.place__card::after { content: ""; position: absolute; left: 50%; top: 100%; width: 1px; height: var(--lift); background: var(--gold); }
+.place__card img { display: block; width: 100%; height: auto; }
+.place__card figcaption { display: grid; gap: 0.15rem; padding: 0.6rem 0.25rem 0; }
+.place__card b { font-size: 0.88rem; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+.place__card span { font-size: 0.78rem; color: var(--ink-2); }
+.place__card small { font-size: 0.66rem; color: var(--ink-2); margin-top: 0.15rem; }
+.place__pin--then .place__card { width: 11.5rem; }
+.place__city {
+  --lift: 0px; white-space: nowrap; text-align: center;
+  font-size: 0.78rem; font-weight: 600; letter-spacing: var(--label-track); text-transform: uppercase; color: var(--bone);
+}
+.place__city::before { content: "\2191"; display: block; font-size: 1.4rem; color: var(--gold); line-height: 1; margin-bottom: 0.3rem; }
+.place__city b { color: var(--gold); font-weight: 600; }
+.place__clinic { --lift: 0.8rem; display: grid; justify-items: center; gap: 0.45rem; }
+.place__clinic img { width: 3.8rem; height: 3.8rem; border-radius: 50%; box-shadow: 0 10px 24px -8px hsl(var(--sc-shadow-color) / 0.9); }
+.place__clinic b { white-space: nowrap; background: var(--gold); color: var(--night); font-size: 0.8rem; font-weight: 600; padding: 0.28rem 0.6rem; }
+
+/* 1934: a print on the table, dropped onto the map */
+.place__archive {
+  position: absolute; right: 6vw; top: calc(var(--strip-h) + 7svh); margin: 0;
+  width: min(50vw, 48rem, calc((88svh - var(--strip-h) - 4.8rem) * 1.333));   /* never taller than the screen allows */
+  padding: 0.55rem 0.55rem 0.8rem; background: var(--sheet); color: var(--ink);
+  box-shadow: 0 2px 3px hsl(var(--sc-shadow-color) / 0.4), 0 34px 60px -24px hsl(var(--sc-shadow-color) / 0.95);
+  transform-origin: 50% 80%;
+  transform: translate3d(0, calc(var(--drop, 0) * 34svh), 0) rotate(calc(-1.4deg + var(--drop, 0) * 5deg)) scale(calc(1 - var(--drop, 0) * 0.38));
+  opacity: var(--archive, 1);
+}
+.place__archive img { display: block; width: 100%; height: auto; }
+.place__archive figcaption { font-size: 0.8rem; color: var(--ink-2); padding: 0.55rem 0.2rem 0; line-height: 1.4; }
+.place__archive figcaption span { display: block; font-size: 0.68rem; margin-top: 0.15rem; }
+
+.place__copy { position: absolute; z-index: 1; left: 0; right: 0; top: calc(var(--strip-h) + 9svh); pointer-events: none; }
+.place__words { width: fit-content; }
+.place__copy h2 { max-width: 11ch; }
+.place__copy .lede { max-width: 26ch; margin-top: 1.1rem; color: var(--bone); }
+.place__visit {
+  position: absolute; z-index: 1; left: var(--sc-gutter); bottom: clamp(1.5rem, 5svh, 3.5rem); width: min(24rem, 34vw);
+  padding: 1.2rem 1.3rem 1.3rem; background: color-mix(in oklab, var(--night) 88%, transparent); border: 1px solid var(--rule-strong);
+  display: grid; gap: 0.75rem;
+}
+.place__visit address { font-style: normal; font-size: 1.05rem; font-weight: 500; }
+.place__visit .facts { font-size: 0.9rem; }
+.place__links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; font-size: 0.94rem; }
+
+@media (max-width: 860px) {
+  .place__scene { perspective: 760px; perspective-origin: 50% 30%; }
+  .place__plane { top: var(--top, 54%); }
+  .place__card { width: 9.5rem; --lift: 1.6rem; padding: 0.3rem 0.3rem 0.5rem; }
+  .place__pin--then .place__card { width: 7.6rem; }
+  .place__card b { font-size: 0.74rem; }
+  .place__card span { font-size: 0.66rem; }
+  .place__card small { font-size: 0.58rem; }
+  .place__clinic img { width: 2.8rem; height: 2.8rem; }
+  .place__clinic b { font-size: 0.7rem; }
+  /* under the heading, lower and smaller on a short screen so the two never meet */
+  .place__archive {
+    left: 0; right: 0; margin-inline: auto; top: auto; bottom: clamp(1rem, calc(100svh - 41rem), 14svh);
+    width: min(calc(100% - 2 * var(--sc-gutter)), 34rem, calc((97svh - var(--strip-h) - 17.3rem) * 1.333));
+  }
+  .place__copy { top: calc(var(--strip-h) + 3svh); }
+  .place__visit { bottom: 1rem; width: min(24rem, calc(100% - 2 * var(--sc-gutter))); padding: 0.9rem 1rem 1rem; gap: 0.5rem; }
+  .place__visit .facts { font-size: 0.82rem; }
+}
+
+/* a short phone: the visit card keeps the address and the links (the hours
+   are in the footer and on the contact page) so the clinic stays in view */
+@media (max-width: 860px) and (max-height: 780px) {
+  .place:not(.is-still) .place__visit .facts { display: none; }
+}
+
+/* a phone on its side: heading left, print right */
+@media (max-width: 860px) and (orientation: landscape) {
+  .place__archive {
+    left: auto; right: var(--sc-gutter); top: calc(var(--strip-h) + 4svh); bottom: auto; margin: 0;
+    width: min(46vw, calc((92svh - var(--strip-h) - 4.8rem) * 1.333));
+  }
+}
+
+/* reduced motion: one held frame near the end, nothing pinned */
+.place.is-still .place__stage { position: relative; height: max(100svh, 40rem); }
+.place.is-still .place__archive { display: none; }
+/* on a phone, or any screen too short for the moving act, the held frame
+   and the no-script page stack in one column: heading, then the map (or the
+   1934 print), then the visit card. The photographs keep their phone size so
+   one map window fits them at every width. */
+@media (max-width: 860px), (max-height: 600px) {
+  .place.is-still .place__stage, html:not(.js) .place__stage {
+    display: flex; flex-direction: column; gap: 1.25rem; height: auto; min-height: 0;
+    padding: calc(var(--strip-h) + 1.5rem) 0 2.5rem;
+  }
+  .place.is-still .place__copy, html:not(.js) .place__copy { position: relative; top: auto; }
+  .place.is-still .place__scene {
+    position: relative; inset: auto; flex: none; height: 32rem; perspective: 760px; perspective-origin: 50% 30%;
+    -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  }
+  .place.is-still .place__plane { top: 76%; }
+  .place.is-still .place__pin > * { --k: 1; }
+  .place.is-still .place__card { width: 9.5rem; --lift: 1.6rem; padding: 0.3rem 0.3rem 0.5rem; }
+  .place.is-still .place__pin--then .place__card { width: 7.6rem; }
+  .place.is-still .place__card b { font-size: 0.74rem; }
+  .place.is-still .place__card span { font-size: 0.66rem; }
+  .place.is-still .place__card small { font-size: 0.58rem; }
+  html:not(.js) .place__archive { position: relative; inset: auto; width: min(calc(100% - 2 * var(--sc-gutter)), 34rem); margin: 0.5rem auto; }
+  .place.is-still .place__visit, html:not(.js) .place__visit {
+    position: relative; left: auto; bottom: auto; width: auto; max-width: 30rem;
+    margin: 0 var(--sc-gutter) 0 calc(max(0px, (100% - var(--sc-maxw)) / 2) + var(--sc-gutter));   /* on the heading's edge */
+  }
+}
+
+/* ------------------------------------------------ act 6: the paper arrives
    The assessment's ground wipes up over the dark as it enters: a change of
    state from reading to doing. Reduced motion shows it settled. */
 .home .assess { background: transparent; padding: 0; }

@@ -125,6 +125,22 @@
     current = -1; lastKey = "";
   }
 
+  // The goal's photograph under the goals: the new one wipes up over the last.
+  var shots = routeAct ? [].slice.call(routeAct.querySelectorAll(".route-act__shot")) : [];
+  var shotKey = keys[0], shotTimer = 0;
+  function setShot(k) {
+    if (!shots.length || !k || k === shotKey) return;
+    var prev = shotKey;
+    shotKey = k;
+    clearTimeout(shotTimer);
+    shots.forEach(function (el) {
+      var g = el.getAttribute("data-goal");
+      el.classList.toggle("was-on", g === prev);
+      el.classList.toggle("is-on", g === k);
+    });
+    shotTimer = setTimeout(function () { shots.forEach(function (el) { el.classList.remove("was-on"); }); }, reduce ? 0 : 700);
+  }
+
   // ------------------------------------------------------- the route act --
   // Static: nothing pins, so the goal of the panel filling the upper part of
   // the screen, below the sticky goals row on a phone, is lit.
@@ -135,6 +151,7 @@
     panels.forEach(function (el, j) { if (el.getBoundingClientRect().top <= line) i = j; });
     if (i === current) return;
     current = i;
+    if (i >= 0) setShot(keys[i]);
     var lit = null;
     routeLinks.forEach(function (a) {
       var on = i >= 0 && a.getAttribute("data-goal") === keys[i];
@@ -169,6 +186,7 @@
         [].forEach.call(el.querySelectorAll(".is-on"), function (x) { x.classList.remove("is-on"); });
       });
       routeLinks.forEach(function (a) { a.setAttribute("aria-current", a.getAttribute("data-goal") === keys[i] ? "true" : "false"); });
+      setShot(keys[i]);
       current = i;
     }
     var panel = panels[i];
@@ -231,13 +249,18 @@
   // ----------------------------------------------------------- the rail --
   var rail = pan && pan.querySelector("[data-sc-pan]");
   var items = rail ? [].slice.call(rail.children).slice(1) : [];
+  // Each item settles as it arrives; its photograph drifts against the
+  // rail's travel inside an oversized frame, and eases from a slight zoom.
   function settleRail() {
     if (!rail || reduce) return;
     var vw = innerWidth;
     items.forEach(function (it) {
-      var x = it.getBoundingClientRect().left;
-      var t = clamp((vw - x) / (vw * 0.42), 0, 1);
+      var r = it.getBoundingClientRect();
+      var t = clamp((vw - r.left) / (vw * 0.42), 0, 1);
+      var d = clamp((r.left + r.width / 2 - vw / 2) / vw, -1, 1);
       it.style.setProperty("--in", (0.55 + 0.45 * t).toFixed(3));
+      it.style.setProperty("--px", (-d * 6).toFixed(2));
+      it.style.setProperty("--pz", (1.07 - 0.07 * t).toFixed(3));
     });
   }
   // Keyboard focus inside the rail scrolls the page so the focused plate is
@@ -256,6 +279,129 @@
     });
   }
 
+  // ------------------------------------------------------------ Annerley --
+  // A camera over today's streets. The 1934 print drops away, Ipswich Road is
+  // traced in gold, the camera tilts and swings round to look down the road,
+  // travels it from Annerley Junction to the clinic, and settles. Photographs
+  // stand where they were taken and come up as the camera nears them.
+  var place = document.querySelector(".place");
+  var plane = place && place.querySelector(".place__plane");
+  var placeStage = place && place.querySelector("[data-sc-stage]");
+  var archive = place && place.querySelector(".place__archive");
+  var placePins = place ? [].slice.call(place.querySelectorAll(".place__pin")) : [];
+  var PA = null, placeKey = "";
+  var road = plane ? JSON.parse(plane.getAttribute("data-road")) : [];
+  var junction = plane ? JSON.parse(plane.getAttribute("data-junction")) : [0.5, 0.5];
+  var turnTo = plane ? 360 - (+plane.getAttribute("data-bearing")) : 0;   // swing the road to point ahead
+  if (turnTo > 180) turnTo -= 360;
+  var CL = [0.5, 0.5];
+  var sm = function (t) { return t * t * (3 - 2 * t); };
+  var seg = function (p, a, b) { return sm(clamp((p - a) / (b - a), 0, 1)); };
+  var mix = function (a, b, t) { return a + (b - a) * t; };
+  // Ipswich Road as arc length, from where it meets the Junction to the clinic.
+  var arc = [0];
+  for (var r = 1; r < road.length; r++) arc.push(arc[r - 1] + Math.hypot(road[r][0] - road[r - 1][0], road[r][1] - road[r - 1][1]));
+  function nearestS(pt) {
+    var best = 0, bd = Infinity;
+    for (var r2 = 0; r2 < road.length; r2++) { var d = Math.hypot(road[r2][0] - pt[0], road[r2][1] - pt[1]); if (d < bd) { bd = d; best = arc[r2]; } }
+    return best;
+  }
+  var s0 = road.length ? nearestS(junction) : 0, s1 = road.length ? nearestS(CL) : 0;
+  function roadAt(t) {
+    if (!road.length) return CL;
+    var s = s0 + (s1 - s0) * t;
+    for (var r3 = 1; r3 < road.length; r3++) {
+      if (arc[r3] >= s) {
+        var u = (s - arc[r3 - 1]) / Math.max(arc[r3] - arc[r3 - 1], 1e-9);
+        return [mix(road[r3 - 1][0], road[r3][0], u), mix(road[r3 - 1][1], road[r3][1], u)];
+      }
+    }
+    return road[road.length - 1];
+  }
+  // Under reduced motion, and on a screen too short for photographs to stand
+  // on the map (a phone on its side), the act holds one frame and nothing pins.
+  var shortMQ = matchMedia("(max-height: 600px)");
+  var placeSpan = place ? place.getAttribute("data-sc-span") : null;
+  var placeCues = place ? [].slice.call(place.querySelectorAll("[data-sc-cue]")).map(function (el) { return [el, el.getAttribute("data-sc-cue")]; }) : [];
+  var still = null;
+  var placeStill = function () { return reduce || shortMQ.matches; };
+  function setPlace(s) {
+    if (s === still) return;
+    still = s;
+    if (!place) return;
+    place.classList.toggle("is-still", s);
+    place.setAttribute("data-sc-act", s ? "flow" : "pin");
+    if (s) {
+      // undo what a pinned mount leaves on the act, as the route act does
+      place.removeAttribute("data-sc-span");
+      place.style.height = "";
+      place.classList.remove("sc-act--pinned");
+      if (placeStage) placeStage.classList.remove("sc-stage");
+    } else place.setAttribute("data-sc-span", placeSpan);
+    placeCues.forEach(function (c) {
+      if (!s) { c[0].setAttribute("data-sc-cue", c[1]); return; }
+      c[0].removeAttribute("data-sc-cue");
+      c[0].style.opacity = ""; c[0].style.transform = "";   // the engine's last write
+    });
+    placeKey = "";
+  }
+  // On a shorter screen the camera's mark sits lower, so the photographs
+  // standing on the map clear the header, and on a laptop they stand a little
+  // smaller.
+  // Sizes come from the layout viewport, as the CSS media queries do, not
+  // innerWidth: that follows pinch zoom, and while a phone is still loading
+  // the page it can report a zoomed-out width.
+  var de = document.documentElement;
+  var planeSize = 2400;
+  function sizePlace() {
+    if (!plane) return;
+    var phone = mobileMQ.matches, H = de.clientHeight;
+    planeSize = phone ? 1600 : 2400;
+    plane.style.setProperty("--S", planeSize + "px");
+    plane.style.setProperty("--top", (phone ? 54 + clamp((844 - H) / 14, 0, 15) : 60 + clamp((900 - H) / 10, 0, 22)).toFixed(1) + "%");
+    plane.style.setProperty("--k", phone ? "1" : clamp((H + 300) / 1200, 0.8, 1).toFixed(3));
+  }
+  function renderPlace(p) {
+    if (!plane) return;
+    var W = de.clientWidth, H = de.clientHeight, phone = mobileMQ.matches;
+    var key = p.toFixed(4) + ":" + W + "x" + H;
+    if (key === placeKey) return;
+    placeKey = key;
+    var fit = Math.min(W, H) * (phone ? 1.15 : 0.92) / planeSize;
+    var drop = seg(p, 0.08, 0.3), draw = seg(p, 0.18, 0.46), turn = seg(p, 0.28, 0.5), travel = seg(p, 0.42, 0.84), settle = seg(p, 0.8, 0.97);
+    var O = [(junction[0] + CL[0]) / 2, (junction[1] + CL[1]) / 2];
+    var a = [mix(O[0], junction[0], turn), mix(O[1], junction[1], turn)], b = roadAt(travel);
+    var fx = mix(a[0], b[0], travel), fy = mix(a[1], b[1], travel);
+    var zoom = fit * (1 + 1.4 * turn + 1.2 * travel - 0.35 * settle);
+    var st = plane.style;
+    st.setProperty("--fx", fx.toFixed(5));
+    st.setProperty("--fy", fy.toFixed(5));
+    st.setProperty("--zoom", zoom.toFixed(4));
+    st.setProperty("--tilt", (58 * turn - 14 * settle).toFixed(2));
+    st.setProperty("--rot", (turnTo * turn + 58 * settle).toFixed(2));   // and a last orbit round the clinic
+    // on a narrow screen the camera steps sideways while the Queenslanders
+    // card is up, so the card is not cut by the edge, then steps back
+    st.setProperty("--sx", (phone ? Math.min(0.1 * W, 40) * seg(p, 0.36, 0.5) * (1 - seg(p, 0.72, 0.9)) : 0).toFixed(1) + "px");
+    st.setProperty("--draw", draw.toFixed(4));
+    st.setProperty("--mapo", (0.3 + 0.7 * seg(p, 0.06, 0.3)).toFixed(3));
+    st.setProperty("--ring", seg(p, 0.66, 0.82).toFixed(3));
+    if (archive) {
+      archive.style.setProperty("--drop", drop.toFixed(4));
+      archive.style.setProperty("--archive", (1 - seg(p, 0.2, 0.3)).toFixed(3));
+    }
+    placePins.forEach(function (pin) {
+      var o;
+      if (pin.classList.contains("place__pin--city")) o = seg(p, 0.12, 0.22) * (1 - seg(p, 0.3, 0.4));
+      else if (pin.classList.contains("place__pin--clinic")) o = seg(p, 0.16, 0.28);
+      else {
+        var stop = +pin.getAttribute("data-stop");
+        o = seg(p, stop - 0.12, stop - 0.02) * (pin.classList.contains("place__pin--then") ? 1 : 1 - seg(p, stop + 0.24, stop + 0.32));
+      }
+      pin.style.setProperty("--o", o.toFixed(3));
+    });
+    if (placeStage) placeStage.setAttribute("data-sc-verify-state", "place p=" + p.toFixed(2) + (p < 0.3 ? " print" : p < 0.5 ? " turn" : p < 0.84 ? " travel" : " arrive"));
+  }
+
   // ------------------------------------------------------------- mounting --
   var sc = null, P = null, RA = null;
   var actOf = function (el) { return el && sc ? sc.acts.filter(function (a) { return a.el === el; })[0] : null; };
@@ -264,37 +410,50 @@
     if (sc) sc.destroy();
     if (pan) pan.setAttribute("data-sc-span", panSpan());
     sc = window.ScrollCraft.mount(document);
-    P = actOf(pan); RA = actOf(routeAct);
+    P = actOf(pan); RA = actOf(routeAct); PA = actOf(place);
+    placeKey = "";
     renderRoute();
   }
   // Re-mount only when the route's mode or the rail's length has to change,
   // and hold the reader's place in whichever act they were in.
   function recheck() {
-    var m = routeAct ? measure() : mode;
-    if (m === mode && (!pan || pan.getAttribute("data-sc-span") === panSpan())) return;
+    var m = routeAct ? measure() : mode, s = placeStill();
+    if (m === mode && s === still && (!pan || pan.getAttribute("data-sc-span") === panSpan())) return;
     var at = null;
     sc.acts.some(function (a) {
       if (scrollY < a.top + a.height) { at = { el: a.el, f: clamp((scrollY - a.top) / Math.max(a.height, 1), 0, 1) }; return true; }
       return false;
     });
     if (routeAct) apply(m);
+    setPlace(s);
     mount();
+    if (still) renderPlace(0.9);
     var a = at && actOf(at.el);
     if (a) window.scrollTo({ top: a.top + at.f * a.height, behavior: "instant" });
   }
 
+  setPlace(placeStill());
+  sizePlace();
   if (routeAct) apply(measure());
   mount();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(recheck);
-  var lastW = innerWidth, lastH = innerHeight, rz = 0;
+  if (still) renderPlace(0.9);
+  var lastW = de.clientWidth, lastH = de.clientHeight, rz = 0;
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
+    lastW = de.clientWidth; lastH = de.clientHeight;
+    sizePlace();
+    recheck();
+    if (still) renderPlace(0.9);
+  });
   addEventListener("resize", function () {
     clearTimeout(rz);
     rz = setTimeout(function () {
       // A phone's URL bar changes the height and not the width. That is not
       // a new screen, and re-laying out under the reader's thumb jumps.
-      if (innerWidth === lastW && (touch || Math.abs(innerHeight - lastH) < 40)) return;
-      lastW = innerWidth; lastH = innerHeight;
+      if (de.clientWidth === lastW && (touch || Math.abs(de.clientHeight - lastH) < 40)) return;
+      lastW = de.clientWidth; lastH = de.clientHeight;
+      sizePlace();
       recheck();
+      if (still) renderPlace(0.9);
     }, 180);
   }, { passive: true });
 
@@ -302,6 +461,7 @@
     renderDepth();
     if (RA && scrollY > RA.top - innerHeight * 1.25 && scrollY < RA.top + RA.height) renderRoute();
     if (P && scrollY > P.top - innerHeight * 1.2 && scrollY < P.top + P.height) settleRail();
+    if (PA && !still && scrollY > PA.top - innerHeight * 1.1 && scrollY < PA.top + PA.height) renderPlace(progress(PA));
     requestAnimationFrame(frame);
   }
 

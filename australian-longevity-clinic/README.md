@@ -2,7 +2,64 @@
 
 A rebuild of [australianlongevityclinic.com.au](https://australianlongevityclinic.com.au/) as a static site: HTML, CSS and a little JavaScript. No framework, no tracking, no third-party requests.
 
-Built with the **scroll-craft** skill. This is revision 3. The home page opens on what the clinic does and who does it: "Real peptide therapy, from real doctors.", the four goals people come in for, and the clinic's lead doctors. Pick a goal and the page shows the blood tests a doctor may order before prescribing anything, and when you'd be tested again. That choice is then already set in the assessment form. Apart from the clinic's logo and its doctors' photographs, every image is set in type from the clinic's published test data. None comes from an image generator. The brief, the fingerprint gate and the verification results are in `BRIEF.md`.
+Built with the **scroll-craft** skill. This is revision 4. The home page opens on what the clinic does and who does it: "Real peptide therapy, from real doctors.", the four goals people come in for, and the clinic's lead doctors. Pick a goal and the page shows the blood tests a doctor may order before prescribing anything, and when you'd be tested again. That choice is then already set in the assessment form. Before the form, the page travels down Ipswich Road to the clinic's door. The photographs are the clinic's own, from its live site, and documentary photographs of Annerley. The other images are drawn from real data: the clinic's published tests, and OpenStreetMap. No image was generated for this build, though the clinic's own images look AI-generated (see *Photographs*). The brief, the fingerprint gate and the verification results are in `BRIEF.md`.
+
+## Revision 4 (6 October 2026)
+
+The direction for this revision: take out the section on what the clinic won't do, bring in more photographs (the clinic's own, from its live site, and the Annerley area), replace the code-like typeface under the clinic's name with something more professional, and add scroll effects that hold attention. The messaging stays.
+
+- **"What the clinic won't do" is gone.** The list, the small map and the address beside it are removed from the doctors section. The address and hours now sit at the end of the new Annerley act, and on the contact page as before.
+- **Photographs, from two places.** Eight of the clinic's own images from its live site, used as lifestyle pictures for the four goals and on the inner pages. Four photographs of Annerley from Wikimedia Commons, two of them State Library of Queensland prints from the 1930s. *Photographs* below lists what was used and what was left out, with the licences.
+- **A new act: Annerley.** Between the doctors and the assessment, the page pins on a print of Annerley from the air in about 1934. As you scroll, the print drops away onto today's streets, drawn at night from OpenStreetMap. Ipswich Road traces itself in gold, and the camera tilts to look down the road and travels it from Annerley Junction to the clinic. Two photographs stand on the map where they were taken: Queenslanders on Waterton Street, and Ipswich Road in about 1936, 150 m from the clinic. It settles on 628 Ipswich Road and the clinic's visiting details.
+- **More movement as you scroll.** Each plate on the programs rail is now its goal's photograph, which drifts and settles as the plate comes in. On large screens the route act shows the chosen goal's photograph under the goal buttons, and a new one wipes in over the last. The doctors' photographs wipe in as their records arrive. Program pages and journal articles open on a wide photograph that drifts with the scroll. All of it moves with transform and opacity only, and under reduced motion it is still.
+- **One typeface.** The monospaced face (Azeret Mono) is gone from every page. The line under the clinic's name is now "ANNERLEY · BRISBANE" in spaced capitals of the site's own face, Schibsted Grotesk, which also sets every label and table heading. Figures use tabular numerals, so columns still line up. The client named only the line under the clinic's name. The same face set every label on the site, so it went everywhere.
+- **Smaller changes.** The contact page has three photographs of Annerley under its map. The journal index shows each article's photograph on wider screens. The location map's labels are in Schibsted Grotesk.
+
+Everything else, the messaging included, is as it was in revision 3.
+
+### Photographs
+
+| Photograph | Where | Source | Licence |
+|---|---|---|---|
+| Eight lifestyle images: a woman with clear skin among amber bottles, a woman in activewear at a window, a smiling man outdoors, an arm with an IV line on a navy recliner, a man in a treatment chair, a woman asleep, a woman in a cream suit, a woman with her eyes closed | Programs rail, route act, program pages, journal | The clinic's live site | The clinic's own (to confirm, see *Before launch*) |
+| Annerley from the air, about 1934 | Annerley act | State Library of Queensland, via Wikimedia Commons | Public domain |
+| Ipswich Road just south of Cracknell Road, about 1936 | Annerley act, contact page | State Library of Queensland, via Wikimedia Commons | Public domain |
+| Queenslanders on Waterton Street | Annerley act, contact page | John Robert McPherson, via Wikimedia Commons | CC0 |
+| Jubilee Hall, Annerley | Contact page | Chris Olszewski, via Wikimedia Commons | CC BY-SA 4.0. The credit links the source and the licence, and says the photograph is cropped and toned. |
+
+The clinic's images look AI-generated, like most of the live site's imagery. Here they are lifestyle pictures only. None is captioned or placed as the clinic's rooms, staff or patients. 36 of the live site's 45 images are left out:
+
+- 28 show medicines or products: peptide vials, pens, capsules and creams with names on the label, Wegovy and Mounjaro pens, and drip bags labelled "Vitamin C" or with another business's name. Prescription medicines cannot be advertised to the public.
+- 4 would pass as the clinic's own premises or staff: two interiors, one with another business's name on its reception wall, and two consultations with a doctor who is not one of the clinic's.
+- 2 are illustrations of a glowing cell and a glowing gut, the metaphor imagery the brief rules out.
+- 2 frame treatment in ways the site avoids: athletic performance, and sexual health.
+
+The 45th is the logo, in since revision 2. Three Annerley photographs were tried and dropped: Annerley Junction in 2009 (other businesses' signs fill the frame), a café corner that could be anywhere, and a first view of Waterton Street that was mostly road.
+
+`tools/alc-assets/photos.py` crops and grades every photograph from `photos.json`, which records each one's source, licence, alt text and caption. The clinic's images are left close to how they were. The street photographs are a little desaturated, with shadows toward the navy and highlights toward ivory. The 1930s prints become a navy-to-ivory duotone. Each is served as AVIF and WebP at two or three widths.
+
+No image generator was used. The image service the scroll-craft skill can call needs an API key this environment does not have, so the new artwork is drawn in code from real data, as the hero's data field already was.
+
+## How the home page behaves on different screens
+
+The route act measures its panels before it pins, then picks one of three modes. Nothing is ever cut off at the bottom of the screen.
+
+| Mode | When | What the reader sees |
+|---|---|---|
+| Whole | A full goal panel fits the screen: most desktops and tablets | Pinned. Scrolling walks the four goals. In each, the tests rise one by one before the rule and the re-test interval appear. |
+| Split | Half a panel fits: most Android phones, and 1366 x 768 or 1280 x 720 laptops | Pinned. Each goal shows its tests first, then the rule and the re-test take their place. |
+| Static | Neither fits, or the reader has reduced motion turned on. iPhones in Safari load at about 390 x 664 with the toolbars showing, so they land here. | Nothing pins. The panels sit one after another. On a phone the four goals ride in a row under the header and light up as you pass each one. |
+
+Every goal link on the page sets that goal in the assessment form and lands on its panel. If the fonts load late or the screen turns, the page measures again and keeps the reader's place.
+
+The Annerley act has two forms.
+
+| Form | When | What the reader sees |
+|---|---|---|
+| Moving | Motion allowed, and a screen more than 600 px tall | Pinned. The print drops, the road draws and the camera travels to the clinic. On shorter laptops and phones the camera's mark sits lower, and on laptops the standing photographs are a little smaller, so they always clear the header. On phones up to 780 px tall the visit card keeps the address and the links and leaves the hours to the footer, so the clinic stays in view. |
+| Still | Reduced motion, or a screen 600 px tall or less, such as a phone on its side | Nothing pins. It holds one frame near the end: the clinic, the 1936 photograph and the visit card. On phones and short screens it stacks as heading, map, then visit card. |
+
+Turning a phone switches between the two and keeps the reader's place. Without JavaScript the act shows the heading, the 1934 print and the visit card over the street map.
 
 ## Revision 3 (5 October 2026)
 
@@ -17,18 +74,6 @@ The direction for this revision: take out the tree, lead with what the clinic do
 - **Smaller changes.** The form's progress is a five-step bar. The journal index puts the date and topic in a column on the left. The menus show each program's goal under its name. The 404 page no longer talks about rings. The social card has the new headline and both doctors. The solid header is fully opaque, so text no longer shows through it as it scrolls underneath.
 
 The copy for this revision follows the humanscope structure sheet in `BRIEF.md` and the house language rules: no em dashes, Australian spelling, no stock phrases, and no run of three-part lists.
-
-### How the home page behaves on different screens
-
-The route act measures its panels before it pins, then picks one of three modes. Nothing is ever cut off at the bottom of the screen.
-
-| Mode | When | What the reader sees |
-|---|---|---|
-| Whole | A full goal panel fits the screen: most desktops and tablets | Pinned. Scrolling walks the four goals. In each, the tests rise one by one before the rule and the re-test interval appear. |
-| Split | Half a panel fits: most Android phones, and 1366 x 768 or 1280 x 720 laptops | Pinned. Each goal shows its tests first, then the rule and the re-test take their place. |
-| Static | Neither fits, or the reader has reduced motion turned on. iPhones in Safari load at about 390 x 664 with the toolbars showing, so they land here. | Nothing pins. The panels sit one after another. On a phone the four goals ride in a row under the header and light up as you pass each one. |
-
-Every goal link on the page sets that goal in the assessment form and lands on its panel. If the fonts load late or the screen turns, the page measures again and keeps the reader's place.
 
 ## Earlier revisions
 
@@ -58,6 +103,8 @@ Opening `index.html` straight from disk also works. The browser will log harmles
 | Recommended | The doctors add their AHPRA registration numbers. | For this audience a named, checkable doctor is the strongest trust signal there is. |
 | Recommended | Connect the journal sign-up (`data-endpoint` on `form.news`). | It says it is a preview until connected. |
 | Recommended | Redirect `/blog/ozempic-vs-mounjaro-brisbane` and `/blog/bpc-157-gut-health-brisbane` to `/blog/`. | Those two articles are not carried over (see below). |
+| Recommended | Confirm the clinic holds the rights to the eight images taken from its live site, and is happy to use them as lifestyle pictures (see *Photographs*). | They appear to be AI-generated. Whoever made them for the live site should confirm the licence covers this use. |
+| Recommended | If the pages are restyled, keep each Annerley photograph's credit with it. | The Jubilee Hall photograph's licence (CC BY-SA 4.0) requires the credit, the licence link and the note that it was changed. The others ask for nothing, but the credit is right. |
 | Optional | The privacy policy (carried over word for word) mentions cookies, analytics and document uploads. This build has none of them. Leave the policy as is, or update it. | Accuracy. |
 
 How the form hands over: on submit it POSTs the answers, expects `2xx` with an optional `{ "id": "...", "checkoutUrl": "..." }`, and then opens Stripe with `client_reference_id` and `prefilled_email` set so each payment matches its answers. Without JavaScript, the form still posts every step's fields (never by GET).
@@ -66,15 +113,15 @@ How the form hands over: on submit it POSTs the answers, expects `2xx` with an o
 
 | Path | What |
 |---|---|
-| `index.html` | Home: the offer and the lead doctors, the four programs on a sideways rail, what a doctor checks for each goal (the signature move), the doctors who lead the clinic, and the assessment as the ending |
-| `iv-drips/` `peptide-therapy/` `testosterone-therapy/` `weight-management/` | One page per program, each with its goal's tests beside the text. Same URLs as the live site; weight management is new. |
+| `index.html` | Home: the offer and the lead doctors, the four programs on a sideways rail, what a doctor checks for each goal (the signature move), the doctors who lead the clinic, Annerley, and the assessment as the ending |
+| `iv-drips/` `peptide-therapy/` `testosterone-therapy/` `weight-management/` | One page per program, each opening on its goal's photograph, with the goal's tests beside the text. Same URLs as the live site; weight management is new. |
 | `our-team/` | The lead doctors: both records in full, including special interests and how to check a registration on the AHPRA register |
-| `contact/` | Address, hours, the location map, the full assessment and its FAQs |
-| `blog/` and `blog/<slug>/` | The journal: 14 of the clinic's 16 articles |
+| `contact/` | Address, hours, the location map with three photographs of Annerley, the full assessment and its FAQs |
+| `blog/` and `blog/<slug>/` | The journal: 14 of the clinic's 16 articles, each with a photograph |
 | `privacy-policy/` | The clinic's policy, carried over word for word |
 | `404.html` | Not-found page (root-relative links, so hosts can serve it at any depth) |
 
-Every page is generated by `../tools/alc-site/build.mjs` from shared parts: the header, footer, doctors' register and assessment form are identical everywhere they appear. Edit the builder, not the HTML, then run `node tools/alc-site/build.mjs` from the repository root. The doctors' records live in one place, `DOCTORS` in `build.mjs`. The goals, tests, rules and re-test intervals live in one place, `ROUTES` in `routes.mjs`; the hero slip, the rail, the route act, the program pages and the hero's far plane are all built from it.
+Every page is generated by `../tools/alc-site/build.mjs` from shared parts: the header, footer, doctors' register and assessment form are identical everywhere they appear. Edit the builder, not the HTML, then run `node tools/alc-site/build.mjs` from the repository root. The doctors' records live in one place, `DOCTORS` in `build.mjs`. The goals, tests, rules and re-test intervals live in one place, `ROUTES` in `routes.mjs`; the hero slip, the rail, the route act, the program pages and the hero's far plane are all built from it. Each photograph's alt text, caption and credit come from `tools/alc-assets/photos.json`, and the Annerley act's positions from `place.mjs`, which `gen_place.mjs` writes.
 
 ## The doctors
 
@@ -121,7 +168,9 @@ Method: the humanscope skill in audit mode, scoped for explainers. Its premise i
 
 The rules for medical content were stricter than the style rules. Every number, dose, duration, threshold, test, timeframe and contraindication is kept exactly. No new benefit, mechanism, study, statistic or medicine was added, and no caveat, risk or disclaimer was removed. Claims the evidence doesn't support were softened, never strengthened, and each one is listed. The clinic's measure-first rule is consistent everywhere: nothing is prescribed from a questionnaire alone, and sometimes the answer is no.
 
-**Revision 3.** The new home page and program heads were written from a humanscope structure sheet (in `BRIEF.md`) before any line was drafted. The deliberate choices: no line explains what the page means, feelings are said plainly ("if low testosterone is why you feel flat"), references are named (HbA1c, SHBG, Schedule 4, the RACGP, AHPRA, 628 Ipswich Road), and the clinic says what it won't do. A final pass rewrote the three-part lists that had crept into the route copy. The measure-first sentence keeps its three steps, because they are the process.
+**Revision 3.** The new home page and program heads were written from a humanscope structure sheet (in `BRIEF.md`) before any line was drafted. The deliberate choices: no line explains what the page means, feelings are said plainly ("if low testosterone is why you feel flat"), references are named (HbA1c, SHBG, Schedule 4, the RACGP, AHPRA, 628 Ipswich Road), and the clinic says what it won't do (that list was removed in revision 4, at the client's request). A final pass rewrote the three-part lists that had crept into the route copy. The measure-first sentence keeps its three steps, because they are the process.
+
+**Revision 4.** The new copy is the Annerley act ("On Ipswich Road, Annerley." and "About 5.5 km south of the city centre, on the main road in."), the photographs' captions and alt text, and two distances on the map cards. It follows the same sheet: places are named (Ipswich Road, Cracknell Road, Waterton Street, Jubilee Hall), and no line says what the act means. Distances are straight lines between OpenStreetMap coordinates: 5.5 km to the city centre, about 550 m to the Waterton Street houses and about 150 m to where the 1936 photograph was taken.
 
 **The site's own pages (revision 2).** The four program pages and their FAQs, the contact FAQs and the doctors page. Ledes that read as compliance text now say plainly what happens. FAQ answers start with the answer. Generic closing lines are gone ("Every recommendation is individual"). One claim was softened: "programs work best alongside sleep, nutrition and exercise" now says a program works alongside them.
 
@@ -165,25 +214,28 @@ Additions come only from the clinic's own published facts: the pathology and GP 
 
 ## The assets
 
-The live site's imagery is AI-generated: a caduceus badge, product vials labelled for a different clinic, and stock people in navy-and-gold rooms. Each is replaced with the clinic's own material or with type set from its own data:
+The live site's imagery is AI-generated: a caduceus badge, product vials labelled for a different clinic, and stock people in navy-and-gold rooms. Revision 4 brings eight of the people pictures back as lifestyle images (see *Photographs*). Everything else is the clinic's own material, a documentary photograph, or drawn from data:
 
 | Asset | File | Source |
 |---|---|---|
 | Logo | `assets/img/logo/alc-medallion-*.webp`, `favicon.ico`, `touch-icon-*.png` | The clinic's medallion from its live site, white square removed. The live site's own favicon is a site-builder placeholder, so the favicons are made from the medallion. |
 | The doctors' portraits | `assets/img/doctors/*.webp` | The profile image supplied with the brief, cropped and lightly graded, not retouched |
-| The data field (hero far plane) | `assets/img/data-field-*.avif` and `.webp` | Every route's tests, ranges and re-test intervals from `ROUTES`, typeset in the site's two faces and defocused (`tools/alc-assets/gen_datafield.mjs`) |
+| The data field (hero far plane) | `assets/img/data-field-*.avif` and `.webp` | Every route's tests, ranges and re-test intervals from `ROUTES`, typeset in the site's face and defocused (`tools/alc-assets/gen_datafield.mjs`) |
+| Lifestyle photographs | `assets/img/photos/{skin,weight,strong,energy,rest,sleep,calm,still}-*` | The clinic's live site, cropped and barely graded (`tools/alc-assets/photos.py`) |
+| Annerley photographs | `assets/img/photos/{aerial-1934,ipswich-1936,queenslanders,jubilee}-*` | Wikimedia Commons, credited where they appear (see *Photographs*) |
+| The Annerley act's map | `assets/img/place/annerley-{4096,2048}.avif` and `.webp` | Streets, parks, rail and water around the clinic from OpenStreetMap, drawn at night in the site's palette, 2.6 km square (`tools/alc-assets/gen_place.mjs`). Ipswich Road's line and the positions of the clinic and the photographs go to `tools/alc-site/place.mjs`. |
 | The hero slip | inline | The tests for the goal under the pointer, read from the route panels |
-| Goal plates (programs rail) | inline | The goal set in type on navy, with that goal's tests along the top |
+| Goal plates (programs rail) | inline, with a photograph | The goal's photograph with the goal set over it, and that goal's tests along the top |
 | Route panels | inline, from `ROUTES` | See *Where the tests come from* |
 | The doctors' calendars | inline, from `DOCTORS` | A ruler of years from 1995 with each dated entry from the supplied image marked in gold, on one scale for both doctors |
 | Form progress | inline | Five segments, one per step |
-| Location map | `map-annerley.svg` | OpenStreetMap streets around 628 Ipswich Road (© OpenStreetMap contributors, ODbL) |
+| Location map | `map-annerley.svg` | OpenStreetMap streets around 628 Ipswich Road, on the contact page (© OpenStreetMap contributors, ODbL) |
 | Social card | `og.jpg` | The headline, the medallion, both doctors' photographs and the Lose weight tests (`tools/alc-assets/og.html`) |
 | Icons | none | Type and the gold dot on a chosen goal do the work |
 
-Retired in revision 3, with their generators: the Huon pine round and its defocused far plane, the core, the four plates, the sixteen journal cores, the progress rings, the dark location map and the ring mark. They remain in the repository's history.
+Retired in revision 3, with their generators: the Huon pine round and its defocused far plane, the core, the four plates, the sixteen journal cores, the progress rings, the dark location map and the ring mark. Retired in revision 4: the Azeret Mono font. They remain in the repository's history.
 
-The generators live in `../tools/alc-assets/` (see `../tools/README.md`). Fonts: Schibsted Grotesk and Azeret Mono (SIL Open Font License), self-hosted.
+The generators live in `../tools/alc-assets/` (see `../tools/README.md`). Font: Schibsted Grotesk (SIL Open Font License), self-hosted.
 
 ## Content changes from the live site
 
@@ -215,13 +267,23 @@ Testosterone itself is named throughout both testosterone articles, the testoste
   - The consultation is described as 15 to 20 minutes in one FAQ and 15 to 25 minutes in another (this build uses 15 to 25).
   - The IV page describes an in-clinic consultation, while the contact page describes a phone consultation (this build says "consultation" on the IV page and "by phone" for the assessment).
 
-## Verification (5 October 2026, revision 3)
+## Verification (6 October 2026, revision 4)
 
-- **scroll-craft harness**, final code: desktop 1440 x 900 (13.5 viewport heights, route in whole mode), phone 390 x 844 (19.2, split mode), compact phone 360 x 640 (22.5, static), and reduced motion at 1440 x 900 (12.7, static). No dead scroll or contrast flags, and no console errors or failed requests in any run.
+- **scroll-craft harness**, final code: desktop 1440 x 900 (16.6 viewport heights; route whole, Annerley moving), phone 390 x 844 (21.9; route split, Annerley moving), compact phone 360 x 640 (24.9; route static, Annerley moving), and reduced motion at 1440 x 900 (13.0; route static, Annerley still). No dead scroll in any run. Every line of text that sits over an image or the map clears 4.5:1 contrast in its worst frame. No console errors or failed requests.
+- **The Annerley act at 21 screen sizes**, from 360 x 640 to 2560 x 1440, sampled every 2.5% of the act: no standing photograph is ever under the header at full strength, and the clinic is never under the visit card. The 1934 print never meets the heading at 16 sizes, including a phone on its side. The still and no-JavaScript layouts were checked at phone, phone-on-its-side, short laptop and desktop sizes, and turning a phone switches between moving and still and back.
 - **The route at 14 screen sizes**, from 320 x 568 to 1920 x 1080, including 390 x 664 (an iPhone in Safari with its toolbars showing), stepped through every goal: no line of a panel ever runs below the bottom of the screen, and no page scrolls sideways.
-- **The assessment form and the goal routing**: 49 of 49 functional checks pass. They cover required fields, formats, under-18 and impossible dates, conditional questions, the error summary and `aria-invalid`, keyboard order, Enter to advance, review and edit, persistence across a reload, preview mode, a wired success (POST, then Stripe with reference and email), a server error (reported honestly, answers kept) and no-JavaScript posting. New in this revision: a goal tapped in the hero sets the form and lands on that goal's panel, with motion and without; the pinned act arrives with every test showing; after a reader has scrolled through all four goals, an earlier goal's button still takes the tap, on a desktop and on a phone; and in the split mode each half of a panel takes only its own taps.
-- **Every page** (24) at 320, 390 and 1440 px wide: no horizontal overflow, no console errors, no failed requests.
-- **Links**: 1,386 internal references (pages, assets, image candidates and anchors), none broken.
-- **Copy**: every page checked by script for em dashes and the banned stock phrases: none. A search of every page, stylesheet and script for the tree's vocabulary (Huon, ring, core, pith, specimen, NOAA and the rest): none.
-- **Found and fixed while verifying**: on a 390 px phone the tests slip covered Dr Rekha Bohra's photograph, so on phones it now tucks under the photographs' lower edge. The tallest panels (testosterone and iron) ran past the bottom of a phone screen, which is why the route now measures itself and splits. The test rows waited a third of a second before appearing, because the hidden state's transition outranked the shown state's; fixed. A tap on a goal on a phone landed 80 px short, because the header offset was counted twice. Rows already shown in a goal the reader had scrolled past stayed live inside the faded panel and swallowed taps meant for the current goal's button; a panel now resets when it is left, and only the current one takes taps. In the split mode the faded tests did the same to the button that replaces them; now only the half on screen takes taps. Making the walkthrough videos found both. The menus squeezed the goal names into a column built for "Fig. 1"; they now sit under each program's name. The journal kept an empty column where the tree cores were.
-- **Not verified**: a real phone (headless Chromium is not Safari on an iPhone), screen-reader output beyond the automated checks above, the live endpoint and Stripe link, which do not exist yet, and the medical review of the copy, which needs the clinic's doctors.
+- **The assessment form and the goal routing**: 49 of 49 functional checks pass. They cover required fields, formats, under-18 and impossible dates, conditional questions, the error summary and `aria-invalid`, keyboard order, Enter to advance, review and edit, persistence across a reload, preview mode, a wired success (POST, then Stripe with reference and email), a server error (reported honestly, answers kept), no-JavaScript posting, and the goal routing with and without motion.
+- **Every page** (24) at 320, 390 and 1440 px wide: no horizontal overflow, no console errors, no failed requests. The program pages, the contact page's photographs and the journal were also checked by eye on a phone and a desktop.
+- **Links**: 1,669 internal references (pages, assets, image candidates and anchors), none broken.
+- **Copy**: every page checked by script for em dashes and the banned stock phrases: none. No page names a prescription medicine outside the journal articles already listed above.
+- **Found and fixed while verifying**:
+  - On laptops 657 to 768 px tall, the most common sizes, the 1936 photograph rose under the header at the end of the Annerley act, and the Waterton Street photograph did the same mid-way. The same happened on phones up to 667 px tall. The camera's mark now sits lower on shorter screens, and the photographs stand a little smaller on laptops.
+  - On phones the Waterton Street photograph was cut by the left edge while it was up. The camera now steps sideways while it shows, then steps back.
+  - On a 360 x 640 phone the 1934 print covered the heading's second line, and on a 768 x 1024 tablet it touched it. The print now sizes itself to the screen's height.
+  - On a 1024 x 768 screen the visit card covered the clinic's marker. The card is narrower there.
+  - A phone could load the act with desktop sizes, because while a page loads the browser can report a zoomed-out width. Sizes now come from the layout viewport, the same width the stylesheets use.
+  - A phone on its side had no room for photographs standing on the map, so short screens now get the still form.
+  - With JavaScript off, the Annerley heading was painted under the map, and on a phone the print covered the visit card. The heading now comes first in the markup, which is also the better reading order, and the act stacks.
+  - Under reduced motion on a phone, the 1936 photograph covered the heading's second line and the visit card ran under the phone's assessment bar. The still frame now stacks.
+  - The harness flagged the Annerley heading at 1.4:1 contrast. It was measuring a box as wide as the page, which took in the 1934 print beside the heading. The heading's box now fits its text, and the real contrast clears 4.5:1.
+- **Not verified**: a real phone (headless Chromium is not Safari on an iPhone), screen-reader output beyond the automated checks above, the live endpoint and Stripe link, which do not exist yet, the medical review of the copy, which needs the clinic's doctors, and the rights to the clinic's own images, which only the clinic can confirm.

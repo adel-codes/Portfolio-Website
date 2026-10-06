@@ -1,0 +1,246 @@
+{
+ "_note": "Every photograph on the site: where it came from, its licence, how it is cropped and graded. photos.py makes the files; build.mjs reads alt text and credits from here. Clinic photos are the clinic's own, from its live site; they look generated and are used only as lifestyle images, never as the clinic's rooms, staff or patients. Annerley photos are from Wikimedia Commons.",
+ "photos": [
+  {
+   "key": "skin",
+   "src": "peptide-skin-hair.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/peptide-skin-hair-KnGvYKeyojKPjkiiRSb3Mk.webp",
+   "alt": "A woman with clear skin, framed among amber dropper bottles.",
+   "grade": "clinic",
+   "crops": {
+    "tall": [
+     0.8,
+     0.5,
+     0.5,
+     1.0
+    ],
+    "wide": [
+     1.5,
+     0.5,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "weight",
+   "src": "peptide-weight.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/peptide-weight-Zftjo8tZsqshdF6bNZq4MU.webp",
+   "alt": "A woman in activewear standing at a bright window.",
+   "grade": "clinic",
+   "crops": {
+    "tall": [
+     0.8,
+     0.37,
+     0.5,
+     1.0
+    ],
+    "wide": [
+     1.5,
+     0.45,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "strong",
+   "src": "trt-vitality.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/trt-vitality-YxTnhbFnRWb4LycRrh5FQQ.webp",
+   "alt": "A smiling man in his fifties outdoors in late afternoon light.",
+   "grade": "clinic",
+   "crops": {
+    "tall": [
+     0.8,
+     0.36,
+     0.5,
+     1.0
+    ],
+    "wide": [
+     1.5,
+     0.42,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "energy",
+   "src": "iv-infusion-arm.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/iv-infusion-arm-cfomzJr3e2pUpjhLHMwDXZ.webp",
+   "alt": "An arm with an IV line resting on the arm of a navy recliner.",
+   "grade": "clinic",
+   "crops": {
+    "tall": [
+     0.8,
+     0.42,
+     0.5,
+     1.0
+    ],
+    "wide": [
+     1.5,
+     0.5,
+     0.52,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "rest",
+   "src": "trt-hero.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/trt-hero-hp6gknVjnLEsK26HK9Weky.webp",
+   "alt": "A man resting in a reclining treatment chair.",
+   "grade": "clinic",
+   "crops": {
+    "wide": [
+     1.5,
+     0.55,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "sleep",
+   "src": "peptide-sleep.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/peptide-sleep-9Je5TrAJjBZeWhWjBtiumx.webp",
+   "alt": "A woman asleep in a dim navy bedroom.",
+   "grade": "clinic",
+   "crops": {
+    "wide": [
+     1.5,
+     0.55,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "calm",
+   "src": "peptide-menopause.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/peptide-menopause-BoVPFrjzvRFqnM9Ty76xkd.webp",
+   "alt": "A woman in a cream suit seated in a sunlit room.",
+   "grade": "clinic",
+   "crops": {
+    "wide": [
+     1.5,
+     0.52,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "still",
+   "src": "mood-memory.webp",
+   "from": "clinic",
+   "url": "https://d2xsxph8kpxj0f.cloudfront.net/310519663420495530/KCARSnqs6fkFJBLH482Y6i/mood-memory-cognitive-programme-n497KiXB9LE4Z2qwFdPqfd.webp",
+   "alt": "A woman sitting quietly with her eyes closed by a sunny window.",
+   "grade": "clinic",
+   "crops": {
+    "wide": [
+     1.5,
+     0.5,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "aerial-1934",
+   "src": "aerial-1934.jpg",
+   "from": "commons",
+   "url": "https://commons.wikimedia.org/wiki/File:StateLibQld_1_293719_Aerial_view_of_Annerley,_Brisbane,_ca._1934.jpg",
+   "alt": "Annerley from the air in about 1934: Ipswich Road crosses the frame, lined with shops and houses.",
+   "caption": "Annerley from the air, about 1934, with Ipswich Road crossing the frame.",
+   "credit": "State Library of Queensland",
+   "licence": "Public domain",
+   "grade": "archive",
+   "crops": {
+    "full": [
+     1.3333,
+     0.5,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "ipswich-1936",
+   "src": "ipswich-1936.jpg",
+   "from": "commons",
+   "url": "https://commons.wikimedia.org/wiki/File:StateLibQld_1_293931_Ipswich_Road_in_Annerley,_Brisbane,_ca._1936.jpg",
+   "alt": "Ipswich Road in about 1936, a wide road with tram lines and a few shops.",
+   "caption": "Ipswich Road just south of Cracknell Road, about 1936.",
+   "credit": "State Library of Queensland",
+   "licence": "Public domain",
+   "grade": "archive",
+   "crops": {
+    "tall": [
+     0.75,
+     0.5,
+     0.5,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "queenslanders",
+   "src": "waterton-bower.jpg",
+   "from": "commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Waterton_St_near_Bower_St_Annerley_P1340891.jpg",
+   "alt": "Two timber houses on Waterton Street, Annerley, one a yellow Queenslander with a deep verandah.",
+   "caption": "Queenslanders on Waterton Street.",
+   "credit": "John Robert McPherson",
+   "licence": "CC0",
+   "grade": "place",
+   "crops": {
+    "card": [
+     1.3333,
+     0.72,
+     0.245,
+     2.15
+    ],
+    "band": [
+     2.4,
+     0.5,
+     0.27,
+     1.0
+    ]
+   }
+  },
+  {
+   "key": "jubilee",
+   "src": "jubilee-hall.jpg",
+   "from": "commons",
+   "url": "https://commons.wikimedia.org/wiki/File:Jubilee_Hall,_Annerley,_2026,_01.jpg",
+   "alt": "Jubilee Hall in Annerley, a cream hall with a curved parapet, at dusk.",
+   "caption": "Jubilee Hall, Annerley.",
+   "credit": "Chris Olszewski",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "grade": "place",
+   "crops": {
+    "card": [
+     1.3333,
+     0.5,
+     0.5,
+     1.1
+    ],
+    "band": [
+     2.4,
+     0.5,
+     0.5,
+     1.0
+    ]
+   }
+  }
+ ]
+}

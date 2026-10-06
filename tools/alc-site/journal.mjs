@@ -45,10 +45,23 @@ function firstSentences(html) {
   return m ? m[1] : text.slice(0, 220);
 }
 
+// Each article's photograph, from the clinic's own set, chosen so that no
+// two neighbours in the index share one.
+const POST_PHOTO = {
+  "how-long-does-iron-infusion-take": "rest", "menopause-hormone-therapy-brisbane": "calm",
+  "low-testosterone-symptoms-women-brisbane": "still", "nad-plus-therapy-brisbane": "energy",
+  "iron-infusion-brisbane": "sleep", "is-peptide-therapy-safe-brisbane": "skin",
+  "peptide-therapy-weight-management-brisbane": "weight", "iv-therapy-women-brisbane": "calm",
+  "nad-plus-longevity-brisbane": "rest", "peptides-longevity-brisbane-guide": "still",
+  "testosterone-replacement-therapy-brisbane-mens-health": "strong", "nad-plus-infusion-benefits-brisbane": "energy",
+  "peptide-therapy-brisbane-what-you-need-to-know": "skin", "iv-drip-therapy-brisbane-guide": "rest",
+};
+
 export function journalPages(ctx) {
-  const { head, strip, footer, scripts, link, esc } = ctx;
+  const { head, strip, footer, scripts, link, esc, photo } = ctx;
   const posts = load();
   const out = [];
+  const pic = (p) => POST_PHOTO[p.slug] || "still";
 
   // ---------------------------------------------------------------- index
   {
@@ -61,6 +74,7 @@ export function journalPages(ctx) {
             <h2>${esc(p.title)}</h2>
             <p>${esc(p.standfirst)}</p>
           </div>
+          <span class="journal__thumb" aria-hidden="true">${photo(depth, pic(p), "wide", { sizes: "12rem", alt: "" })}</span>
         </a>
       </li>`).join("");
     out.push(["blog/index.html", head({ title: "Journal · Australian Longevity Clinic", description: "Educational notes on IV therapy, peptides, hormonal health and longevity medicine from the medical team at Australian Longevity Clinic, Brisbane.", depth, canonical: "blog" }) + `
@@ -103,6 +117,7 @@ ${strip(depth, "blog", "light")}
         <p class="lede" style="margin-top:1.3rem;max-width:52ch">${esc(p.standfirst)}</p>
       </div>
     </header>
+    <figure class="page-photo page-photo--article"><div class="page-photo__in">${photo(depth, pic(p), "wide", { sizes: "100vw", loading: "eager" })}</div></figure>
     <div class="wrap" style="padding-bottom:clamp(3rem,6vw,5rem)">
       <div class="prose">
         ${p.html}

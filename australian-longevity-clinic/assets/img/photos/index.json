@@ -1,0 +1,153 @@
+{
+ "skin-tall": {
+  "widths": [
+   480,
+   960
+  ],
+  "aspect": 0.8,
+  "h": 1200
+ },
+ "skin-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "weight-tall": {
+  "widths": [
+   480,
+   960
+  ],
+  "aspect": 0.8,
+  "h": 1200
+ },
+ "weight-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "strong-tall": {
+  "widths": [
+   480,
+   960
+  ],
+  "aspect": 0.8,
+  "h": 1200
+ },
+ "strong-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "energy-tall": {
+  "widths": [
+   480,
+   960
+  ],
+  "aspect": 0.8,
+  "h": 1200
+ },
+ "energy-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "rest-wide": {
+  "widths": [
+   800,
+   1400,
+   1608
+  ],
+  "aspect": 1.5,
+  "h": 1072
+ },
+ "sleep-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "calm-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "still-wide": {
+  "widths": [
+   800,
+   1400,
+   1920
+  ],
+  "aspect": 1.5,
+  "h": 1280
+ },
+ "aerial-1934-full": {
+  "widths": [
+   998
+  ],
+  "aspect": 1.3333,
+  "h": 749
+ },
+ "ipswich-1936-tall": {
+  "widths": [
+   480,
+   746
+  ],
+  "aspect": 0.75,
+  "h": 995
+ },
+ "queenslanders-card": {
+  "widths": [
+   360,
+   720
+  ],
+  "aspect": 1.3333,
+  "h": 540
+ },
+ "queenslanders-band": {
+  "widths": [
+   960,
+   1920
+  ],
+  "aspect": 2.4,
+  "h": 800
+ },
+ "jubilee-card": {
+  "widths": [
+   360,
+   720
+  ],
+  "aspect": 1.3333,
+  "h": 540
+ },
+ "jubilee-band": {
+  "widths": [
+   960,
+   1920
+  ],
+  "aspect": 2.4,
+  "h": 800
+ }
+}

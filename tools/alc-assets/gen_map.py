@@ -179,7 +179,7 @@ def build(osm, variant="light"):
              f"<text x='{W * 0.612 + 14:.1f}' y='44' font-size='15' fill='{ink}' fill-opacity='0.86'>Brisbane CBD</text>")
     txt = "".join(choose) + "628200 mN(c) OpenStreetMap contributorsBrisbane CBD"
     # labels carry a halo in the page ground so they stay legible where they cross streets
-    style = "<style>%s text{font-family:ALCMono,monospace;paint-order:stroke;stroke:%s;stroke-width:5px;stroke-linejoin:round}</style>" % (face(txt), P["ground"])
+    style = "<style>%s text{font-family:ALCSans,sans-serif;letter-spacing:0.06em;paint-order:stroke;stroke:%s;stroke-width:5px;stroke-linejoin:round}</style>" % (face(txt), P["ground"])
     clip = f"<clipPath id='frame'><rect x='0' y='0' width='{W}' height='{H}'/></clipPath>"
     body = (
         f"<g clip-path='url(#frame)' fill='none' stroke-linejoin='round' stroke-linecap='round'>"

@@ -11,12 +11,39 @@ import { fileURLToPath } from "node:url";
 import { servicePages, teamPage, privacyPage, notFoundPage } from "./pages.mjs";
 import { journalPages } from "./journal.mjs";
 import { ROUTES } from "./routes.mjs";
+import { PLACE } from "./place.mjs";
 export { ROUTES };
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const SITE = path.resolve(HERE, "../../australian-longevity-clinic");
 const IMG = path.join(SITE, "assets/img");
 const read = (p) => fs.readFileSync(p, "utf8");
+
+// ------------------------------------------------------------- photographs
+// Which of the clinic's photographs stands for each goal.
+export const GOAL_PHOTO = { peptides: "skin", weight: "weight", testosterone: "strong", iv: "energy" };
+// Alt text, captions and credits come from tools/alc-assets/photos.json and
+// the widths from the encoder's index, so the markup can't drift from the
+// files. Licensed photos carry their credit wherever they appear.
+const PHOTO_SPEC = JSON.parse(read(path.join(HERE, "../alc-assets/photos.json"))).photos;
+const PHOTO_INDEX = JSON.parse(read(path.join(IMG, "photos/index.json")));
+export const PHOTO = Object.fromEntries(PHOTO_SPEC.map((p) => [p.key, p]));
+export function photo(depth, key, crop, { sizes = "100vw", cls = "", alt, loading = "lazy", imgAttrs = "" } = {}) {
+  const p = PHOTO[key], ix = PHOTO_INDEX[`${key}-${crop}`];
+  if (!p || !ix) throw new Error(`no photo ${key}-${crop}`);
+  const base = `${rel(depth)}assets/img/photos/${key}-${crop}-`;
+  const set = (ext) => ix.widths.map((w) => `${base}${w}.${ext} ${w}w`).join(", ");
+  const w = ix.widths[ix.widths.length - 1];
+  return `<picture${cls ? ` class="${cls}"` : ""}><source type="image/avif" srcset="${set("avif")}" sizes="${sizes}"><img src="${base}${ix.widths[0]}.webp" srcset="${set("webp")}" sizes="${sizes}" width="${w}" height="${ix.h}" alt="${esc(alt ?? p.alt)}" loading="${loading}" decoding="async"${imgAttrs}></picture>`;
+}
+// "Photo: Name, CC0" or "Photo: State Library of Queensland"
+// A licence that asks for attribution (CC BY-SA) gets links to the source and
+// the licence, and a note that the photograph was changed.
+export const credit = (p) => {
+  if (!p.credit) return "";
+  if (p.licence_url) return `Photo: <a href="${p.url}">${p.credit}</a>, <a href="${p.licence_url}" rel="license">${p.licence}</a>, cropped and toned`;
+  return `Photo: ${p.credit}${p.licence && p.licence !== "Public domain" ? `, ${p.licence}` : ""}`;
+};
 
 // ------------------------------------------------------------------ facts
 // Everything here is from the clinic's live site (read 2026-10-05). Nothing
@@ -205,7 +232,6 @@ export function head({ title, description, depth, canonical, extraHead = "" }) {
 <link rel="icon" href="${r}assets/img/logo/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="${r}assets/img/logo/touch-icon-180.png">
 <link rel="preload" href="${r}assets/fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="${r}assets/fonts/azeret-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${r}assets/scrollcraft/scrollcraft.css">
 <link rel="stylesheet" href="${r}assets/css/site.css">
 ${extraHead}<script>document.documentElement.classList.add("js")</script>
@@ -222,7 +248,7 @@ export function strip(depth, current = "", startGround = "light") {
   <div class="strip__in">
     <a class="brand" href="${L_("")}" aria-label="${CLINIC.name}, home">
       ${logoImg(depth, 52)}
-      <span class="brand__name" aria-hidden="true"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span>
+      <span class="brand__name" aria-hidden="true"><b>${CLINIC.name}</b><span>Annerley &middot; Brisbane</span></span>
     </a>
     <nav class="nav" aria-label="Main">
       <div class="nav__group">
@@ -239,7 +265,7 @@ export function strip(depth, current = "", startGround = "light") {
 </header>
 <div class="sheet-menu" id="sheet-menu" hidden role="dialog" aria-modal="true" aria-label="Menu">
   <div class="sheet-menu__top">
-    <a class="brand" href="${L_("")}" aria-label="${CLINIC.name}, home">${logoImg(depth, 48)}<span class="brand__name" aria-hidden="true"><b>${CLINIC.name}</b><span>Annerley, Brisbane</span></span></a>
+    <a class="brand" href="${L_("")}" aria-label="${CLINIC.name}, home">${logoImg(depth, 48)}<span class="brand__name" aria-hidden="true"><b>${CLINIC.name}</b><span>Annerley &middot; Brisbane</span></span></a>
     <button class="sheet-menu__close" type="button">Close</button>
   </div>
   <nav aria-label="Menu">
@@ -350,7 +376,7 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
     <aside class="assess__aside" aria-label="What the assessment involves">
       <div class="assess__progress">
         ${progressGlyph()}
-        <p class="mono assess__step" aria-hidden="true"><span data-step-num>1</span> of 5<br><span data-step-name>Your goals</span></p>
+        <p class="label assess__step" aria-hidden="true"><span data-step-num>1</span> of 5<br><span data-step-name>Your goals</span></p>
       </div>
       <dl class="facts">
         <dt>Fee</dt><dd>${CLINIC.fee}, paid once through Stripe. It covers the doctor's review and your phone consultation. Not bulk billed.</dd>
@@ -364,11 +390,11 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
 
     <form class="intake" id="intake" method="post" action="" data-endpoint="" data-checkout-url="" novalidate aria-labelledby="assess-h">
       <ol class="intake__tabs" aria-label="Assessment steps">
-        <li><button type="button" data-goto="0" aria-current="step"><span class="mono">1</span>Goals</button></li>
-        <li><button type="button" data-goto="1" disabled><span class="mono">2</span>About you</button></li>
-        <li><button type="button" data-goto="2" disabled><span class="mono">3</span>Health</button></li>
-        <li><button type="button" data-goto="3" disabled><span class="mono">4</span>Contact</button></li>
-        <li><button type="button" data-goto="4" disabled><span class="mono">5</span>Review</button></li>
+        <li><button type="button" data-goto="0" aria-current="step"><span class="label">1</span>Goals</button></li>
+        <li><button type="button" data-goto="1" disabled><span class="label">2</span>About you</button></li>
+        <li><button type="button" data-goto="2" disabled><span class="label">3</span>Health</button></li>
+        <li><button type="button" data-goto="3" disabled><span class="label">4</span>Contact</button></li>
+        <li><button type="button" data-goto="4" disabled><span class="label">5</span>Review</button></li>
       </ol>
       <div class="intake__alert" role="alert" tabindex="-1" hidden></div>
 
@@ -486,7 +512,7 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
         <${hs} id="st4" class="d-sm" tabindex="-1">Review and fee</${hs}>
         <div class="review" data-review></div>
         <div class="fee">
-          <p class="fee__amt"><span class="mono">Consultation fee</span><b>${CLINIC.fee}</b><span class="mono">AUD, paid once</span></p>
+          <p class="fee__amt"><span class="label">Consultation fee</span><b>${CLINIC.fee}</b><span class="label">AUD, paid once</span></p>
           <ol class="fee__next">
             <li><b>Now.</b> You pay through Stripe's secure checkout. Your card details go to Stripe, not to the clinic.</li>
             <li><b>Within 1 to 2 business days.</b> A doctor reads your answers, then calls you on <span data-echo="phone">the number you gave</span>, ${CLINIC.callWindow}.</li>
@@ -508,11 +534,12 @@ export function assessment(depth, { headingLevel = 2, act = false } = {}) {
 }
 
 // --------------------------------------------------------------- home ---
-// The goal route. Five acts in the order a consultation answers questions:
+// The goal route. Six acts in the order a consultation answers questions:
 // what you want (hero), what can help (the programs rail), what a doctor
 // checks before prescribing (the route, the peak), who decides (the lead
-// doctors), and how you start (the assessment). Every goal on the page is a
-// control that routes to the same goal everywhere else; home.js wires it.
+// doctors), where (Annerley, a camera over its streets), and how you start
+// (the assessment). Every goal on the page is a control that routes to the
+// same goal everywhere else; home.js wires it.
 function home() {
   const depth = 0;
   const L_ = (t) => link(depth, t);
@@ -526,13 +553,16 @@ function home() {
             <figcaption><b>${d.name}</b><span>${withAbbr(d.post)}</span></figcaption>
           </figure>`;
   const card = (r) => {
-    const p = P[r.key];
+    const p = P[r.key], ph = GOAL_PHOTO[r.key];
     return `
         <article class="pl" id="program-${p.key}" aria-labelledby="pl-${p.key}">
-          <div class="pl__plate">
-            <p class="pl__checks" aria-hidden="true">${r.tests.map(([t]) => t).join(" · ")}</p>
-            <p class="pl__goal">${r.goal}</p>
-          </div>
+          <figure class="pl__plate">
+            <div class="pl__photo">${photo(depth, ph, "tall", { sizes: "(max-width: 860px) 82vw, 26rem" })}</div>
+            <figcaption class="pl__over">
+              <span class="pl__checks" aria-hidden="true">${r.tests.map(([t]) => t).join(" · ")}</span>
+              <span class="pl__goal">${r.goal}</span>
+            </figcaption>
+          </figure>
           <div class="pl__text">
             <h3 id="pl-${p.key}" class="d-md">${p.name}</h3>
             <p class="pl__intro">${r.card.intro}</p>
@@ -541,6 +571,17 @@ function home() {
           </div>
         </article>`;
   };
+
+  // The Annerley act: a camera over today's streets, drawn from OpenStreetMap.
+  // Photographs stand where they were taken; positions are fractions of the
+  // map (gen_place.mjs). home.js flies the camera from the act's progress.
+  const pin = (xy, inner, cls, extra = "") => `<div class="place__pin ${cls}" style="--x:${xy[0]};--y:${xy[1]}"${extra}>${inner}</div>`;
+  const placeCard = (key, crop, note) => {
+    const ph = PHOTO[key];
+    return `<figure class="place__card">${photo(depth, key, crop, { sizes: "(max-width: 860px) 9rem, 15rem" })}<figcaption><b>${ph.caption}</b>${note ? `<span>${note}</span>` : ""}<small>${credit(ph)}</small></figcaption></figure>`;
+  };
+  const roadPath = "M" + PLACE.road.map(([x, y]) => `${(x * 1000).toFixed(1)} ${(y * 1000).toFixed(1)}`).join(" L");
+  const mapsLink = "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(`${CLINIC.street}, ${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}`);
 
   const body = `
 <main id="main">
@@ -601,6 +642,9 @@ function home() {
           <p class="route-act__lede">Pick what you're after. Here's what a doctor may order first, and when you'd be tested again.</p>
           ${goals("goals--route", "Goals")}
           <p class="route-act__chosen" data-chosen aria-live="polite"></p>
+          <div class="route-act__window" aria-hidden="true">
+            ${ROUTES.map((r) => `<div class="route-act__shot${r.key === ROUTES[0].key ? " is-on" : ""}" data-goal="${r.key}">${photo(depth, GOAL_PHOTO[r.key], "wide", { sizes: "22rem", alt: "" })}</div>`).join("\n            ")}
+          </div>
         </header>
         <div class="route-act__panels">
           ${ROUTES.map((r) => routePanel(r, { depth, level: 3 })).join("\n          ")}
@@ -616,26 +660,44 @@ function home() {
         <p class="lede">Dr Raman Bohra and Dr Rekha Bohra are Fellows of the Royal Australian College of General Practitioners. Every consultation is one to one with a doctor.</p>
         <p class="lead__links"><a class="textlink" href="${L_("our-team")}">Full records and special interests</a><a class="textlink" href="${CLINIC.ahpra}" rel="noopener" target="_blank">Check a registration on the AHPRA register<span class="visually-hidden"> (opens in a new tab)</span></a></p>
       </header>
-      <div data-sc-in>
+      <div class="lead__register" data-sc-in>
       ${register(depth)}
       </div>
-      <div class="lead__visit" data-sc-in>
-        <figure class="plate lead__map">
-          <img src="assets/img/map-annerley.svg" alt="A street map of Annerley with the clinic marked at 628 Ipswich Road, between Venner Road and School Road, with Brisbane's CBD to the north." width="1200" height="900" loading="lazy" decoding="async">
-          <figcaption>${CLINIC.street}, ${CLINIC.suburb}, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
-        </figure>
-        <div class="lead__rules">
-          <h3 class="d-sm">What the clinic won't do</h3>
-          <ul class="dashes">
-            <li>Prescribe from a questionnaire alone.</li>
-            <li>Promise outcomes. Responses vary, and the doctor will tell you what the evidence does and doesn't show.</li>
-            <li>Publish testimonials. Australian health advertising law doesn't allow them.</li>
-          </ul>
-          <address>${CLINIC.street}<br>${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}<br><a href="mailto:${CLINIC.email}">${CLINIC.email}</a></address>
-          <dl class="facts">${CLINIC.hours.slice(0, 3).map(([d, h]) => `<dt>${d}</dt><dd>${h}</dd>`).join("")}</dl>
-          <p><a class="textlink" href="${L_("contact")}">Visit and contact</a></p>
+    </div>
+  </section>
+
+  <section class="place g-dark" id="visit" data-ground="dark" data-sc-act="pin" data-sc-span="3.8" aria-labelledby="place-h">
+    <div class="place__stage" data-sc-stage data-sc-verify-state="place">
+      <div class="wrap place__copy">
+        <div class="place__words" data-sc-cue="0 0.42 0 0.3">
+          <h2 id="place-h" class="d-lg">On Ipswich Road, Annerley.</h2>
+          <p class="lede">About 5.5 km south of the city centre, on the main road in.</p>
         </div>
       </div>
+      <div class="place__scene" aria-hidden="true">
+        <div class="place__plane" data-road="${JSON.stringify(PLACE.road)}" data-bearing="${PLACE.bearing}" data-junction="${JSON.stringify(PLACE.junction)}">
+          <picture>
+            <source type="image/avif" srcset="assets/img/place/annerley-2048.avif 2048w, assets/img/place/annerley-4096.avif 4096w" sizes="(max-width: 860px) 2048px, 4096px">
+            <img class="place__map" src="assets/img/place/annerley-2048.webp" srcset="assets/img/place/annerley-2048.webp 2048w, assets/img/place/annerley-4096.webp 4096w" sizes="(max-width: 860px) 2048px, 4096px" alt="" width="4096" height="4096" loading="lazy" decoding="async">
+          </picture>
+          <svg class="place__road" viewBox="0 0 1000 1000" preserveAspectRatio="none" focusable="false"><path d="${roadPath}" pathLength="1"/></svg>
+          <span class="place__ring" style="--x:${PLACE.clinic[0]};--y:${PLACE.clinic[1]}"></span>
+          ${pin([0.47, 0.035], `<p class="place__city">City centre <b>5.5 km</b></p>`, "place__pin--city")}
+          ${pin(PLACE.queenslanders, placeCard("queenslanders", "card", "About 550 m from the clinic"), "place__pin--card", ' data-stop="0.52"')}
+          ${pin(PLACE.ipswich1936, placeCard("ipswich-1936", "tall", "About 150 m from the clinic"), "place__pin--card place__pin--then", ' data-stop="0.84"')}
+          ${pin(PLACE.clinic, `<p class="place__clinic"><img src="assets/img/logo/alc-medallion-128.webp" alt="" width="128" height="128"><b>${CLINIC.street}</b></p>`, "place__pin--clinic", ' data-stop="0.86"')}
+        </div>
+      </div>
+      <figure class="place__archive">
+        ${photo(depth, "aerial-1934", "full", { sizes: "100vw" })}
+        <figcaption>${PHOTO["aerial-1934"].caption} <span>${credit(PHOTO["aerial-1934"])}</span></figcaption>
+      </figure>
+      <aside class="place__visit" data-sc-cue="0.8 1 0.25 0" aria-label="Visit the clinic">
+        <p class="label">Visit</p>
+        <address>${CLINIC.street}<br>${CLINIC.suburb} ${CLINIC.state} ${CLINIC.postcode}</address>
+        <dl class="facts">${CLINIC.hours.slice(0, 3).map(([d, h]) => `<dt>${d}</dt><dd>${h}</dd>`).join("")}</dl>
+        <p class="place__links"><a class="textlink" href="${mapsLink}" rel="noopener" target="_blank">Directions<span class="visually-hidden"> (opens Google Maps in a new tab)</span></a><a class="textlink" href="${L_("contact")}">Visit and contact</a></p>
+      </aside>
     </div>
   </section>
 
@@ -704,6 +766,9 @@ function contact() {
         <img src="${rel(depth)}assets/img/map-annerley.svg" alt="A street map of Annerley with the clinic marked at 628 Ipswich Road, between Venner Road and School Road, with Brisbane's CBD to the north." width="1200" height="900" loading="lazy" decoding="async">
         <figcaption>${CLINIC.street}, ${CLINIC.suburb}, on the main road south from the city. Map data &copy; OpenStreetMap contributors.</figcaption>
       </figure>
+      <div class="photo-strip">
+        ${[["queenslanders", "card"], ["ipswich-1936", "tall"], ["jubilee", "card"]].map(([k, c]) => `<figure class="photo-strip__item">${photo(depth, k, c, { sizes: "(max-width: 760px) 92vw, 30vw" })}<figcaption>${PHOTO[k].caption} <span>${credit(PHOTO[k])}</span></figcaption></figure>`).join("\n        ")}
+      </div>
     </div>
   </section>
   ${assessment(depth)}
@@ -733,7 +798,7 @@ function write(rp, html) {
   return rp;
 }
 
-const ctx = { CLINIC, PROGRAMS, DOCTORS, ROUTES, head, strip, footer, scripts, assessment, register, routePanel, link, rel, esc, logoImg, SITE };
+const ctx = { CLINIC, PROGRAMS, DOCTORS, ROUTES, head, strip, footer, scripts, assessment, register, routePanel, link, rel, esc, logoImg, SITE, photo, PHOTO, GOAL_PHOTO, credit };
 const written = [
   write("index.html", home()),
   write("contact/index.html", contact()),

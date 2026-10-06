@@ -337,7 +337,7 @@
       say("<h4>Preview build: nothing was sent.</h4>" +
         "<p>This copy of the site isn't connected to the clinic yet, so your answers stayed in this browser and nothing was charged.</p>" +
         "<p>On the live site this button saves your answers for the doctor and opens Stripe's secure checkout for the " + "$75 fee.</p>" +
-        '<p class="mono">To connect it, set data-endpoint and data-checkout-url on the form. See README.md.</p>' +
+        '<p class="small">To connect it, set data-endpoint and data-checkout-url on the form. See README.md.</p>' +
         '<p><button type="button" class="linkish" data-restart>Clear the answers and start again</button></p>');
       return;
     }
